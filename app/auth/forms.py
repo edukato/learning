@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, SubmitField, ValidationError
 from wtforms.validators import DataRequired, Email, EqualTo
 
-from ..models import User
+from ..models import Client
 
 
 class RegistrationForm(FlaskForm):
@@ -10,7 +10,6 @@ class RegistrationForm(FlaskForm):
     Form for users to create new account
     """
     email = StringField('Email', validators=[DataRequired(), Email()])
-    username = StringField('Username', validators=[DataRequired()])
     first_name = StringField('First Name', validators=[DataRequired()])
     last_name = StringField('Last Name', validators=[DataRequired()])
     password = PasswordField('Password', validators=[
@@ -21,12 +20,8 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Register')
 
     def validate_email(self, field):
-        if User.query.filter_by(email=field.data).first():
+        if Client.query.filter_by(email=field.data).first():
             raise ValidationError('Email is already in use.')
-
-    def validate_username(self, field):
-        if User.query.filter_by(username=field.data).first():
-            raise ValidationError('Username is already in use.')
 
 
 class LoginForm(FlaskForm):

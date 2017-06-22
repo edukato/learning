@@ -21,13 +21,6 @@ class User(UserMixin, db.Model):
     first_name = db.Column(db.String(60), index=True)
     last_name = db.Column(db.String(60), index=True)
     password_hash = db.Column(db.String(128))
-    laboratory_id = db.Column(db.Integer, db.ForeignKey('laboratories.id'))
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
-    projects = db.relationship('Project', backref='user',
-                               lazy='dynamic')
-    experiments = db.relationship('Experiment', backref='user',
-                               lazy='dynamic')
-    is_admin = db.Column(db.Boolean, default=False)
 
     @property
     def password(self):
