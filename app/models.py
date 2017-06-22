@@ -26,7 +26,10 @@ class Client(UserMixin, db.Model):
     description = db.Column(db.String(300))
     date_of_reg = db.Column(db.DateTime)
     password_hash = db.Column(db.String(128))
+<<<<<<< HEAD
 
+=======
+>>>>>>> c7885f74a49672cab7a9b2bd163734265bdec856
 
     @property
     def password(self):
