@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="930c546b-8ee9-416d-9c71-4513fb5e03e3" name="Default" comment="Изме">
+    <list default="true" id="930c546b-8ee9-416d-9c71-4513fb5e03e3" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -17,8 +17,8 @@
       <file leaf-file-name="run.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="13" lean-forward="true" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+            <state relative-caret-position="102">
+              <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -26,15 +26,26 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="config.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="config.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+            <state relative-caret-position="255">
+              <caret line="47" column="42" lean-forward="true" selection-start-line="47" selection-start-column="42" selection-end-line="47" selection-end-column="42" />
               <folding>
+                <element signature="e#26#138#0" expanded="false" />
                 <element signature="e#26#63#1" expanded="false" />
+                <element signature="e#178#265#0" expanded="false" />
                 <element signature="e#178#220#1" expanded="false" />
+                <element signature="e#304#364#0" expanded="false" />
+                <element signature="e#304#345#1" expanded="false" />
                 <element signature="e#380#456#0" expanded="false" />
+                <element signature="e#498#610#0" expanded="false" />
+                <element signature="e#498#535#1" expanded="false" />
+                <element signature="e#650#781#0" expanded="false" />
+                <element signature="e#650#692#1" expanded="false" />
+                <element signature="e#820#880#0" expanded="false" />
+                <element signature="e#820#861#1" expanded="false" />
+                <element signature="e#896#972#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -55,7 +66,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/models.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
@@ -149,6 +160,7 @@
       <list>
         <option value="$PROJECT_DIR$/app.py" />
         <option value="$PROJECT_DIR$/run.py" />
+        <option value="$PROJECT_DIR$/config.py" />
         <option value="$PROJECT_DIR$/instance/config.py" />
         <option value="$PROJECT_DIR$/auth/__init__.py" />
         <option value="$PROJECT_DIR$/auth/forms.py" />
@@ -160,7 +172,6 @@
         <option value="$PROJECT_DIR$/app/utils.py" />
         <option value="$PROJECT_DIR$/app/__init__.py" />
         <option value="$PROJECT_DIR$/app/models.py" />
-        <option value="$PROJECT_DIR$/config.py" />
       </list>
     </option>
   </component>
@@ -498,14 +509,7 @@
       <option name="project" value="LOCAL" />
       <updated>1498148958451</updated>
     </task>
-    <task id="LOCAL-00007" summary="Kek">
-      <created>1498149023832</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1498149023832</updated>
-    </task>
-    <option name="localTasksCounter" value="8" />
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TodoView">
@@ -555,14 +559,7 @@
     <option name="LAST_COMMIT_MESSAGE" value="Kek" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/config.py</url>
-        </line-breakpoint>
-      </breakpoints>
-      <option name="time" value="1" />
-    </breakpoint-manager>
+    <breakpoint-manager />
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
@@ -630,11 +627,44 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/utils.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="47" column="42" lean-forward="true" selection-start-line="47" selection-start-column="42" selection-end-line="47" selection-end-column="42" />
+          <folding>
+            <element signature="e#26#138#0" expanded="false" />
+            <element signature="e#26#63#1" expanded="false" />
+            <element signature="e#178#265#0" expanded="false" />
+            <element signature="e#178#220#1" expanded="false" />
+            <element signature="e#304#364#0" expanded="false" />
+            <element signature="e#304#345#1" expanded="false" />
+            <element signature="e#380#456#0" expanded="false" />
+            <element signature="e#498#610#0" expanded="false" />
+            <element signature="e#498#535#1" expanded="false" />
+            <element signature="e#650#781#0" expanded="false" />
+            <element signature="e#650#692#1" expanded="false" />
+            <element signature="e#820#880#0" expanded="false" />
+            <element signature="e#820#861#1" expanded="false" />
+            <element signature="e#896#972#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -656,28 +686,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="3" lean-forward="true" selection-start-line="0" selection-start-column="3" selection-end-line="0" selection-end-column="3" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="13" lean-forward="true" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding>
-            <element signature="e#26#63#1" expanded="false" />
-            <element signature="e#178#220#1" expanded="false" />
-            <element signature="e#380#456#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
