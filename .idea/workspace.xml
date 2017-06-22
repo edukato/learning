@@ -29,15 +29,23 @@
       <file leaf-file-name="config.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
             <state relative-caret-position="255">
               <caret line="47" column="42" lean-forward="true" selection-start-line="47" selection-start-column="42" selection-end-line="47" selection-end-column="42" />
+=======
+            <state relative-caret-position="136">
+              <caret line="10" column="30" lean-forward="true" selection-start-line="10" selection-start-column="30" selection-end-line="10" selection-end-column="30" />
+>>>>>>> Stashed changes
               <folding>
                 <element signature="e#26#138#0" expanded="false" />
                 <element signature="e#26#63#1" expanded="false" />
+<<<<<<< Updated upstream
                 <element signature="e#178#265#0" expanded="false" />
                 <element signature="e#178#220#1" expanded="false" />
                 <element signature="e#304#364#0" expanded="false" />
                 <element signature="e#304#345#1" expanded="false" />
+=======
+>>>>>>> Stashed changes
                 <element signature="e#380#456#0" expanded="false" />
                 <element signature="e#498#610#0" expanded="false" />
                 <element signature="e#498#535#1" expanded="false" />
@@ -509,7 +517,25 @@
       <option name="project" value="LOCAL" />
       <updated>1498148958451</updated>
     </task>
+<<<<<<< Updated upstream
     <option name="localTasksCounter" value="7" />
+=======
+    <task id="LOCAL-00007" summary="Kek">
+      <created>1498149023832</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1498149023832</updated>
+    </task>
+    <task id="LOCAL-00008" summary="УДаления кода">
+      <created>1498149416680</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1498149416680</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
+>>>>>>> Stashed changes
     <servers />
   </component>
   <component name="TodoView">
@@ -523,7 +549,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1370" height="754" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.13848631" sideWeight="0.49694657" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32850242" sideWeight="0.5030534" order="-1" side_tool="true" content_ui="tabs" />
@@ -556,10 +581,17 @@
     <MESSAGE value="+1 config" />
     <MESSAGE value="Добавил структуры файлов" />
     <MESSAGE value="Kek" />
-    <option name="LAST_COMMIT_MESSAGE" value="Kek" />
+    <MESSAGE value="УДаления кода" />
+    <option name="LAST_COMMIT_MESSAGE" value="УДаления кода" />
   </component>
   <component name="XDebuggerManager">
+<<<<<<< Updated upstream
     <breakpoint-manager />
+=======
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
+>>>>>>> Stashed changes
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
@@ -689,5 +721,29 @@
         </state>
       </provider>
     </entry>
+<<<<<<< Updated upstream
+=======
+    <entry file="file://$PROJECT_DIR$/run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="13" lean-forward="true" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="10" column="30" lean-forward="true" selection-start-line="10" selection-start-column="30" selection-end-line="10" selection-end-column="30" />
+          <folding>
+            <element signature="e#26#63#1" expanded="false" />
+            <element signature="e#380#456#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+>>>>>>> Stashed changes
   </component>
 </project>
