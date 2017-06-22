@@ -26,10 +26,12 @@ class Client(UserMixin, db.Model):
     description = db.Column(db.String(300))
     date_of_reg = db.Column(db.DateTime)
     password_hash = db.Column(db.String(128))
-<<<<<<< HEAD
-
-=======
->>>>>>> c7885f74a49672cab7a9b2bd163734265bdec856
+    selling_log = db.relationship('SellingLog', backref='client',
+                               lazy='dynamic')
+    events = db.relationship('Event', backref='client',
+                               lazy='dynamic')
+    grades = db.relationship('Grade', backref='client',
+                               lazy='dynamic')
 
     @property
     def password(self):
@@ -65,10 +67,8 @@ class Grade(db.Model):
     __tablename__ = 'grades'
 
     id = db.Column(db.Integer, primary_key=True)
-    client_id = db.relationship('Client', backref='grade',
-                                lazy='dynamic')
-    teacher_id = db.relationship('Teacher', backref='grade',
-                                 lazy='dynamic')
+    client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))
     control_work = db.Column(db.String(200))
     description = db.Column(db.String(200))
     picrel = db.Column(db.String(200))
@@ -86,10 +86,8 @@ class SellingLog(db.Model):
     __tablename__ = 'selling_log'
 
     id = db.Column(db.Integer, primary_key=True)
-    client_id = db.relationship('Client', backref='sellinglog',
-                                lazy='dynamic')
-    service_id = db.relationship('Service', backref='sellinglog',
-                                lazy='dynamic')
+    client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
+    service_id = db.Column(db.Integer, db.ForeignKey('list_of_services.id'))
     amount = db.Column(db.Integer)
     price = db.Column(db.Integer)
     dicount = db.Column(db.Integer)
@@ -103,17 +101,13 @@ class Event(db.Model):
     __tablename__ = 'events'
 
     id = db.Column(db.Integer, primary_key=True)
-    client_id = db.relationship('Client', backref='event',
-                                lazy='dynamic')
-    service_id = db.relationship('Service', backref='event',
-                                lazy='dynamic')
+    client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
+    service_id = db.Column(db.Integer, db.ForeignKey('list_of_services.id'))
     date_time = db.Column(db.DateTime)
     details = db.Column(db.String (300))
     type = db.Column(db.Integer)
-    transaction_id = db.relationship ('SellingLog', backref = "event",
-                                     lazy = 'dynamic')
-    teacher_id = db.relationship('Teacher', backref='event',
-                                  lazy='dynamic')
+    transaction_id = db.Column(db.Integer, db.ForeignKey('selling_log.id'))
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))
 
     def __repr__(self):
         return '<Event: {}>'.format(self.id)
@@ -129,9 +123,16 @@ class Teacher(db.Model):
     email = db.Column(db.String(60))
     phone_num = db.Column(db.Integer)
     description = db.Column(db.String(300))
+    grades = db.relationship('Grade', backref='teacher',
+                               lazy='dynamic')
+    events = db.relationship('Event', backref='teacher',
+                               lazy='dynamic')
+    salaries = db.relationship('Salary', backref='teacher',
+                               lazy='dynamic')
 
     def __repr__(self):
-        return '<Teacher: {}>'.format(self.id)
+        return '<Teacher: {}>'.format(self.first_name)
+
 
 class Service(db.Model):
     __tablename__ = 'list_of_services'
@@ -142,16 +143,20 @@ class Service(db.Model):
     start_date = db.Column(db.DateTime)
     expiration_date = db.Column(db.DateTime)
     price = db.Column (db.Integer)
+    selling_log = db.relationship('SellingLog', backref='service',
+                               lazy='dynamic')
+    events = db.relationship('Event', backref='service',
+                               lazy='dynamic')
 
     def __repr__(self):
         return '<Service: {}>'.format(self.id)
 
+
 class Salary(db.Model):
-    __tablename__ = 'salary'
+    __tablename__ = 'salaries'
 
     id = db.Column(db.Integer, primary_key=True)
-    teacher_id = db.relationship('Teacher', backref='salary',
-                                 lazy='dynamic')
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))
     date = db.Column(db.DateTime)
     description = db.Column(db.String(300))
 

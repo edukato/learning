@@ -20,19 +20,19 @@ def account():
 
 @home.route('/feed')
 @login_required
-def account():
+def feed():
     return render_template('home/feed.html', title="Лента")
 
 
 @home.route('/support')
 @login_required
-def account():
+def support():
     return render_template('home/support.html', title="Поддержка")
 
 
 @home.route('/shop')
 @login_required
-def account():
+def shop():
     return render_template('home/shop.html', title="Магазин")
 
 
