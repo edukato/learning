@@ -6,7 +6,7 @@ from flask import flash, redirect, render_template, url_for, abort
 from flask_login import login_required, current_user
 
 from . import home
-from ..models import Service
+from ..models import Service,SellingLog
 from .. import db
 
 
@@ -18,6 +18,7 @@ def homepage():
 @home.route('/account')
 @login_required
 def account():
+    active_services = SellingLog.query.filter((SellingLog.client_id == current_user.id))
     return render_template('home/account.html', title="Мой аккаунт")
 
 
@@ -36,7 +37,7 @@ def support():
 @home.route('/shop')
 @login_required
 def shop():
-    services = Service.query.filter(Service.expiration_date > datetime.datetime.now()).all()
+    services = Service.query.filter((Service.expiration_date > datetime.datetime.now()) & (Service.start_date < datetime.datetime.now())).all()
     return render_template('home/shop.html', services=services, title="Магазин")
 
 
