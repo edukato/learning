@@ -19,8 +19,8 @@
             <div class="card-block">
                 <h4 class="card-title">{{ service.name }}</h4>
                 <p class="card-text">{{ service.description}}</p>
-                <button type="button" class="btn btn-success">Купить</button>
-                <button type="button" class="btn btn-secondary">Подробнее</button>
+                <a href="{{ url_for('home.confirm_transaction', id=service.id) }}" class="btn btn-success">Купить</a>
+                <a href="{{ url_for('home.show_service', id=service.id) }}" class="btn btn-secondary">Подробнее</a>
             </div>
         </div>
         <br>

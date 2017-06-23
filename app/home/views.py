@@ -49,9 +49,18 @@ def shop():
     return render_template('home/shop.html', services=services, title="Магазин")
 
 
+@home.route('/shop/confirm/<int:id>', methods=['GET', 'POST'])
+@login_required
+def confirm_transaction(id):
+    service = Service.query.get_or_404(id)
+
+# Когда-нибудь проверить несовпадение дат
+
+    return render_template('home/confirm_transaction.html', service=service, title="Подтверждение транзакции")
+
 @home.route('/shop/show/<int:id>', methods=['GET', 'POST'])
 @login_required
-def show_experiment(id):
+def show_service(id):
     service = Service.query.get_or_404(id)
     if service.user_id != current_user.id:
         abort(403)
