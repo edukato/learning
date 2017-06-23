@@ -12,7 +12,10 @@ from .. import db
 
 @home.route('/')
 def homepage():
-    return render_template('home/index.html', title="Добро пожаловать в edukato!")
+    if(current_user.is_authenticated):
+        return redirect(url_for('home.account'))
+    else:
+        return render_template('home/index.html', title="Добро пожаловать в edukato!")
 
 
 @home.route('/account')
