@@ -19,6 +19,11 @@ def homepage():
 @login_required
 def account():
     active_services = SellingLog.query.filter((SellingLog.client_id == current_user.id)&(SellingLog.access_start < datetime.datetime.now())&(SellingLog.access_end > datetime.datetime.now())).all()
+    for service in active_services:
+        service_info = Service.query.get_or_404(service.service_id)
+        service.name = service_info.name
+        service.description = service_info.description
+
     return render_template('home/account.html', active_services=active_services, title="Мой аккаунт")
 
 
