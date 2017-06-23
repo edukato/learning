@@ -18,8 +18,8 @@ def homepage():
 @home.route('/account')
 @login_required
 def account():
-    active_services = SellingLog.query.filter((SellingLog.client_id == current_user.id)&(SellingLog.access_start < datetime.datetime.now())&(SellingLog.access_end > datetime.datetime.now()))
-    return render_template('home/account.html', active_services, title="Мой аккаунт")
+    active_services = SellingLog.query.filter((SellingLog.client_id == current_user.id)&(SellingLog.access_start < datetime.datetime.now())&(SellingLog.access_end > datetime.datetime.now())).all()
+    return render_template('home/account.html', active_services=active_services, title="Мой аккаунт")
 
 
 @home.route('/feed')
