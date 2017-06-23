@@ -96,6 +96,8 @@ class SellingLog(db.Model):
     amount = db.Column(db.Integer)
     price = db.Column(db.Integer)
     dicount = db.Column(db.Integer)
+    access_start = db.Column(db.DateTime)
+    access_end = db.Column(db.DateTime)
 
 
     def __repr__(self):
@@ -148,8 +150,6 @@ class Service(db.Model):
     start_date = db.Column(db.DateTime)
     expiration_date = db.Column(db.DateTime)
     price = db.Column (db.Integer)
-    access_start = db.Column(db.DateTime)
-    access_end = db.Column(db.DateTime)
     selling_log = db.relationship('SellingLog', backref='service',
                                lazy='dynamic')
     events = db.relationship('Event', backref='service',
