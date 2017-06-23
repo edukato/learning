@@ -6,13 +6,13 @@ from flask import flash, redirect, render_template, url_for, abort
 from flask_login import login_required, current_user
 
 from . import home
-from ..models import Service,SellingLog
+from ..models import Service, SellingLog
 from .. import db
 
 
 @home.route('/')
 def homepage():
-    if(current_user.is_authenticated):
+    if current_user.is_authenticated:
         return redirect(url_for('home.account'))
     else:
         return render_template('home/index.html', title="Добро пожаловать в edukato!")
@@ -21,7 +21,9 @@ def homepage():
 @home.route('/account')
 @login_required
 def account():
-    active_services = SellingLog.query.filter((SellingLog.client_id == current_user.id)&(SellingLog.access_start < datetime.datetime.now())&(SellingLog.access_end > datetime.datetime.now())).all()
+    active_services = SellingLog.query.filter(
+        (SellingLog.client_id == current_user.id) & (SellingLog.access_start < datetime.datetime.now()) & (
+            SellingLog.access_end > datetime.datetime.now())).all()
     for service in active_services:
         service_info = Service.query.get_or_404(service.service_id)
         service.name = service_info.name
@@ -45,7 +47,8 @@ def support():
 @home.route('/shop')
 @login_required
 def shop():
-    services = Service.query.filter((Service.expiration_date > datetime.datetime.now()) & (Service.start_date < datetime.datetime.now())).all()
+    services = Service.query.filter(
+        (Service.expiration_date > datetime.datetime.now()) & (Service.start_date < datetime.datetime.now())).all()
     return render_template('home/shop.html', services=services, title="Магазин")
 
 
@@ -54,15 +57,17 @@ def shop():
 def confirm_transaction(id):
     service = Service.query.get_or_404(id)
 
-# Когда-нибудь проверить несовпадение дат
+    # Когда-нибудь проверить несовпадение дат
 
     return render_template('home/confirm_transaction.html', service=service, title="Подтверждение транзакции")
+
 
 @home.route('/shop/confirmed/<int:id>', methods=['GET', 'POST'])
 @login_required
 def confirmed_transaction(id):
     service = Service.query.get_or_404(id)
-    transaction = SellingLog(client_id=current_user.id, service_id=id, date_time=datetime.datetime.now(), access_start=datetime.datetime.now(), access_end=service.expiration_date)
+    transaction = SellingLog(client_id=current_user.id, service_id=id, date_time=datetime.datetime.now(),
+                             access_start=datetime.datetime.now(), access_end=service.expiration_date)
     db.session.add(transaction)
     db.session.commit()
     flash('Поздравляем с покупкой!')
@@ -73,9 +78,5 @@ def confirmed_transaction(id):
 @login_required
 def show_service(id):
     service = Service.query.get_or_404(id)
-    if service.user_id != current_user.id:
-        abort(403)
-    service.content = Markup(markdown(experiment.content,['markdown.extensions.extra']))
-    return render_template('home/shop/service.html',
-                           action_project='show_service',
+    return render_template('home/service.html',
                            service=service, title="Показать услушу")
