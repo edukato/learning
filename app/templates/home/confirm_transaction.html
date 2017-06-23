@@ -28,7 +28,7 @@
         </small>
     </p>
 
-    <a href="" class="btn btn-success">Подтвердить</a>
+    <a href="{{ url_for('home.confirmed_transaction', id=service.id)}}" class="btn btn-success">Подтвердить</a>
     <a href="{{ url_for('home.shop') }}" class="btn btn-danger">Отменить</a>
 </div>
 {% endblock %}

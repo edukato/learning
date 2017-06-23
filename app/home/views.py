@@ -58,6 +58,17 @@ def confirm_transaction(id):
 
     return render_template('home/confirm_transaction.html', service=service, title="Подтверждение транзакции")
 
+@home.route('/shop/confirmed/<int:id>', methods=['GET', 'POST'])
+@login_required
+def confirmed_transaction(id):
+    service = Service.query.get_or_404(id)
+    transaction = SellingLog(client_id=current_user.id, service_id=id, date_time=datetime.datetime.now(), access_start=datetime.datetime.now(), access_end=service.expiration_date)
+    db.session.add(transaction)
+    db.session.commit()
+    flash('Поздравляем с покупкой!')
+    return redirect(url_for('home.account'))
+
+
 @home.route('/shop/show/<int:id>', methods=['GET', 'POST'])
 @login_required
 def show_service(id):

@@ -96,6 +96,7 @@ class SellingLog(db.Model):
     amount = db.Column(db.Integer)
     price = db.Column(db.Integer)
     dicount = db.Column(db.Integer)
+    date_time = db.Column(db.DateTime)
     access_start = db.Column(db.DateTime)
     access_end = db.Column(db.DateTime)
 

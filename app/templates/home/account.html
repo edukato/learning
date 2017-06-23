@@ -1,6 +1,8 @@
 {% extends "base.html" %}
+{% import "bootstrap/utils.html" as utils %}
 {% block title %}Главная страница{% endblock %}
 {% block body %}
+{{ utils.flashed_messages() }}
 <div class="row">
     <div class="col-md-6">
         <img data-src="holder.js/140x140" class="rounded-circle img-fluid float-left mr-5" alt="140x140"
