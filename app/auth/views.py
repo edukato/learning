@@ -25,7 +25,7 @@ def register():
         # add employee to the database
         db.session.add(user)
         db.session.commit()
-        flash('You have successfully registered! You may now login.')
+        flash('Вы успешно зарегистрированы! Теперь вы можете войти в свой аккаунт.')
 
         # redirect to the login page
         return redirect(url_for('auth.login'))
@@ -56,7 +56,7 @@ def login():
 
         # when login details are incorrect
         else:
-            flash('Invalid email or password.')
+            flash('Неверный e-mail или пароль')
 
     # load login template
     return render_template('auth/login.html', form=form, title='Login')
@@ -70,7 +70,7 @@ def logout():
     Log an employee out through the logout link
     """
     logout_user()
-    flash('You have successfully been logged out.')
+    flash('Вы вышли из своего аккаунта.')
 
     # redirect to the login page
     return redirect(url_for('auth.login'))
