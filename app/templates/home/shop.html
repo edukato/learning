@@ -1,173 +1,34 @@
 {% extends "base.html" %}
 {% block title %}Главная страница{% endblock %}
 {% block body %}
-<H1 align="center">Магазин</H1>
+<h1 align="center">Магазин</h1>
 <div>
-    <H2>Новинки
+    <h2>Новинки
         <small><span class="badge badge-default">4</small>
-        </span></H2>
+        </span></h2>
 </div>
 <br>
 <div class="row">
+    {% if services %}
+    {% for service in services %}
     <div class="col-md-3">
         <div class="card">
             <div class="divgood">
-                <img class="card-img-top m-2 good" src="kot-saimon.jpg" alt="Card image cap">
+                <img class="card-img-top m-2 good" src="" alt="Card image cap">
             </div>
             <div class="card-block">
-                <h4 class="card-title">Card title</h4>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                    content. This content is a little bit longer.</p>
+                <h4 class="card-title">{{ service.name }}</h4>
+                <p class="card-text">{{ service.description}}</p>
                 <button type="button" class="btn btn-success">Купить</button>
                 <button type="button" class="btn btn-secondary">Подробнее</button>
             </div>
         </div>
         <br>
     </div>
-    <div class="col-md-3">
-        <div class="card">
-            <div class="divgood">
-                <img class="card-img-top m-2 good" src="kot-saimon.jpg" alt="Card image cap">
-            </div>
-            <div class="card-block">
-                <h4 class="card-title">Card title</h4>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                    content. This content is a little bit longer.</p>
-                <button type="button" class="btn btn-success">Купить</button>
-                <button type="button" class="btn btn-secondary">Подробнее</button>
-            </div>
-        </div>
-        <br>
-    </div>
-    <div class="col-md-3">
-        <div class="card">
-            <div class="divgood">
-                <img class="card-img-top m-2 good" src="kot-saimon.jpg" alt="Card image cap">
-            </div>
-            <div class="card-block">
-                <h4 class="card-title">Card title</h4>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                    content. This content is a little bit longer.</p>
-                <button type="button" class="btn btn-success">Купить</button>
-                <button type="button" class="btn btn-secondary">Подробнее</button>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card">
-            <div class="divgood">
-                <img class="card-img-top m-2 good" src="kot-saimon.jpg" alt="Card image cap">
-            </div>
-            <div class="card-block">
-                <h4 class="card-title">Card title</h4>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                    content. This content is a little bit longer.</p>
-                <button type="button" class="btn btn-success">Купить</button>
-                <button type="button" class="btn btn-secondary">Подробнее</button>
-            </div>
-        </div>
-        <br>
-    </div>
+    {% endfor %}
+    {% else %}
+    <h3> Товаров пока нет, зайдите позже. </h3>
+    {% endif %}
 </div>
-<hr>
-<H2>Пакеты услуг
-    <small><span class="badge badge-default">3</small>
-    </span></H2>
-<br>
-<div class="row">
-    <div class="col-md-4">
-        <div class="card">
-            <div class="divgood">
-                <img class="card-img-top m-2 good" src="kot-saimon.jpg" alt="Card image cap">
-            </div>
-            <div class="card-block">
-                <h4 class="card-title">Card title</h4>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                    content. This content is a little bit longer.</p>
-                <button type="button" class="btn btn-success">Купить</button>
-                <button type="button" class="btn btn-secondary">Подробнее</button>
-            </div>
-        </div>
-        <br>
-    </div>
-    <div class="col-md-4">
-        <div class="card">
-            <div class="divgood">
-                <img class="card-img-top m-2 good" src="kot-saimon.jpg" alt="Card image cap">
-            </div>
-            <div class="card-block">
-                <h4 class="card-title">Card title</h4>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                    content. This content is a little bit longer.</p>
-                <button type="button" class="btn btn-success">Купить</button>
-                <button type="button" class="btn btn-secondary">Подробнее</button>
-            </div>
-        </div>
-        <br>
-    </div>
-    <div class="col-md-4">
-        <div class="card">
-            <div class="divgood">
-                <img class="card-img-top m-2 good" src="kot-saimon.jpg" alt="Card image cap">
-            </div>
-            <div class="card-block">
-                <h4 class="card-title">Card title</h4>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                    content. This content is a little bit longer.</p>
-                <button type="button" class="btn btn-success">Купить</button>
-                <button type="button" class="btn btn-secondary">Подробнее</button>
-            </div>
-        </div>
-    </div>
-</div>
-<hr>
-<H2>Вебинары
-    <small><span class="badge badge-default">3</small>
-    </span></H2>
-<br>
-<div class="row">
-<div class="col-md-4">
-    <div class="card">
-        <div class="divgood">
-            <img class="card-img-top m-2 good" src="kot-saimon.jpg" alt="Card image cap">
-        </div>
-        <div class="card-block">
-            <h4 class="card-title">Card title</h4>
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                content. This content is a little bit longer.</p>
-            <button type="button" class="btn btn-success">Купить</button>
-            <button type="button" class="btn btn-secondary">Подробнее</button>
-        </div>
-    </div>
-    <br>
-</div>
-<div class="col-md-4">
-    <div class="card">
-        <div class="divgood">
-            <img class="card-img-top m-2 good" src="kot-saimon.jpg" alt="Card image cap">
-        </div>
-        <div class="card-block">
-            <h4 class="card-title">Card title</h4>
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                content. This content is a little bit longer.</p>
-            <button type="button" class="btn btn-success">Купить</button>
-            <button type="button" class="btn btn-secondary">Подробнее</button>
-        </div>
-    </div>
-    <br>
-</div>
-<div class="col-md-4">
-    <div class="card">
-        <div class="divgood">
-            <img class="card-img-top m-2 good" src="kot-saimon.jpg" alt="Card image cap">
-        </div>
-        <div class="card-block">
-            <h4 class="card-title">Card title</h4>
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                content. This content is a little bit longer.</p>
-            <button type="button" class="btn btn-success">Купить</button>
-            <button type="button" class="btn btn-secondary">Подробнее</button>
-        </div>
-    </div>
-</div>
+
 {% endblock %}

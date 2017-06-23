@@ -1,9 +1,12 @@
 # app/home/views.py
 
+import datetime
+
 from flask import flash, redirect, render_template, url_for, abort
 from flask_login import login_required, current_user
 
 from . import home
+from ..models import Service
 from .. import db
 
 
@@ -33,7 +36,8 @@ def support():
 @home.route('/shop')
 @login_required
 def shop():
-    return render_template('home/shop.html', title="Магазин")
+    services = Service.query.filter(Service.expiration_date > datetime.datetime.now()).all()
+    return render_template('home/shop.html', services=services, title="Магазин")
 
 
 @home.route('/shop/show/<int:id>', methods=['GET', 'POST'])
