@@ -9,25 +9,25 @@ class RegistrationForm(FlaskForm):
     """
     Form for users to create new account
     """
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    first_name = StringField('First Name', validators=[DataRequired()])
-    last_name = StringField('Last Name', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[
+    email = StringField('Электронная почта', validators=[DataRequired(), Email()])
+    first_name = StringField('Имя', validators=[DataRequired()])
+    last_name = StringField('Фамилия', validators=[DataRequired()])
+    password = PasswordField('Пароль', validators=[
         DataRequired(),
         EqualTo('confirm_password')
     ])
-    confirm_password = PasswordField('Confirm Password')
-    submit = SubmitField('Register')
+    confirm_password = PasswordField('Подтверждение пароля')
+    submit = SubmitField('Зарегистрировать')
 
     def validate_email(self, field):
         if Client.query.filter_by(email=field.data).first():
-            raise ValidationError('Email is already in use.')
+            raise ValidationError('Данная электронная почта уже зарегистрированна')
 
 
 class LoginForm(FlaskForm):
     """
     Form for users to login
     """
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Login')
+    email = StringField('Электронная почта', validators=[DataRequired(), Email()])
+    password = PasswordField('Пароль', validators=[DataRequired()])
+    submit = SubmitField('Вход')
