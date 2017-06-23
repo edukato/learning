@@ -26,6 +26,11 @@ class Client(UserMixin, db.Model):
     description = db.Column(db.String(300))
     date_of_reg = db.Column(db.DateTime)
     password_hash = db.Column(db.String(128))
+    balance = db.Column(db.Integer)
+    year_of_study = db.Column(db.Integer)
+    birth_date = db.Column(db.Date)
+    school = db.Column(db.String(300))
+    home_address = db.Column(db.String(300))
     selling_log = db.relationship('SellingLog', backref='client',
                                lazy='dynamic')
     events = db.relationship('Event', backref='client',
