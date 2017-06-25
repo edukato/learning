@@ -79,4 +79,4 @@ def confirmed_transaction(id):
 def show_service(id):
     service = Service.query.get_or_404(id)
     return render_template('home/service.html',
-                           service=service, title="Показать услушу")
+                           service=service, title="Показать услугу")
