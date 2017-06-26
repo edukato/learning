@@ -33,6 +33,7 @@ class Client(UserMixin, db.Model):
     home_address = db.Column(db.String(300))
     image = db.Column(db.String(300))
     plan = db.Column(db.String(300))
+    groups_list = db.Column(db.String)
     selling_log = db.relationship('SellingLog', backref='client',
                                lazy='dynamic')
     events = db.relationship('Event', backref='client',
@@ -197,11 +198,11 @@ class ONews(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     group_id = db.Column(db.Integer, db.ForeignKey('groups.id'))
     link = db.Column(db.String(300))
-    text = db.Column(db.String(300))
-    image = db.Column(db.String(300))
-    video = db.Column(db.String(300))
-    document = db.Column(db.String(300))
-    audio = db.Column(db.String(300))
+    text = db.Column(db.String)
+    image = db.Column(db.String)
+    video = db.Column(db.String)
+    document = db.Column(db.String)
+    audio = db.Column(db.String)
 
     def __repr__(self):
         return '<Onews: {}>'.format(self.id)
