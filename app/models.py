@@ -32,6 +32,7 @@ class Client(UserMixin, db.Model):
     school = db.Column(db.String(300))
     home_address = db.Column(db.String(300))
     image = db.Column(db.String(300))
+    plan = db.Column(db.String(300))
     selling_log = db.relationship('SellingLog', backref='client',
                                lazy='dynamic')
     events = db.relationship('Event', backref='client',
