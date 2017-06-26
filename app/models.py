@@ -107,6 +107,8 @@ class SellingLog(db.Model):
     access_start = db.Column(db.DateTime)
     access_end = db.Column(db.DateTime)
     image = db.Column(db.String(300))
+    route_maps = db.relationship('RouteMap', backref='sellinglog',
+                                 lazy='dynamic')
 
     def __repr__(self):
         return '<SellingLog: {}>'.format(self.id)
