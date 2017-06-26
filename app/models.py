@@ -33,12 +33,19 @@ class Client(UserMixin, db.Model):
     home_address = db.Column(db.String(300))
     image = db.Column(db.String(300))
     plan = db.Column(db.String(300))
+    groups_list = db.Column(db.String)
     selling_log = db.relationship('SellingLog', backref='client',
                                lazy='dynamic')
     events = db.relationship('Event', backref='client',
                                lazy='dynamic')
     grades = db.relationship('Grade', backref='client',
                                lazy='dynamic')
+    route_maps = db.relationship('RouteMap', backref='client',
+                                 lazy='dynamic')
+    answers = db.relationship('Answer', backref='client',
+                              lazy='dynamic')
+    schedlues = db.relationship('Schedlue', backref='client',
+                              lazy='dynamic')
 
     @property
     def password(self):
@@ -102,6 +109,8 @@ class SellingLog(db.Model):
     access_start = db.Column(db.DateTime)
     access_end = db.Column(db.DateTime)
     image = db.Column(db.String(300))
+    route_maps = db.relationship('RouteMap', backref='sellinglog',
+                                 lazy='dynamic')
 
     def __repr__(self):
         return '<SellingLog: {}>'.format(self.id)
@@ -141,6 +150,8 @@ class Teacher(db.Model):
                                lazy='dynamic')
     salaries = db.relationship('Salary', backref='teacher',
                                lazy='dynamic')
+    schedlues = db.relationship('Schedlue', backref='teacher',
+                              lazy='dynamic')
 
     def __repr__(self):
         return '<Teacher: {}>'.format(self.first_name)
@@ -197,11 +208,11 @@ class ONews(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     group_id = db.Column(db.Integer, db.ForeignKey('groups.id'))
     link = db.Column(db.String(300))
-    text = db.Column(db.String(300))
-    image = db.Column(db.String(300))
-    video = db.Column(db.String(300))
-    document = db.Column(db.String(300))
-    audio = db.Column(db.String(300))
+    text = db.Column(db.String)
+    image = db.Column(db.String)
+    video = db.Column(db.String)
+    document = db.Column(db.String)
+    audio = db.Column(db.String)
 
     def __repr__(self):
         return '<Onews: {}>'.format(self.id)
@@ -217,3 +228,44 @@ class Group(db.Model):
 
     def __repr__(self):
         return '<Group: {}>'.format(self.id)
+
+class Task(db.Model):
+    __tablename__ = 'tasks'
+
+    id = db.Column(db.Integer, primary_key=True)
+    subject = db.Column(db.String(300))
+    part = db.Column(db.String(300))
+    number = db.Column(db.Integer)
+    text = db.Column(db.String)
+    image = db.Column(db.String)
+    right_answer = db.Column(db.String)
+    answers = db.relationship('Answer', backref='task',
+                             lazy='dynamic')
+
+    def __repr__(self):
+        return '<Task: {}>'.format(self.id)
+
+class Answer(db.Model):
+    __tablename__ = 'answers'
+
+    id = db.Column(db.Integer, primary_key=True)
+    client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
+    task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
+    answer = db.Column(db.String)
+    right = db.Column(db.Boolean)
+
+    def __repr__(self):
+        return '<Answer: {}>'.format(self.id)
+
+class Schedlue(db.Model):
+    __tablename__ = 'schedlues'
+
+    id = db.Column(db.Integer, primary_key=True)
+    client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
+    task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
+    subject = db.Column(db.String(300))
+    time = db.Column(db.DateTime)
+    if_done = db.Column(db.Boolean)
+
+    def __repr__(self):
+        return '<Schedlue: {}>'.format(self.id)
