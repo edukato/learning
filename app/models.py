@@ -31,6 +31,7 @@ class Client(UserMixin, db.Model):
     birth_date = db.Column(db.Date)
     school = db.Column(db.String(300))
     home_address = db.Column(db.String(300))
+    image = db.Column(db.String(300))
     selling_log = db.relationship('SellingLog', backref='client',
                                lazy='dynamic')
     events = db.relationship('Event', backref='client',
@@ -99,7 +100,7 @@ class SellingLog(db.Model):
     date_time = db.Column(db.DateTime)
     access_start = db.Column(db.DateTime)
     access_end = db.Column(db.DateTime)
-
+    image = db.Column(db.String(300))
 
     def __repr__(self):
         return '<SellingLog: {}>'.format(self.id)
@@ -116,6 +117,7 @@ class Event(db.Model):
     type = db.Column(db.Integer)
     transaction_id = db.Column(db.Integer, db.ForeignKey('selling_log.id'))
     teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))
+    image = db.Column(db.String(300))
 
     def __repr__(self):
         return '<Event: {}>'.format(self.id)
@@ -131,6 +133,7 @@ class Teacher(db.Model):
     email = db.Column(db.String(60))
     phone_num = db.Column(db.Integer)
     description = db.Column(db.String(300))
+    image = db.Column(db.String(300))
     grades = db.relationship('Grade', backref='teacher',
                                lazy='dynamic')
     events = db.relationship('Event', backref='teacher',
@@ -151,6 +154,7 @@ class Service(db.Model):
     start_date = db.Column(db.DateTime)
     expiration_date = db.Column(db.DateTime)
     price = db.Column (db.Integer)
+    image = db.Column(db.String(300))
     selling_log = db.relationship('SellingLog', backref='service',
                                lazy='dynamic')
     events = db.relationship('Event', backref='service',
@@ -170,3 +174,17 @@ class Salary(db.Model):
 
     def __repr__(self):
         return '<Salary: {}>'.format(self.id)
+
+class RouteMap(db.Model):
+    __tablename__ = 'route_maps'
+
+    id = db.Column(db.Integer, primary_key=True)
+    client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
+    transaction_id = db.Column(db.Integer, db.ForeignKey('selling_log.id'))
+    step = db.Column(db.Integer)
+    name = db.Column(db.String(300))
+    description = db.Column(db.String(300))
+    if_done = db.Column(db.Binary)
+
+    def __repr__(self):
+        return '<RouteMap: {}>'.format(self.id)
