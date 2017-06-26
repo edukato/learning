@@ -155,6 +155,7 @@ class Service(db.Model):
     expiration_date = db.Column(db.DateTime)
     price = db.Column (db.Integer)
     image = db.Column(db.String(300))
+    type = db.Column(db.Integer)
     selling_log = db.relationship('SellingLog', backref='service',
                                lazy='dynamic')
     events = db.relationship('Event', backref='service',
