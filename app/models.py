@@ -44,6 +44,8 @@ class Client(UserMixin, db.Model):
                                  lazy='dynamic')
     answers = db.relationship('Answer', backref='client',
                               lazy='dynamic')
+    schedlues = db.relationship('Schedlue', backref='client',
+                              lazy='dynamic')
 
     @property
     def password(self):
@@ -148,6 +150,8 @@ class Teacher(db.Model):
                                lazy='dynamic')
     salaries = db.relationship('Salary', backref='teacher',
                                lazy='dynamic')
+    schedlues = db.relationship('Schedlue', backref='teacher',
+                              lazy='dynamic')
 
     def __repr__(self):
         return '<Teacher: {}>'.format(self.first_name)
@@ -252,3 +256,16 @@ class Answer(db.Model):
 
     def __repr__(self):
         return '<Answer: {}>'.format(self.id)
+
+class Schedlue(db.Model):
+    __tablename__ = 'schedlues'
+
+    id = db.Column(db.Integer, primary_key=True)
+    client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
+    task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
+    subject = db.Column(db.String(300))
+    time = db.Column(db.DateTime)
+    if_done = db.Column(db.Boolean)
+
+    def __repr__(self):
+        return '<Schedlue: {}>'.format(self.id)
