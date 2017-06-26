@@ -40,6 +40,10 @@ class Client(UserMixin, db.Model):
                                lazy='dynamic')
     grades = db.relationship('Grade', backref='client',
                                lazy='dynamic')
+    route_maps = db.relationship('RouteMap', backref='client',
+                                 lazy='dynamic')
+    answers = db.relationship('Answer', backref='client',
+                              lazy='dynamic')
 
     @property
     def password(self):
@@ -218,3 +222,31 @@ class Group(db.Model):
 
     def __repr__(self):
         return '<Group: {}>'.format(self.id)
+
+class Task(db.Model):
+    __tablename__ = 'tasks'
+
+    id = db.Column(db.Integer, primary_key=True)
+    subject = db.Column(db.String(300))
+    part = db.Column(db.String(300))
+    number = db.Column(db.Integer)
+    text = db.Column(db.String)
+    image = db.Column(db.String)
+    right_answer = db.Column(db.String)
+    answers = db.relationship('Answer', backref='task',
+                             lazy='dynamic')
+
+    def __repr__(self):
+        return '<Task: {}>'.format(self.id)
+
+class Answer(db.Model):
+    __tablename__ = 'answers'
+
+    id = db.Column(db.Integer, primary_key=True)
+    client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
+    task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
+    answer = db.Column(db.String)
+    right = db.Column(db.Boolean)
+
+    def __repr__(self):
+        return '<Answer: {}>'.format(self.id)
