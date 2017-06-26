@@ -49,7 +49,9 @@ def support():
 def shop():
     services = Service.query.filter(
         (Service.expiration_date > datetime.datetime.now()) & (Service.start_date < datetime.datetime.now())).all()
-    return render_template('home/shop.html', services=services, title="Магазин")
+    services_count = Service.query.filter(
+        (Service.expiration_date > datetime.datetime.now()) & (Service.start_date < datetime.datetime.now())).count()
+    return render_template('home/shop.html', services=services, services_count=services_count, title="Магазин")
 
 
 @home.route('/shop/confirm/<int:id>', methods=['GET', 'POST'])

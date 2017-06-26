@@ -3,8 +3,8 @@
 {% block body %}
 <h1 align="center">Магазин</h1>
 <div>
-    <h2>Новинки
-        <small><span class="badge badge-default">4</small>
+    <h2>Тарифные планы
+        <small><span class="badge badge-default">{{ services_count}}</small>
         </span></h2>
 </div>
 <br>
@@ -14,7 +14,7 @@
     <div class="col-md-3">
         <div class="card">
             <div class="divgood">
-                <img class="card-img-top m-2 good" src="" alt="Card image cap">
+                <img class="card-img-top m-2 good" src="static/images/shop/{{ service.id }}.png" alt="Card image cap" style="height: 150px">
             </div>
             <div class="card-block">
                 <h4 class="card-title">{{ service.name }}</h4>
@@ -30,5 +30,15 @@
     <h3> Товаров пока нет, зайдите позже. </h3>
     {% endif %}
 </div>
-
+<div>
+    <h2>Если не хватило в плане:
+        <small><span class="badge badge-default">{{ services_count}}</small>
+        </span></h2>
+</div>
+<br>
+<div>
+    <h2>Предстоящие вебинары и другие интересности
+        <small><span class="badge badge-default">{{ services_count}}</small>
+        </span></h2>
+</div>
 {% endblock %}
