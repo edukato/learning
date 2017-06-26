@@ -190,3 +190,30 @@ class RouteMap(db.Model):
 
     def __repr__(self):
         return '<RouteMap: {}>'.format(self.id)
+
+class ONews(db.Model):
+    __tablename__ = 'news'
+
+    id = db.Column(db.Integer, primary_key=True)
+    group_id = db.Column(db.Integer, db.ForeignKey('groups.id'))
+    link = db.Column(db.String(300))
+    text = db.Column(db.String(300))
+    image = db.Column(db.String(300))
+    video = db.Column(db.String(300))
+    document = db.Column(db.String(300))
+    audio = db.Column(db.String(300))
+
+    def __repr__(self):
+        return '<Onews: {}>'.format(self.id)
+
+class Group(db.Model):
+    __tablename__ = 'groups'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(300))
+    link = db.Column(db.String(300))
+    news = db.relationship('ONews', backref='group',
+                             lazy='dynamic')
+
+    def __repr__(self):
+        return '<Group: {}>'.format(self.id)
