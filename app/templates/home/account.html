@@ -11,7 +11,7 @@
         <h3>{{ current_user.first_name }} {{ current_user.last_name }}</h3>
         <p class="no_mar"><span class="fa fa-envelope"></span> {{ current_user.email }} </p>
         <p><span class="fa fa-phone"></span> {{ current_user.phone_num }} </p>
-        <small><a href="#"><span class="fa fa- fa-pencil"></span> Редактировать страницу</a></small>
+        <small><a href="{{ url_for('home.edit_account') }}"><span class="fa fa- fa-pencil"></span> Редактировать страницу</a></small>
     </div>
     <div class="col-md-6">
         <h5>Баланс:</h5>
@@ -23,7 +23,7 @@
 <div class="row" style="text-align:center">
     <div class="col-md-6">
     <p>Ваш тарифный план:</p>
-        <h1>Оптимальный</h1>
+        <h1>{{ current_user.plan }}</h1>
         </div>
     <div class="col-md-2">
         <h5>Материалы</h5>

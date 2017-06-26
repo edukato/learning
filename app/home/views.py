@@ -48,11 +48,27 @@ def support():
 @home.route('/shop')
 @login_required
 def shop():
-    services = Service.query.filter(
-        (Service.expiration_date > datetime.datetime.now()) & (Service.start_date < datetime.datetime.now())).all()
-    services_count = Service.query.filter(
-        (Service.expiration_date > datetime.datetime.now()) & (Service.start_date < datetime.datetime.now())).count()
-    return render_template('home/shop.html', services=services, services_count=services_count, title="Магазин")
+    services_0 = Service.query.filter(
+        (Service.expiration_date > datetime.datetime.now()) & (
+            Service.start_date < datetime.datetime.now()) & (Service.type == '0')).all()
+    services_0_count = Service.query.filter(
+        (Service.expiration_date > datetime.datetime.now()) & (
+            Service.start_date < datetime.datetime.now()) & (Service.type == '0')).count()
+    services_1 = Service.query.filter(
+        (Service.expiration_date > datetime.datetime.now()) & (
+            Service.start_date < datetime.datetime.now()) & (Service.type == '1')).all()
+    services_1_count = Service.query.filter(
+        (Service.expiration_date > datetime.datetime.now()) & (
+            Service.start_date < datetime.datetime.now()) & (Service.type == '1')).count()
+    services_2 = Service.query.filter(
+        (Service.expiration_date > datetime.datetime.now()) & (
+            Service.start_date < datetime.datetime.now()) & (Service.type == '2')).all()
+    services_2_count = Service.query.filter(
+        (Service.expiration_date > datetime.datetime.now()) & (
+            Service.start_date < datetime.datetime.now()) & (Service.type == '2')).count()
+    return render_template('home/shop.html', services_0=services_0, services_0_count=services_0_count,
+                           services_1=services_1, services_1_count=services_1_count, services_2=services_2,
+                           services_2_count=services_2_count, title="Магазин")
 
 
 @home.route('/shop/confirm/<int:id>', methods=['GET', 'POST'])
@@ -84,6 +100,7 @@ def show_service(id):
     return render_template('home/service.html',
                            service=service, title="Показать услугу")
 
+
 @home.route('/account/edit', methods=['GET', 'POST'])
 @login_required
 def edit_account():
@@ -95,7 +112,7 @@ def edit_account():
         client.last_name = form.last_name.data
         client.password = form.password.data
         db.session.commit()
-        flash('You have successfully edited the department.')
+        flash('Ваше задание выполнено, капитан.')
         return redirect(url_for('home.account'))
 
     form.first_name.data = client.first_name
@@ -103,4 +120,3 @@ def edit_account():
 
     return render_template('home/change_pers_inf.html', form=form,
                            client=client, title="Изменение персональных данных")
-
