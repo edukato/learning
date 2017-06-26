@@ -1,8 +1,8 @@
 # app/home/views.py
 
-import datetime
+import datetime, os
 
-from flask import flash, redirect, render_template, url_for, abort
+from flask import flash, redirect, render_template, url_for
 from flask_login import login_required, current_user
 
 from . import home
@@ -111,6 +111,8 @@ def edit_account():
         client.first_name = form.first_name.data
         client.last_name = form.last_name.data
         client.password = form.password.data
+        if form.photo.data is not None:
+            form.photo.data.save('app/static/images/profile/'+str(current_user.id)+'.png')
         db.session.commit()
         flash('Ваше задание выполнено, капитан.')
         return redirect(url_for('home.account'))
