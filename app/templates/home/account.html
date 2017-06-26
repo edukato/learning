@@ -5,22 +5,39 @@
 {{ utils.flashed_messages() }}
 <div class="row">
     <div class="col-md-6">
-        <img data-src="holder.js/140x140" class="rounded-circle img-fluid float-left mr-5" alt="140x140"
-             src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNDAiIGhlaWdodD0iMTQwIj48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI2VlZSIvPjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjcwIiB5PSI3MCIgc3R5bGU9ImZpbGw6I2FhYTtmb250LXdlaWdodDpib2xkO2ZvbnQtc2l6ZToxMnB4O2ZvbnQtZmFtaWx5OkFyaWFsLEhlbHZldGljYSxzYW5zLXNlcmlmO2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjE0MHgxNDA8L3RleHQ+PC9zdmc+"
-             style="width: 140px; height: 140px;">
+        <img src="static/images/profile/{{ current_user.id }}.png" class="rounded-circle img-fluid float-left mr-5"
+             alt="140x140"
+             style="width: 120px; height: 120px;">
         <h3>{{ current_user.first_name }} {{ current_user.last_name }}</h3>
-        <p class="lead">{{ current_user.status }}</p>
         <p class="no_mar"><span class="fa fa-envelope"></span> {{ current_user.email }} </p>
-        <p class="no_mar"><span class="fa fa-vk"></span> {{ current_user.social_network }} </p>
         <p><span class="fa fa-phone"></span> {{ current_user.phone_num }} </p>
+        <small><a href="#"><span class="fa fa- fa-pencil"></span> Редактировать страницу</a></small>
     </div>
     <div class="col-md-6">
         <h5>Баланс:</h5>
         <h1>{{ current_user.balance }}₽ </h1>
-        <a href="#"><span class="fa fa- fa-credit-card-alt"></span> Пополнить баланс</a>
+        <small><a href="#"><span class="fa fa- fa-credit-card-alt"></span> Пополнить баланс</a></small>
     </div>
 </div>
 <hr>
+<div class="row" style="text-align:center">
+    <div class="col-md-6">
+    <p>Ваш тарифный план:</p>
+        <h1>Оптимальный</h1>
+        </div>
+    <div class="col-md-2">
+        <h5>Материалы</h5>
+        <p>Следующий 21 апреля</p>
+    </div>
+    <div class="col-md-2">
+        <h5>Консультации</h5>
+        <p>Осталось 4. Следующая завтра</p>
+    </div>
+    <div class="col-md-2">
+        <h5>Занятия</h5>
+        <p>Не предусмотрены вашим тарифным планом</p>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-6">
         <h2>Мои услуги:</h2>
