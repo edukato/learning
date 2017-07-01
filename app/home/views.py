@@ -70,6 +70,10 @@ def shop():
                            services_1=services_1, services_1_count=services_1_count, services_2=services_2,
                            services_2_count=services_2_count, title="Магазин")
 
+@home.route('/pay')
+@login_required
+def pay():
+    return render_template('home/pay.html', title="Пополнение счёта")
 
 @home.route('/shop/confirm/<int:id>', methods=['GET', 'POST'])
 @login_required
