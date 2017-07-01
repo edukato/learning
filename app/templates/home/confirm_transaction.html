@@ -1,34 +1,39 @@
 {% extends "base.html" %}
 {% block title %}Подтвердите покупку{% endblock %}
 {% block body %}
-
-<div class="row">
-    <div class="col-md-8">
-        <img alt="140x140" class="rounded-circle img-fluid float-left mr-3" data-src="holder.js/140x140"
-             src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNDAiIGhlaWdodD0iMTQwIj48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI2VlZSIvPjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjcwIiB5PSI3MCIgc3R5bGU9ImZpbGw6I2FhYTtmb250LXdlaWdodDpib2xkO2ZvbnQtc2l6ZToxMnB4O2ZvbnQtZmFtaWx5OkFyaWFsLEhlbHZldGljYSxzYW5zLXNlcmlmO2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjE0MHgxNDA8L3RleHQ+PC9zdmc+"
-             style="width: 150px; height: 150px;">
-        <h2>{{ service.name}}</h2>
-        <p class="lead">{{ service.description}}</p>
-    </div>
-    <div class="col-md-4">
-        <p>Стоимость:</p>
-        <h1>{{ service.price}}₽
-            <small>в месяц</small>
-        </h1>
+<div class="bg-1">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <img alt="140x140" class="rounded-circle img-fluid float-left mr-3" data-src="holder.js/140x140"
+                     src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNDAiIGhlaWdodD0iMTQwIj48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI2VlZSIvPjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjcwIiB5PSI3MCIgc3R5bGU9ImZpbGw6I2FhYTtmb250LXdlaWdodDpib2xkO2ZvbnQtc2l6ZToxMnB4O2ZvbnQtZmFtaWx5OkFyaWFsLEhlbHZldGljYSxzYW5zLXNlcmlmO2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjE0MHgxNDA8L3RleHQ+PC9zdmc+"
+                     style="width: 150px; height: 150px;">
+                <h2>{{ service.name}}</h2>
+                <p class="lead">{{ service.description}}</p>
+            </div>
+            <div class="col-md-4">
+                <p>Стоимость:</p>
+                <h1>{{ service.price}}₽
+                    <small>в месяц</small>
+                </h1>
+            </div>
+        </div>
     </div>
 </div>
-<hr>
-<div align="center">
-    <h3>Подтверждение покупки</h3>
-    <p> При приобретении курса "{{ service.name }}" с вашего счета будет
-        списано {{ service.price }} рублей, подтвердите покупку.</p>
-    <p>
-        <small>edukato не обманывает своих клиентов. Мы никогда не снимем деньги без вашего ведома. По всем вопросам
-            обращайтесь в поддержку 8 800 555-35-35
-        </small>
-    </p>
+<div class="container">
+    <div align="center">
+        <h3>Подтверждение покупки</h3>
+        <p> При приобретении курса "{{ service.name }}" с вашего счета будет
+            списано {{ service.price }} рублей, подтвердите покупку.</p>
+        <p>
+            <small>edukato не обманывает своих клиентов. Мы никогда не снимем деньги без вашего ведома. По всем
+                вопросам
+                обращайтесь в поддержку 8 800 555-35-35
+            </small>
+        </p>
 
-    <a href="{{ url_for('home.confirmed_transaction', id=service.id)}}" class="btn btn-success">Подтвердить</a>
-    <a href="{{ url_for('home.shop') }}" class="btn btn-danger">Отменить</a>
+        <a href="{{ url_for('home.confirmed_transaction', id=service.id)}}" class="btn btn-success">Подтвердить</a>
+        <a href="{{ url_for('home.shop') }}" class="btn btn-danger">Отменить</a>
+    </div>
 </div>
 {% endblock %}

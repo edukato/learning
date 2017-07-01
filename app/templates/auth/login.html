@@ -3,14 +3,16 @@
 {% extends "base.html" %}
 {% block title %}Вход{% endblock %}
 {% block body %}
-<div class="content-section">
-    <br/>
-    {{ utils.flashed_messages() }}
-    <br/>
-    <div class="center">
-        <h1 class="text-center">Вход в аккаунт</h1>
+<div class="container">
+    <div class="content-section">
         <br/>
-        {{ wtf.quick_form(form) }}
+        {{ utils.flashed_messages() }}
+        <br/>
+        <div class="center">
+            <h1 class="text-center">Вход в аккаунт</h1>
+            <br/>
+            {{ wtf.quick_form(form) }}
+        </div>
     </div>
 </div>
 {% endblock %}

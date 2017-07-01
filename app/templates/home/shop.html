@@ -1,91 +1,102 @@
 {% extends "base.html" %}
 {% block title %}Магазин{% endblock %}
 {% block body %}
-<h1 align="center">Магазин</h1>
-<div>
-    <h2>Тарифные планы
-        <small><span class="badge badge-default">{{ services_0_count}}</small>
-        </span></h2>
-</div>
-<br>
-<div class="row">
-    {% if services_0 %}
-    {% for service_0 in services_0 %}
-    <div class="col-md-3">
-        <div class="card">
-            <div class="divgood">
-                <img class="card-img-top m-2 good" src="static/images/shop/{{ service_0.id }}.png" alt="Card image cap"
-                     style="height: 150px">
-            </div>
-            <div class="card-block">
-                <h4 class="card-title">{{ service_0.name }}</h4>
-                <p class="card-text">{{ service_0.description}}</p>
-                <a href="{{ url_for('home.confirm_transaction', id=service_0.id) }}" class="btn btn-success">Купить</a>
-                <a href="{{ url_for('home.show_service', id=service_0.id) }}" class="btn btn-secondary">Подробнее</a>
-            </div>
-        </div>
-        <br>
+<div class="container">
+    <h1 align="center">Магазин</h1>
+    <div>
+        <h3>Тарифные планы
+            <small><span class="badge badge-default">{{ services_0_count}}</small>
+            </span></h3>
     </div>
-    {% endfor %}
-    {% else %}
-    <h3> Товаров пока нет, зайдите позже. </h3>
-    {% endif %}
-</div>
-<div>
-    <h2>Если не хватило в плане:
-        <small><span class="badge badge-default">{{ services_1_count}}</small>
-        </span></h2>
-</div>
-<br>
-<div class="row">
-    {% if services_1 %}
-    {% for service_1 in services_1 %}
-    <div class="col-md-3">
-        <div class="card">
-            <div class="divgood">
-                <img class="card-img-top m-2 good" src="static/images/shop/{{ service_1.id }}.png" alt="Card image cap"
-                     style="height: 150px">
+    <br>
+    <div class="row">
+        {% if services_0 %}
+        {% for service_0 in services_0 %}
+        <div class="col-md-3">
+            <div class="card">
+                <div class="divgood">
+                    <img class="card-img-top m-2 good" src="static/images/shop/{{ service_0.id }}.png"
+                         alt="Card image cap"
+                         style="height: 150px">
+                </div>
+                <div class="card-block">
+                    <h4 class="card-title">{{ service_0.name }}</h4>
+                    <p class="card-text">{{ service_0.description}}</p>
+                    <a href="{{ url_for('home.confirm_transaction', id=service_0.id) }}"
+                       class="btn btn-success">Купить</a>
+                    <a href="{{ url_for('home.show_service', id=service_0.id) }}"
+                       class="btn btn-secondary">Подробнее</a>
+                </div>
             </div>
-            <div class="card-block">
-                <h4 class="card-title">{{ service_1.name }}</h4>
-                <p class="card-text">{{ service_1.description}}</p>
-                <a href="{{ url_for('home.confirm_transaction', id=service_1.id) }}" class="btn btn-success">Купить</a>
-                <a href="{{ url_for('home.show_service', id=service_1.id) }}" class="btn btn-secondary">Подробнее</a>
-            </div>
+            <br>
         </div>
-        <br>
+        {% endfor %}
+        {% else %}
+        <h3> Товаров пока нет, зайдите позже. </h3>
+        {% endif %}
     </div>
-    {% endfor %}
-    {% else %}
-    <h3> Товаров пока нет, зайдите позже. </h3>
-    {% endif %}
-</div>
-<div>
-    <h2>Предстоящие вебинары и другие интересности
-        <small><span class="badge badge-default">{{ services_2_count}}</small>
-        </span></h2>
-</div>
-<div class="row">
-    {% if services_2 %}
-    {% for service_2 in services_2 %}
-    <div class="col-md-3">
-        <div class="card">
-            <div class="divgood">
-                <img class="card-img-top m-2 good" src="static/images/shop/{{ service_2.id }}.png" alt="Card image cap"
-                     style="height: 150px">
+    <div>
+        <h3>Если не хватило в плане:
+            <small><span class="badge badge-default">{{ services_1_count}}</small>
+            </span></h3>
+    </div>
+    <br>
+    <div class="row">
+        {% if services_1 %}
+        {% for service_1 in services_1 %}
+        <div class="col-md-3">
+            <div class="card">
+                <div class="divgood">
+                    <img class="card-img-top m-2 good" src="static/images/shop/{{ service_1.id }}.png"
+                         alt="Card image cap"
+                         style="height: 150px">
+                </div>
+                <div class="card-block">
+                    <h4 class="card-title">{{ service_1.name }}</h4>
+                    <p class="card-text">{{ service_1.description}}</p>
+                    <a href="{{ url_for('home.confirm_transaction', id=service_1.id) }}"
+                       class="btn btn-success">Купить</a>
+                    <a href="{{ url_for('home.show_service', id=service_1.id) }}"
+                       class="btn btn-secondary">Подробнее</a>
+                </div>
             </div>
-            <div class="card-block">
-                <h4 class="card-title">{{ service_2.name }}</h4>
-                <p class="card-text">{{ service_2.description}}</p>
-                <a href="{{ url_for('home.confirm_transaction', id=service_2.id) }}" class="btn btn-success">Купить</a>
-                <a href="{{ url_for('home.show_service', id=service_2.id) }}" class="btn btn-secondary">Подробнее</a>
-            </div>
+            <br>
         </div>
-        <br>
+        {% endfor %}
+        {% else %}
+        <h3> Товаров пока нет, зайдите позже. </h3>
+        {% endif %}
     </div>
-    {% endfor %}
-    {% else %}
-    <h3> Товаров пока нет, зайдите позже. </h3>
-    {% endif %}
+    <div>
+        <h3>Предстоящие вебинары и другие интересности
+            <small><span class="badge badge-default">{{ services_2_count}}</small>
+            </span></h3>
+    </div>
+    <div class="row">
+        {% if services_2 %}
+        {% for service_2 in services_2 %}
+        <div class="col-md-3">
+            <div class="card">
+                <div class="divgood">
+                    <img class="card-img-top m-2 good" src="static/images/shop/{{ service_2.id }}.png"
+                         alt="Card image cap"
+                         style="height: 150px">
+                </div>
+                <div class="card-block">
+                    <h4 class="card-title">{{ service_2.name }}</h4>
+                    <p class="card-text">{{ service_2.description}}</p>
+                    <a href="{{ url_for('home.confirm_transaction', id=service_2.id) }}"
+                       class="btn btn-success">Купить</a>
+                    <a href="{{ url_for('home.show_service', id=service_2.id) }}"
+                       class="btn btn-secondary">Подробнее</a>
+                </div>
+            </div>
+            <br>
+        </div>
+        {% endfor %}
+        {% else %}
+        <h3> Товаров пока нет, зайдите позже. </h3>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}
