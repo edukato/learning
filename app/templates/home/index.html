@@ -2,10 +2,13 @@
 {% block title %}Главная страница{% endblock %}
 {% block body %}
 <div class="container">
-<div class="row">
-    <h1>Привет, это закрытый сервис. <small>Если честно, то мы не очень рады тебе</small></h1>
-    <a class="btn-primary" href="{{ url_for('auth.register') }}">Регистрация</a>
-    <a class="btn-default" href="{{ url_for('auth.login') }}">Вход</a>
+    <div class="row">
+        <h1>Привет, это закрытый сервис.
+            <small>Если честно, то мы не очень рады тебе</small>
+        </h1>
+        <a class="btn-primary" href="{{ url_for('auth.register') }}">Регистрация</a>
+        <a class="btn-default" href="{{ url_for('auth.login') }}">Вход</a>
 
+    </div>
 </div>
 {% endblock %}
