@@ -72,10 +72,36 @@
             <ul class="navbar-nav navbar-right">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                       aria-haspopup="true" aria-expanded="false"><span class="fa fa- fa-money"></span>
+                        <b>{{ current_user.balance }}₽</b> на счету
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="m-3" style="width: 275px">
+                            <h5>Последние операции:</h5>
+                            <a class="btn btn-sm btn-success" href="#">Хочу ещё</a>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ url_for('home.edit_account') }}"><span
+                                class="fa fa- fa-credit-card"></span> Пополнить баланс</a>
+                        <a class="dropdown-item" href="{{ url_for('auth.logout') }}"><span
+                                class="fa fa- fa-question"></span> Возникли проблемы</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                        aria-haspopup="true" aria-expanded="false"><span class="fa fa- fa-user"></span>
                         Привет, {{ current_user.first_name }}
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
+                        <div class="m-3" style="width: 275px">
+                            <img src="static/images/profile/{{ current_user.id }}.png"
+                                 class="rounded-circle img-fluid float-left mr-3"
+                                 style="width: 75px; height: 75px;">
+                            <h5>{{ current_user.first_name }} {{ current_user.last_name }}</h5>
+                            <p class="no_mar"><span class="fa fa-envelope"></span> {{ current_user.email }} </p>
+                            <p><span class="fa fa-phone"></span> {{ current_user.phone_num }} </p>
+                        </div>
+                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ url_for('home.edit_account') }}"><span
                                 class="fa fa- fa-pencil"></span> Настройки аккаунта</a>
                         <a class="dropdown-item" href="{{ url_for('auth.logout') }}"><span
