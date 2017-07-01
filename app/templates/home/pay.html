@@ -3,7 +3,18 @@
 {% block title %}Пополнение счета{% endblock %}
 {% block body %}
 <div class="container">
-    <div class="row">
-    </div>
+    <h1 align="center">Пополнение баланса</h1>
+    <br>
+    <h2 align="center">На вашем счету: 1448 ₽</h2>
+    <br>
+    <h3 align="center">Введите сумму для пополнения:</h3>
+    <br>
+    <input class="form-control col-4 offset-md-4" type="number" value="0" id="example-text-input">
+    <br>
+    <a class="btn btn-success btn-lg col-2 offset-md-5" href="{{ url_for('home.account') }}">Оплатить</a>
+    <br>
+    <br>
+    <p>Деньги, находящиеся на вашем лицевой счёте, могут быть списанны только на приобретения услуг, предоставлемых
+        edukato. </p>
 </div>
 {% endblock %}
