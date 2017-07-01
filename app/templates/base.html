@@ -29,87 +29,97 @@
             aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="#">
-        <img src="{{ url_for('static', filename='images/logo.svg') }}" height="30" alt="">
-    </a>
+    <div class="container">
+        <a class="navbar-brand" href="{{ url_for('home.homepage') }}">
+            <img src="{{ url_for('static', filename='images/logo.svg') }}" height="30" alt="">
+        </a>
 
-    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-            {% if ((current_user.is_authenticated) and (self.title() == "Главная страница")) %}
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ url_for('home.account') }}">Мой аккаунт</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('home.feed') }}">Новости</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('home.shop') }}">Магазин</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('auth.logout') }}">Выйти</a>
-            </li>
-            {% elif ((current_user.is_authenticated) and (self.title() == "Лента новостей")) %}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('home.account') }}">Мой аккаунт</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ url_for('home.feed') }}">Новости</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('home.shop') }}">Магазин</a>
-            </li>
-            <a class="nav-link" href="{{ url_for('auth.logout') }}">Выйти</a>
-            </li>
-            {% elif ((current_user.is_authenticated) and (self.title() == "Магазин")) %}
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('home.account') }}">Мой аккаунт</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('home.feed') }}">Новости</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ url_for('home.shop') }}">Магазин</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('auth.logout') }}">Выйти</a>
-            </li>
-            {% elif ( (not(current_user.is_authenticated)) and (self.title() == "Главная страница")) %}
-            <li class="nav-item active">
-                <a class="nav-link" href="/">Главная</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/register">Регистрация</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/login">Вход</a>
-            </li>
-            {% elif ( (not(current_user.is_authenticated)) and (self.title() == "Регистрация")) %}
-            <li class="nav-item">
-                <a class="nav-link" href="/">Главная</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="/register">Регистрация</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/login">Вход</a>
-            </li>
-            {% elif ( (not(current_user.is_authenticated)) and (self.title() == "Вход")) %}
-            <li class="nav-item ">
-                <a class="nav-link" href="/">Главная</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/register">Регистрация</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="/login">Вход</a>
-            </li>
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                {% if ((current_user.is_authenticated) and (self.title() == "Главная страница")) %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('home.account') }}">Мой аккаунт</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('home.feed') }}">Новости</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('home.shop') }}">Магазин</a>
+                </li>
+                {% elif ((current_user.is_authenticated) and (self.title() == "Лента новостей")) %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('home.account') }}">Мой аккаунт</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('home.feed') }}">Новости</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('home.shop') }}">Магазин</a>
+                </li>
+                {% elif ((current_user.is_authenticated) and (self.title() == "Магазин")) %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('home.account') }}">Мой аккаунт</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('home.feed') }}">Новости</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('home.shop') }}">Магазин</a>
+                </li>
+                {% elif ( (not(current_user.is_authenticated)) and (self.title() == "Главная страница")) %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/register">Регистрация</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Вход</a>
+                </li>
+                {% elif ( (not(current_user.is_authenticated)) and (self.title() == "Регистрация")) %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Главная</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/register">Регистрация</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Вход</a>
+                </li>
+                {% elif ( (not(current_user.is_authenticated)) and (self.title() == "Вход")) %}
+                <li class="nav-item ">
+                    <a class="nav-link" href="/">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/register">Регистрация</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/login">Вход</a>
+                </li>
+                {% endif %}
+            </ul>
+            {% if current_user.is_authenticated %}
+            <ul class="navbar-nav navbar-right">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                       aria-haspopup="true" aria-expanded="false"><span class="fa fa- fa-user"></span>
+                        Привет, {{ current_user.first_name }}
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="{{ url_for('home.edit_account') }}"><span
+                                class="fa fa- fa-pencil"></span> Настройки аккаунта</a>
+                        <a class="dropdown-item" href="{{ url_for('auth.logout') }}"><span
+                                class="fa fa- fa-sign-out"></span> Выход наружу</a>
+                    </div>
+                </li>
+            </ul>
             {% endif %}
-        </ul>
+        </div>
     </div>
 </nav>
 
 
-    {% block body %}{% endblock %}
+{% block body %}{% endblock %}
 <div class="container">
     <hr>
 
