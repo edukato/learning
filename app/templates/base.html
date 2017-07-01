@@ -3,14 +3,14 @@
     <title>{{ title }} | edukato</title>
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://bootswatch.com/4-alpha/lumen/bootstrap.css">
+    <link rel="stylesheet" href="static/css/bootstrap.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link hred="https://bootswatch.com/4-alpha/assets/css/custom.min.css" rel="stylesheet">
+    <link href="static/css/custom.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <style>
         body {
-            padding-top: 100px;
+            padding-top: 58px;
             padding-bottom 20px;
         }
 
@@ -28,87 +28,90 @@
             aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="#">edukato</a>
+    <a class="navbar-brand" href="#">
+        <img src="static/images/logo.svg" height="30" alt="">
+    </a>
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
             {% if ((current_user.is_authenticated) and (self.title() == "Главная страница")) %}
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{ url_for('home.account') }}">Мой аккаунт</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('home.feed') }}">Новости</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('home.shop') }}">Магазин</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('auth.logout') }}">Выйти</a>
-                </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for('home.account') }}">Мой аккаунт</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('home.feed') }}">Новости</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('home.shop') }}">Магазин</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('auth.logout') }}">Выйти</a>
+            </li>
             {% elif ((current_user.is_authenticated) and (self.title() == "Лента новостей")) %}
-                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('home.account') }}">Мой аккаунт</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{ url_for('home.feed') }}">Новости</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('home.shop') }}">Магазин</a>
-                </li>
-                    <a class="nav-link" href="{{ url_for('auth.logout') }}">Выйти</a>
-                </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('home.account') }}">Мой аккаунт</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for('home.feed') }}">Новости</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('home.shop') }}">Магазин</a>
+            </li>
+            <a class="nav-link" href="{{ url_for('auth.logout') }}">Выйти</a>
+            </li>
             {% elif ((current_user.is_authenticated) and (self.title() == "Магазин")) %}
-                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('home.account') }}">Мой аккаунт</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('home.feed') }}">Новости</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{ url_for('home.shop') }}">Магазин</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('auth.logout') }}">Выйти</a>
-                </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('home.account') }}">Мой аккаунт</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('home.feed') }}">Новости</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for('home.shop') }}">Магазин</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('auth.logout') }}">Выйти</a>
+            </li>
             {% elif ( (not(current_user.is_authenticated)) and (self.title() == "Главная страница")) %}
-                <li class="nav-item active">
-                    <a class="nav-link" href="/">Главная</a>
-                </li>
-                 <li class="nav-item">
-                    <a class="nav-link" href="/register">Регистрация</a>
-                </li>
-                 <li class="nav-item">
-                    <a class="nav-link" href="/login">Вход</a>
-                </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Главная</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/register">Регистрация</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/login">Вход</a>
+            </li>
             {% elif ( (not(current_user.is_authenticated)) and (self.title() == "Регистрация")) %}
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Главная</a>
-                </li>
-                 <li class="nav-item active">
-                    <a class="nav-link" href="/register">Регистрация</a>
-                </li>
-                 <li class="nav-item">
-                    <a class="nav-link" href="/login">Вход</a>
-                </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/">Главная</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/register">Регистрация</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/login">Вход</a>
+            </li>
             {% elif ( (not(current_user.is_authenticated)) and (self.title() == "Вход")) %}
-                <li class="nav-item ">
-                    <a class="nav-link" href="/">Главная</a>
-                </li>
-                 <li class="nav-item">
-                    <a class="nav-link" href="/register">Регистрация</a>
-                </li>
-                 <li class="nav-item active">
-                    <a class="nav-link" href="/login">Вход</a>
-                </li>
-            {% endif %}
+            <li class="nav-item ">
+                <a class="nav-link" href="/">Главная</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/register">Регистрация</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/login">Вход</a>
+            </li>
+            {% elif current_user.is_auntenficated %}
 
+            {% endif %}
         </ul>
     </div>
 </nav>
 
 
-<div class="container">
     {% block body %}{% endblock %}
+<div class="container">
     <hr>
 
     <footer>
