@@ -1,10 +1,12 @@
 {% import "bootstrap/wtf.html" as wtf %}
+{% import "bootstrap/utils.html" as utils %}
 {% extends "base.html" %}
 {% set active_page = "register" %}
 {% block title %}Регистрация{% endblock %}
 {% block body %}
 <div class="container">
     <div class="content-section">
+        {{ utils.flashed_messages() }}
         <div class="center">
             <h1>Регистрация</h1>
             <br/>
