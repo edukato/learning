@@ -22,6 +22,19 @@
 </head>
 <body>
 
+{% set navigation_bar_auth = [
+    ('/account', 'account', 'Мой аккаунт'),
+    ('/feed', 'feed', 'Новости'),
+    ('/shop', 'shop', 'Магазин')
+] -%}
+
+{% set navigation_bar_non_auth = [
+    ('/', 'index', 'Неприветливая страничка'),
+    ('/login', 'login', 'Вход'),
+    ('/register', 'register', 'Регистрация')
+] -%}
+
+{% set active_page = active_page|default('account') -%}
 <!-- Navigation bar -->
 <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
@@ -34,6 +47,20 @@
             <img src="{{ url_for('static', filename='images/logo.svg') }}" height="30" alt="">
         </a>
 
+<<<<<<< HEAD
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul id="navigation" class="navbar-nav mr-auto">
+            {% if current_user.is_authenticated %}
+                {% for href, id, caption in navigation_bar_auth %}
+                <div class="nav-item">
+                    <li {% if id == active_page %} class="active" {% endif %}>
+                            <a class="nav-link" href="{{ href|e }}">{{ caption|e }}</a>
+                    </li>
+                </div>
+                {% endfor %}
+                <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.logout') }}">Выйти</a>
+=======
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <ul class="navbar-nav mr-auto">
                 {% if ((current_user.is_authenticated) and (self.title() == "Главная страница")) %}
@@ -95,6 +122,7 @@
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="/login">Вход</a>
+>>>>>>> 50db812b5f2650770650cc64886cb6a3debe7535
                 </li>
                 {% endif %}
             </ul>
@@ -114,7 +142,20 @@
                 </li>
             </ul>
             {% endif %}
+<<<<<<< HEAD
+            {% if (not current_user.is_authenticated) %}
+                {% for href, id, caption in navigation_bar_non_auth %}
+                <div class="nav-item">
+                    <li {% if id == active_page %} class="active" {% endif %}>
+                            <a class="nav-link" href="{{ href|e }}">{{ caption|e }}</a>
+                    </li>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </ul>
+=======
         </div>
+>>>>>>> 50db812b5f2650770650cc64886cb6a3debe7535
     </div>
 </nav>
 
