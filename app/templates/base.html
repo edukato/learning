@@ -3,9 +3,10 @@
     <title>{{ title }} | edukato</title>
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="static/css/bootstrap.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="static/css/custom.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/custom.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 
     <!-- Custom CSS -->
     <style>
@@ -29,7 +30,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="#">
-        <img src="static/images/logo.svg" height="30" alt="">
+        <img src="{{ url_for('static', filename='images/logo.svg') }}" height="30" alt="">
     </a>
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">

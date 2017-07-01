@@ -1,0 +1,7 @@
+.bg-1 {
+    background-color: #ecf0f1 !important;
+    padding-bottom: 20px;
+}
+.container:first-of-type{
+    padding-top: 20px;
+}

@@ -2,17 +2,19 @@
 {% extends "base.html" %}
 {% block title %}Изменение персональных данных{% endblock %}
 {% block body %}
-<div class="content-section">
- <div class="outer">
-    <div class="middle">
-      <div class="inner">
-        <div class="center">
-            <h1>Изменение персональных данных</h1>
-            <br/>
-            {{ wtf.quick_form(form,enctype="multipart/form-data") }}
+<div class="container">
+    <div class="content-section">
+        <div class="outer">
+            <div class="middle">
+                <div class="inner">
+                    <div class="center">
+                        <h1>Изменение персональных данных</h1>
+                        <br/>
+                        {{ wtf.quick_form(form,enctype="multipart/form-data") }}
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 {% endblock %}
