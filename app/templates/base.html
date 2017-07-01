@@ -94,7 +94,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <div class="m-3" style="width: 275px">
-                            <img src="static/images/profile/{{ current_user.id }}.png"
+                            <img src="{{ url_for('static', filename=('images/profile/' ~ current_user.id ~ '.png')) }}"
                                  class="rounded-circle img-fluid float-left mr-3"
                                  style="width: 75px; height: 75px;">
                             <h5>{{ current_user.first_name }} {{ current_user.last_name }}</h5>
