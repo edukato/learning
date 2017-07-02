@@ -39,12 +39,6 @@ def feed():
     return render_template('home/feed.html', title="Лента")
 
 
-@home.route('/support')
-@login_required
-def support():
-    return render_template('home/support.html', title="Поддержка")
-
-
 @home.route('/shop')
 @login_required
 def shop():
