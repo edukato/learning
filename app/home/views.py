@@ -70,10 +70,18 @@ def shop():
                            services_1=services_1, services_1_count=services_1_count, services_2=services_2,
                            services_2_count=services_2_count, title="Магазин")
 
+
 @home.route('/pay')
 @login_required
 def pay():
     return render_template('home/pay.html', title="Пополнение счёта")
+
+
+@home.route('/help')
+@login_required
+def help():
+    return render_template('home/help.html', title="Служба поддержки")
+
 
 @home.route('/shop/confirm/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -116,7 +124,7 @@ def edit_account():
         client.last_name = form.last_name.data
         client.password = form.password.data
         if form.photo.data is not None:
-            form.photo.data.save('app/static/images/profile/'+str(current_user.id)+'.png')
+            form.photo.data.save('app/static/images/profile/' + str(current_user.id) + '.png')
         db.session.commit()
         flash('Ваше задание выполнено, капитан.')
         return redirect(url_for('home.account'))
