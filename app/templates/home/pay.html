@@ -1,20 +1,32 @@
 {% extends "base.html" %}
-{% set active_page = "account" %}
 {% block title %}Пополнение счета{% endblock %}
 {% block body %}
+<div class="bg-2 text-center" style="padding-bottom: 0px;">
+    <p>
+        <small>На вашем счете:</small>
+        {{ current_user.balance }}₽
+    </p>
+</div>
 <div class="container">
-    <h1 align="center">Пополнение баланса</h1>
-    <br>
-    <h2 align="center">На вашем счету: 1448 ₽</h2>
-    <br>
-    <h3 align="center">Введите сумму для пополнения:</h3>
-    <br>
-    <input class="form-control col-4 offset-md-4" type="number" value="0" id="example-text-input">
-    <br>
-    <a class="btn btn-success btn-lg col-2 offset-md-5" href="{{ url_for('home.account') }}">Оплатить</a>
-    <br>
-    <br>
-    <p>Деньги, находящиеся на вашем лицевой счёте, могут быть списанны только на приобретения услуг, предоставлемых
-        edukato. </p>
+    <h1>Пополнение баланса</h1>
+    <hr>
+    <form class="form-inline">
+        <label class="sr-only" for="inlineFormInputGroup">Введите сумму для пополнения:</label>
+        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+            <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Введите сумму">
+            <div class="input-group-addon">₽</div>
+        </div>
+
+        <button type="submit" class="btn btn-success">Оплатить</button>
+    </form>
+    <p>Вы будете перенаправлены на сайт <abbr
+            title="Яндекс.Касса позволяет нам быстро и безопасно проводить платежи огромным количеством способов">Яндекс.Касса</abbr>
+        для завершения платежа</p>
+    <p>
+        <small>Деньги, находящиеся на вашем лицевом счёте, могут быть списанны только на приобретения услуг,
+            предоставлемых
+            edukato. Нажимая кнопку "Оплатить" вы соглашаетесь с условиями использования сервисов edukato.
+        </small>
+    </p>
 </div>
 {% endblock %}

@@ -2,6 +2,11 @@
     background-color: #ecf0f1 !important;
     padding-bottom: 20px;
 }
+.bg-2 {
+    background-color: #34495e !important;
+    padding-bottom: 20px;
+    color: white;
+}
 .container {
     padding-top: 20px;
 }
