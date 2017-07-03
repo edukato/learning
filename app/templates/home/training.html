@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% set active_page = "training" %}
+{% block title %}Тренировка{% endblock %}
+{% block body %}
+<style>
+   .par {
+    font-size: 14pt; /* Размер шрифта в пунктах */
+   }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <h3>Предметы</h3>
+            <ul class="list-group">
+                <a href="#" class="list-group-item justify-content-between list-group-item-action">
+                    Математика
+                </a>
+                <a href="#" class="list-group-item justify-content-between list-group-item-action">
+                    Химия
+                </a>
+                <a href="#" class="list-group-item justify-content-between list-group-item-action">
+                    Физика
+                </a>
+                <a href="#" class="list-group-item justify-content-between list-group-item-action">
+                    Русский язык
+                </a>
+            </ul>
+        </div>
+        <div class="col-md-8">
+            <h3>Режим тренировки</h3>
+            <ul class="list-group">
+                <a href="{{ url_for('home.question') }}" class="list-group-item justify-content-between list-group-item-action ">
+                    <div class="col-md-12">
+                        <h4 align="center">Вариант ЕГЭ</h4>
+                    </div>
+                    <div class="par">
+                        <p>
+                            Автоматически сгенерированый вариант ЕГЭ, позволяющий проверить свою готовность к написанию
+                            настоящего варианта ЕГЭ.
+                        </p>
+                    </div>
+                </a>
+                <a href="#" class="list-group-item justify-content-between list-group-item-action">
+                    <div class="col-md-12">
+                        <h4 align="center">Рекомендуем отработать</h4>
+                    </div>
+                    <div class="par">
+                        <p>
+                            Задания, рекомендуемые к выполнению, исходя из анализа выполненных заданий в прошлом. Анализ
+                            выполнен при помощи уникальной самообучающейся системы анализа успеваемости ЛОБОДА.
+                        </p>
+                    </div>
+                </a>
+                <a href="#" class="list-group-item justify-content-between list-group-item-action">
+                    <div class="col-md-12">
+                        <h4 align="center">Выборочное тестирование</h4>
+                    </div>
+                    <div class="par">
+                        <p>
+                            Вариант ЕГЭ составленный из заданий, выбранных пользователем для отработки определенных умений
+                            и навыков, необходимых для успешной сдачи экзамена.
+                        </p>
+                    </div>
+                </a>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+
+    </div>
+</div>
+{% endblock %}
