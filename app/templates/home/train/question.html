@@ -4,19 +4,69 @@
 {% block body %}
 <style>
    .par {
-    font-size: 14pt; /* Размер шрифта в пунктах */
+    font-size: 14pt;
+   }
+   .time {
+    font-size: 20pt;
+   }
+   input {
+       border: 0px;
+       outline:none;
+       background: white;
+       font-size: 18pt;
    }
 </style>
 <div class="container offset-2 col-8">
     <h1 align="center">Вариант ЕГЭ</h1>
     <br>
     <div class="row">
-        <div class="col-9">
+        <div class="col-7">
               <h2>Вопрос 1 из 101</h2>
         </div>
+
+        <script type="text/javascript">
+
+         function trim(string) { return string.replace (/\s+/g, " ").replace(/(^\s*)|(\s*)$/g, ''); }
+         var init=0;
+         var startDate;
+         var clocktimer;
+
+         function startTIME() {
+          var thisDate = new Date();
+          var t = thisDate.getTime() - startDate.getTime();
+          var ms = t%1000; t-=ms; ms=Math.floor(ms/10);
+          t = Math.floor (t/1000);
+          var s = t%60; t-=s;
+          t = Math.floor (t/60);
+          var m = t%60; t-=m;
+          t = Math.floor (t/60);
+          var h = t%60;
+          if (h<10) h='0'+h;
+          if (m<10) m='0'+m;
+          if (s<10) s='0'+s;
+          if (ms<10) ms='0'+ms;
+          if (init==1){
+              document.clockform.clock.value = h + ':' + m + ':' + s;
+          }
+          clocktimer = setTimeout("startTIME()",10);
+         }
+         function findTIME() {
+           startDate = new Date();
+           startTIME();
+           init=1;
+         }
+         findTIME();
+        </script>
+
+        <form name="clockform">
+         <p class="time">Время:
+            <input type="text" name="clock" size="4" maxlength="4" value="00:00:00" disabled>
+         </p>
+        </form>
+
         <div class="col-12 col-md-auto">
           <a href="#" class="list-group-item justify-content-between list-group-item-action">
-        Сообщить об ошибке
+        Ошибка!
         </a>
         </div>
     </div>
