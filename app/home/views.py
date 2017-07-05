@@ -73,18 +73,23 @@ def pay():
 @home.route('/training')
 @login_required
 def training():
-    return render_template('home/training.html', title="Тренировка")
+    return render_template('home/train/training.html', title="Тренировка")
 
 @home.route('/question')
 @login_required
 def question():
-    return render_template('home/question.html', title="Вопрос")
+    return render_template('home/train/question.html', title="Вопрос")
 
 
 @home.route('/help')
 @login_required
 def help():
     return render_template('home/help.html', title="Служба поддержки")
+
+@home.route('/contacts')
+@login_required
+def contacts():
+    return render_template('home/contacts.html', title="Контакты")
 
 
 @home.route('/shop/confirm/<int:id>', methods=['GET', 'POST'])
