@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% set active_page = "training" %}
+{% block title %}Вопрос{% endblock %}
+{% block body %}
+<style>
+   .par {
+    font-size: 14pt; /* Размер шрифта в пунктах */
+   }
+</style>
+<div class="container offset-2 col-8">
+    <h1 align="center">Вариант ЕГЭ</h1>
+    <br>
+    <div class="row">
+        <div class="col-9">
+              <h2>Вопрос 1 из 101</h2>
+        </div>
+        <div class="col-12 col-md-auto">
+          <a href="#" class="list-group-item justify-content-between list-group-item-action">
+        Сообщить об ошибке
+        </a>
+        </div>
+    </div>
+    <hr>
+    <div class="par">
+        <p>
+            Здесь будет очень каверзный вопрос на 100500 слов <br>
+            Может быть даже на пикчу <br>
+            вооот тут <br>
+            разоримся <br>
+            Очень <br>
+            Много <br>
+            Текста <br>
+            Прям <br>
+            Воообще <br>
+        </p>
+    </div>
+    <hr>
+    <div class="row">
+    <div class="col-12 col-md-auto">
+    <h3>Введите ответ: </h3>
+    </div>
+    <div class="col-3">
+    <input class="form-control" type="text" value="" id="example-text-input">
+    </div>
+    <a href="#" class="btn btn-success">Подтвердить</a>
+    </div>
+</div>
+<br>
+{% endblock %}
