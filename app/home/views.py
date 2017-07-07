@@ -75,15 +75,20 @@ def pay():
 def training():
     return render_template('home/train/training.html', title="Тренировка")
 
+@home.route('/ege')
+@login_required
+def ege():
+    return render_template('home/train/ege.html', title="Вариант ЕГЭ")
+
 @home.route('/recommendation')
 @login_required
 def recommendation():
     return render_template('home/train/recommendation.html', title="Рекомендуем отработать")
 
-@home.route('/ege')
+@home.route('/choice')
 @login_required
-def ege():
-    return render_template('home/train/ege.html', title="Вариант ЕГЭ")
+def choice():
+    return render_template('home/train/choice.html', title="Выбор задания")
 
 
 @home.route('/help')
