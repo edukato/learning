@@ -81,10 +81,15 @@ def training():
 def ege():
     return render_template('home/train/ege.html', title="Вариант ЕГЭ")
 
-@home.route('/recommendation')
+@home.route('/recommendation_question')
 @login_required
-def recommendation():
-    return render_template('home/train/recommendation.html', title="Рекомендуем отработать")
+def recommendation_question():
+    return render_template('home/train/recommendation_question.html', title="Рекомендуем отработать")
+
+@home.route('/recommendation_answer')
+@login_required
+def recommendation_answer():
+    return render_template('home/train/recommendation_answer.html', title="Рекомендуем отработать")
 
 @home.route('/choice')
 @login_required
