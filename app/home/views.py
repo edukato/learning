@@ -90,6 +90,11 @@ def recommendation():
 def choice():
     return render_template('home/train/choice.html', title="Выбор задания")
 
+@home.route('/answers_ege')
+@login_required
+def answers_ege():
+    return render_template('home/train/answers_ege.html', title="Решения и ответы")
+
 
 @home.route('/help')
 @login_required
