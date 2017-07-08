@@ -9,6 +9,12 @@
     color: white;
 }
 
+.bg-blackboard {
+    background: url('../images/bg-blackboard.jpg') no-repeat fixed center;
+    background-size: cover;
+    color: white;
+}
+
 .container {
     padding-top: 20px;
 }
@@ -171,3 +177,4 @@ nav .container:first-of-type {
 .timeline-body > p + p {
     margin-top: 5px;
 }
+

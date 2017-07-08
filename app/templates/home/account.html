@@ -107,6 +107,27 @@
                 </a>
             </div>
             <br>
+            <div class="bg-blackboard" style="padding: 10px;">
+                <div>
+                    <img src="static/images/profile/{{ current_user.id }}.png"
+                         class="rounded-circle img-fluid float-left mr-3 ml-2"
+                         alt="140x140"
+                         style="width: 120px; height: 120px;">
+                    <div>
+                        <h5>Какой-то аутист - твой куратор</h5>
+                        <p style="font-size: 0.9em">Студент химического факультета МГУ. Обладатель золотой медали
+                            международной олимпиады по химии.</p>
+                        <p class="no_mar"><span class="fa fa-envelope"></span> autist@edukato.ru</p>
+                        <br>
+                    </div>
+                    <div class="float-right">
+                        <a class="btn btn-sm btn-success">Написать в чатике</a>
+                        <a class="btn btn-sm btn-danger">Пожаловаться</a>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+            <br>
             <h2>Мои услуги:</h2>
             {% if active_services %}
             {% for service in active_services %}
