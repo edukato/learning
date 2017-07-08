@@ -76,17 +76,28 @@ def pay():
 def training():
     return render_template('home/train/training.html', title="Тренировка")
 
+<<<<<<< HEAD
+=======
+@home.route('/ege')
+@login_required
+def ege():
+    return render_template('home/train/ege.html', title="Вариант ЕГЭ")
+>>>>>>> e3cbd88ae54b697b7211da3a3aad92b1c91abe82
 
 @home.route('/recommendation')
 @login_required
 def recommendation():
     return render_template('home/train/recommendation.html', title="Рекомендуем отработать")
 
+<<<<<<< HEAD
 
 @home.route('/ege')
+=======
+@home.route('/choice')
+>>>>>>> e3cbd88ae54b697b7211da3a3aad92b1c91abe82
 @login_required
-def ege():
-    return render_template('home/train/ege.html', title="Вариант ЕГЭ")
+def choice():
+    return render_template('home/train/choice.html', title="Выбор задания")
 
 
 @home.route('/help')

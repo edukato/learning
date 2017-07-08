@@ -4,7 +4,7 @@
 {% block body %}
 <style>
    .par {
-    font-size: 14pt; /* Размер шрифта в пунктах */
+    font-size: 12pt; /* Размер шрифта в пунктах */
    }
 </style>
 <div class="container">
@@ -51,7 +51,7 @@
                         </p>
                     </div>
                 </a>
-                <a href="#" class="list-group-item justify-content-between list-group-item-action">
+                <a href="{{ url_for('home.choice') }}" class="list-group-item justify-content-between list-group-item-action">
                     <div class="col-md-12">
                         <h4 align="center">Выборочное тестирование</h4>
                     </div>

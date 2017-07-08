@@ -34,13 +34,19 @@ class Client(UserMixin, db.Model):
     image = db.Column(db.String(300))
     plan = db.Column(db.String(300))
     groups_list = db.Column(db.String)
+    subjects = db.Column(db.String)
     selling_log = db.relationship('SellingLog', backref='client',
                                   lazy='dynamic')
     events = db.relationship('Event', backref='client',
                              lazy='dynamic')
     grades = db.relationship('Grade', backref='client',
+<<<<<<< HEAD
                              lazy='dynamic')
     route_maps = db.relationship('RouteMap', backref='client',
+=======
+                               lazy='dynamic')
+    roude_maps = db.relationship('RoudeMap', backref='client',
+>>>>>>> e3cbd88ae54b697b7211da3a3aad92b1c91abe82
                                  lazy='dynamic')
     answers = db.relationship('Answer', backref='client',
                               lazy='dynamic')
@@ -116,8 +122,6 @@ class SellingLog(db.Model):
     access_start = db.Column(db.DateTime)
     access_end = db.Column(db.DateTime)
     image = db.Column(db.String(300))
-    route_maps = db.relationship('RouteMap', backref='sellinglog',
-                                 lazy='dynamic')
 
     def __repr__(self):
         return '<SellingLog: {}>'.format(self.id)
@@ -195,20 +199,25 @@ class Salary(db.Model):
     def __repr__(self):
         return '<Salary: {}>'.format(self.id)
 
+<<<<<<< HEAD
 
 class RouteMap(db.Model):
     __tablename__ = 'route_maps'
+=======
+class RoudeMap(db.Model):
+    __tablename__ = 'roude_maps'
+>>>>>>> e3cbd88ae54b697b7211da3a3aad92b1c91abe82
 
     id = db.Column(db.Integer, primary_key=True)
     client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
-    transaction_id = db.Column(db.Integer, db.ForeignKey('selling_log.id'))
+    transaction_id = db.Column(db.Integer)
     step = db.Column(db.Integer)
     name = db.Column(db.String(300))
     description = db.Column(db.String(300))
     if_done = db.Column(db.Binary)
 
     def __repr__(self):
-        return '<RouteMap: {}>'.format(self.id)
+        return '<RoudeMap: {}>'.format(self.id)
 
 
 class ONews(db.Model):
@@ -282,3 +291,17 @@ class Schedlue(db.Model):
 
     def __repr__(self):
         return '<Schedlue: {}>'.format(self.id)
+<<<<<<< HEAD
+=======
+
+class Training_choice(db.Model):
+    __tablename__ = 'training_choices'
+
+    id = db.Column(db.Integer, primary_key=True)
+    subject = db.Column(db.String)
+    number = db.Column(db.Integer)
+    description = db.Column(db.String)
+
+    def __repr__(self):
+        return '<Training_choice: {}>'.format(self.id)
+>>>>>>> e3cbd88ae54b697b7211da3a3aad92b1c91abe82
