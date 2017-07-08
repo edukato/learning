@@ -40,14 +40,9 @@ class Client(UserMixin, db.Model):
     events = db.relationship('Event', backref='client',
                              lazy='dynamic')
     grades = db.relationship('Grade', backref='client',
-<<<<<<< HEAD
                              lazy='dynamic')
-    route_maps = db.relationship('RouteMap', backref='client',
-=======
+    road_maps = db.relationship('RoadMap', backref='client',
                                lazy='dynamic')
-    roude_maps = db.relationship('RoudeMap', backref='client',
->>>>>>> e3cbd88ae54b697b7211da3a3aad92b1c91abe82
-                                 lazy='dynamic')
     answers = db.relationship('Answer', backref='client',
                               lazy='dynamic')
     schedlues = db.relationship('Schedlue', backref='client',
@@ -199,14 +194,8 @@ class Salary(db.Model):
     def __repr__(self):
         return '<Salary: {}>'.format(self.id)
 
-<<<<<<< HEAD
-
-class RouteMap(db.Model):
-    __tablename__ = 'route_maps'
-=======
-class RoudeMap(db.Model):
-    __tablename__ = 'roude_maps'
->>>>>>> e3cbd88ae54b697b7211da3a3aad92b1c91abe82
+class RoadMap(db.Model):
+    __tablename__ = 'road_maps'
 
     id = db.Column(db.Integer, primary_key=True)
     client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
@@ -217,7 +206,7 @@ class RoudeMap(db.Model):
     if_done = db.Column(db.Binary)
 
     def __repr__(self):
-        return '<RoudeMap: {}>'.format(self.id)
+        return '<RoadMap: {}>'.format(self.id)
 
 
 class ONews(db.Model):
@@ -291,8 +280,6 @@ class Schedlue(db.Model):
 
     def __repr__(self):
         return '<Schedlue: {}>'.format(self.id)
-<<<<<<< HEAD
-=======
 
 class Training_choice(db.Model):
     __tablename__ = 'training_choices'
@@ -304,4 +291,3 @@ class Training_choice(db.Model):
 
     def __repr__(self):
         return '<Training_choice: {}>'.format(self.id)
->>>>>>> e3cbd88ae54b697b7211da3a3aad92b1c91abe82
