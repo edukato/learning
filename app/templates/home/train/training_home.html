@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% set active_page = "training_home" %}
+{% block title %}Тренировка{% endblock %}
+{% block body %}
+<style>
+    .par {
+        font-size: 12pt; /* Размер шрифта в пунктах */
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <ul class="list-group">
+                <a href="#" class="list-group-item justify-content-between list-group-item-action">
+                    Главная
+                </a>
+                <a href="{{url_for('home.training_subject')}}"
+                   class="list-group-item justify-content-between list-group-item-action">
+                    Математика
+                </a>
+                <a href="{{url_for('home.training_subject')}}"
+                   class="list-group-item justify-content-between list-group-item-action">
+                    Химия
+                </a>
+                <a href="{{url_for('home.training_subject')}}"
+                   class="list-group-item justify-content-between list-group-item-action">
+                    Физика
+                </a>
+                <a href="{{url_for('home.training_subject')}}"
+                   class="list-group-item justify-content-between list-group-item-action">
+                    Русский язык
+                </a>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-9">
+            <div class="bg-3">
+                <div class="row">
+                    <div class="col text-center">
+                        <br>
+                        <img height="200px" align="middle" src="/static/images/пикча.svg">
+                    </div>
+                    <div class="col text-center">
+                        <br><br>
+                        <h3>Привет<br> Сегодня у нас теология <br> Сразу 20 вопросов</h3>
+                        <br>
+                        <a align="center" href="{{url_for('home.recommendation_question')}}"
+                           class="btn btn-success">
+                            За Русь на мид ворвусь!
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <h3 align="center">Но есть и другие варианты:</h3>
+            <br>
+            <div class="row">
+                <div class="col-md-6 col-sm-12 mb-3">
+                    <a href="{{ url_for('home.ege') }}"
+                       class="list-group-item justify-content-between list-group-item-action ">
+                        <div class="col-md-12">
+                            <h4 align="center">Вариант ЕГЭ</h4>
+                        </div>
+                        <div class="par">
+                            <p>
+                                Автоматически сгенерированый вариант ЕГЭ, позволяющий проверить свою готовность к
+                                написанию
+                                настоящего варианта ЕГЭ.
+                            </p>
+                        </div>
+                    </a>
+                </div>
+                <br>
+                <div class="col-md-6 col-sm-12" >
+                    <a href="{{ url_for('home.choice') }}"
+                       class="list-group-item justify-content-between list-group-item-action">
+                        <div class="col-md-12">
+                            <h4 align="center">Выборочное тестирование</h4>
+                        </div>
+                        <div class="par">
+                            <p>
+                                Вариант ЕГЭ составленный из заданий, выбранных пользователем для отработки определенных
+                                умений
+                                и навыков, необходимых для успешной сдачи экзамена.
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+    </div>
+</div>
+{% endblock %}

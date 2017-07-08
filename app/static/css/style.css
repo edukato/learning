@@ -9,6 +9,12 @@
     color: white;
 }
 
+.bg-3 {
+    background-color: #2C82C9 !important;
+    padding-bottom: 20px;
+    color: white;
+}
+
 .bg-blackboard {
     background: url('../images/bg-blackboard.jpg') no-repeat center;
     color: white;

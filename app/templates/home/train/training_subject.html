@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% set active_page = "training" %}
+{% set active_page = "training_home" %}
 {% block title %}Тренировка{% endblock %}
 {% block body %}
 <style>
@@ -9,26 +9,33 @@
 </style>
 <div class="container">
     <div class="row">
-        <div class="col-md-4">
-            <h3>Предметы</h3>
+        <div class="col-md-3">
             <ul class="list-group">
-                <a href="#" class="list-group-item justify-content-between list-group-item-action">
+                <a href="{{url_for('home.training_home')}}" class="list-group-item justify-content-between list-group-item-action">
+                    Главная
+                </a>
+                <a href="#"
+                   class="list-group-item justify-content-between list-group-item-action">
                     Математика
                 </a>
-                <a href="#" class="list-group-item justify-content-between list-group-item-action">
+                <a href="#"
+                   class="list-group-item justify-content-between list-group-item-action">
                     Химия
                 </a>
-                <a href="#" class="list-group-item justify-content-between list-group-item-action">
+                <a href="#"
+                   class="list-group-item justify-content-between list-group-item-action">
                     Физика
                 </a>
-                <a href="#" class="list-group-item justify-content-between list-group-item-action">
+                <a href="#"
+                   class="list-group-item justify-content-between list-group-item-action">
                     Русский язык
                 </a>
             </ul>
+            <br>
         </div>
-        <div class="col-md-8">
-            <h3>Режим тренировки</h3>
-            <ul class="list-group">
+        <div class="col-md-8 ml-5">
+            <h3 align="center" class="mb-3">Режим тренировки</h3>
+            <ul class="list-group text-center">
                 <a href="{{ url_for('home.ege') }}" class="list-group-item justify-content-between list-group-item-action ">
                     <div class="col-md-12">
                         <h4 align="center">Вариант ЕГЭ</h4>

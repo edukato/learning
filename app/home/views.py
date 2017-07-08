@@ -70,11 +70,15 @@ def shop():
 def pay():
     return render_template('home/pay.html', title="Пополнение счёта")
 
-
-@home.route('/training')
+@home.route('/training_home')
 @login_required
-def training():
-    return render_template('home/train/training.html', title="Тренировка")
+def training_home():
+    return render_template('home/train/training_home.html', title="Тренировка")
+
+@home.route('/training_subject')
+@login_required
+def training_subject():
+    return render_template('home/train/training_subject.html', title="Тренировка")
 
 @home.route('/ege')
 @login_required
