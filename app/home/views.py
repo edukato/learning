@@ -6,7 +6,7 @@ from flask import flash, redirect, render_template, url_for
 from flask_login import login_required, current_user
 
 from . import home
-from ..models import Service, SellingLog, Client
+from ..models import Service, SellingLog, Client, RoadMap
 from .. import db
 from .forms import AccountEditForm
 
@@ -179,4 +179,6 @@ def transactions():
 @home.route('/road_map', methods=['GET','POST'])
 @login_required
 def road_map():
-    return render_template('home/road_map.html', title='Дорожная карта')
+    road_map_items = RoadMap.query.filter(RoadMap.client_id == current_user.id).order_by(
+            RoadMap.step.asc()).all()
+    return render_template('home/road_map.html', road_map_items=road_map_items, title='Дорожная карта')
