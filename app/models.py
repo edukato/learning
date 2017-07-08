@@ -47,6 +47,10 @@ class Client(UserMixin, db.Model):
                               lazy='dynamic')
     schedlues = db.relationship('Schedlue', backref='client',
                                 lazy='dynamic')
+    skils = db.relationship('Skil', backref='client',
+                                lazy='dynamic')
+    training_recommendation_sessions = db.relationship('TrainingRecommendationSession', backref='client',
+                            lazy='dynamic')
 
     @property
     def password(self):
@@ -101,9 +105,6 @@ class Grade(db.Model):
 
 
 class SellingLog(db.Model):
-    """
-    Create a Role table
-    """
 
     __tablename__ = 'selling_log'
 
@@ -263,10 +264,11 @@ class Answer(db.Model):
     task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
     answer = db.Column(db.String)
     right = db.Column(db.Boolean)
+    training_type = db.Column(db.Integer)
+    training_id = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Answer: {}>'.format(self.id)
-
 
 class Schedlue(db.Model):
     __tablename__ = 'schedlues'
@@ -281,7 +283,7 @@ class Schedlue(db.Model):
     def __repr__(self):
         return '<Schedlue: {}>'.format(self.id)
 
-class Training_choice(db.Model):
+class TrainingChoice(db.Model):
     __tablename__ = 'training_choices'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -291,3 +293,30 @@ class Training_choice(db.Model):
 
     def __repr__(self):
         return '<Training_choice: {}>'.format(self.id)
+
+class Skil(db.Model):
+    __tablename__ = 'skils'
+
+    id = db.Column(db.Integer, primary_key=True)
+    client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
+    subject = db.Column(db.String)
+    number = db.Column(db.Integer)
+    level = db.Column(db.Integer)
+
+    def __repr__(self):
+        return '<Skil: {}>'.format(self.id)
+
+class TrainingRecommendationSession(db.Model):
+    __tablename__ = 'training_recommendation_sessions'
+
+    id = db.Column(db.Integer, primary_key=True)
+    client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
+    subject = db.Column(db.String)
+    start_date = db.Column(db.DateTime)
+    if_close = db.Column(db.Boolean)
+    current_question = db.Column(db.Integer)
+    questions = db.Column(db.String)
+    answers = db.Column(db.String)
+
+    def __repr__(self):
+        return '<TrainingRecommendationSession: {}>'.format(self.id)

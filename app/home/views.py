@@ -96,6 +96,11 @@ def choice():
 def answers_ege():
     return render_template('home/train/answers_ege.html', title="Решения и ответы")
 
+@home.route('/results')
+@login_required
+def results():
+    return render_template('home/train/results.html', title="Результаты")
+
 
 @home.route('/help')
 @login_required
