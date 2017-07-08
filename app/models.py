@@ -35,6 +35,7 @@ class Client(UserMixin, db.Model):
     plan = db.Column(db.String(300))
     groups_list = db.Column(db.String)
     subjects = db.Column(db.String)
+    mentor = db.Column(db.Integer, db.ForeignKey('teachers.id'))
     selling_log = db.relationship('SellingLog', backref='client',
                                   lazy='dynamic')
     events = db.relationship('Event', backref='client',
@@ -151,6 +152,8 @@ class Teacher(db.Model):
     phone_num = db.Column(db.Integer)
     description = db.Column(db.String(300))
     image = db.Column(db.String(300))
+    clients = db.relationship('Client', backref='teacher',
+                             lazy='dynamic')
     grades = db.relationship('Grade', backref='teacher',
                              lazy='dynamic')
     events = db.relationship('Event', backref='teacher',
