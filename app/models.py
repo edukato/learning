@@ -20,7 +20,7 @@ class Client(UserMixin, db.Model):
     last_name = db.Column(db.String(60), index=True)
     middle = db.Column(db.String(60), index=True)
     email = db.Column(db.String(60), index=True, unique=True)
-    phone_num = db.Column(db.Integer, unique = True)
+    phone_num = db.Column(db.Integer, unique=True)
     social_network = db.Column(db.String(60))
     status = db.Column(db.Integer)
     description = db.Column(db.String(300))
@@ -36,17 +36,22 @@ class Client(UserMixin, db.Model):
     groups_list = db.Column(db.String)
     subjects = db.Column(db.String)
     selling_log = db.relationship('SellingLog', backref='client',
-                               lazy='dynamic')
+                                  lazy='dynamic')
     events = db.relationship('Event', backref='client',
-                               lazy='dynamic')
+                             lazy='dynamic')
     grades = db.relationship('Grade', backref='client',
+<<<<<<< HEAD
+                             lazy='dynamic')
+    route_maps = db.relationship('RouteMap', backref='client',
+=======
                                lazy='dynamic')
     roude_maps = db.relationship('RoudeMap', backref='client',
+>>>>>>> e3cbd88ae54b697b7211da3a3aad92b1c91abe82
                                  lazy='dynamic')
     answers = db.relationship('Answer', backref='client',
                               lazy='dynamic')
     schedlues = db.relationship('Schedlue', backref='client',
-                              lazy='dynamic')
+                                lazy='dynamic')
 
     @property
     def password(self):
@@ -68,6 +73,13 @@ class Client(UserMixin, db.Model):
         """
         return check_password_hash(self.password_hash, password)
 
+    def last_n_transactions(self, n):
+        list_of_trans = SellingLog.query.filter(SellingLog.client_id == self.id).order_by(
+            SellingLog.id.desc()).limit(n)
+        for last_transaction in list_of_trans:
+            last_transaction.name = (Service.query.filter(Service.id == last_transaction.service_id).first()).name
+        return list_of_trans
+
     def __repr__(self):
         return '<Client: {}>'.format(self.id)
 
@@ -87,7 +99,7 @@ class Grade(db.Model):
     control_work = db.Column(db.String(200))
     description = db.Column(db.String(200))
     picrel = db.Column(db.String(200))
-    grade = db.Column (db.Integer)
+    grade = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Grade: {}>'.format(self.id)
@@ -122,7 +134,7 @@ class Event(db.Model):
     client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
     service_id = db.Column(db.Integer, db.ForeignKey('list_of_services.id'))
     date_time = db.Column(db.DateTime)
-    details = db.Column(db.String (300))
+    details = db.Column(db.String(300))
     type = db.Column(db.Integer)
     transaction_id = db.Column(db.Integer, db.ForeignKey('selling_log.id'))
     teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))
@@ -144,13 +156,13 @@ class Teacher(db.Model):
     description = db.Column(db.String(300))
     image = db.Column(db.String(300))
     grades = db.relationship('Grade', backref='teacher',
-                               lazy='dynamic')
+                             lazy='dynamic')
     events = db.relationship('Event', backref='teacher',
-                               lazy='dynamic')
+                             lazy='dynamic')
     salaries = db.relationship('Salary', backref='teacher',
                                lazy='dynamic')
     schedlues = db.relationship('Schedlue', backref='teacher',
-                              lazy='dynamic')
+                                lazy='dynamic')
 
     def __repr__(self):
         return '<Teacher: {}>'.format(self.first_name)
@@ -164,13 +176,13 @@ class Service(db.Model):
     description = db.Column(db.String(300))
     start_date = db.Column(db.DateTime)
     expiration_date = db.Column(db.DateTime)
-    price = db.Column (db.Integer)
+    price = db.Column(db.Integer)
     image = db.Column(db.String(300))
     type = db.Column(db.Integer)
     selling_log = db.relationship('SellingLog', backref='service',
-                               lazy='dynamic')
+                                  lazy='dynamic')
     events = db.relationship('Event', backref='service',
-                               lazy='dynamic')
+                             lazy='dynamic')
 
     def __repr__(self):
         return '<Service: {}>'.format(self.id)
@@ -187,8 +199,14 @@ class Salary(db.Model):
     def __repr__(self):
         return '<Salary: {}>'.format(self.id)
 
+<<<<<<< HEAD
+
+class RouteMap(db.Model):
+    __tablename__ = 'route_maps'
+=======
 class RoudeMap(db.Model):
     __tablename__ = 'roude_maps'
+>>>>>>> e3cbd88ae54b697b7211da3a3aad92b1c91abe82
 
     id = db.Column(db.Integer, primary_key=True)
     client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
@@ -200,6 +218,7 @@ class RoudeMap(db.Model):
 
     def __repr__(self):
         return '<RoudeMap: {}>'.format(self.id)
+
 
 class ONews(db.Model):
     __tablename__ = 'news'
@@ -216,6 +235,7 @@ class ONews(db.Model):
     def __repr__(self):
         return '<Onews: {}>'.format(self.id)
 
+
 class Group(db.Model):
     __tablename__ = 'groups'
 
@@ -223,10 +243,11 @@ class Group(db.Model):
     name = db.Column(db.String(300))
     link = db.Column(db.String(300))
     news = db.relationship('ONews', backref='group',
-                             lazy='dynamic')
+                           lazy='dynamic')
 
     def __repr__(self):
         return '<Group: {}>'.format(self.id)
+
 
 class Task(db.Model):
     __tablename__ = 'tasks'
@@ -239,10 +260,11 @@ class Task(db.Model):
     image = db.Column(db.String)
     right_answer = db.Column(db.String)
     answers = db.relationship('Answer', backref='task',
-                             lazy='dynamic')
+                              lazy='dynamic')
 
     def __repr__(self):
         return '<Task: {}>'.format(self.id)
+
 
 class Answer(db.Model):
     __tablename__ = 'answers'
@@ -256,6 +278,7 @@ class Answer(db.Model):
     def __repr__(self):
         return '<Answer: {}>'.format(self.id)
 
+
 class Schedlue(db.Model):
     __tablename__ = 'schedlues'
 
@@ -268,6 +291,8 @@ class Schedlue(db.Model):
 
     def __repr__(self):
         return '<Schedlue: {}>'.format(self.id)
+<<<<<<< HEAD
+=======
 
 class Training_choice(db.Model):
     __tablename__ = 'training_choices'
@@ -279,3 +304,4 @@ class Training_choice(db.Model):
 
     def __repr__(self):
         return '<Training_choice: {}>'.format(self.id)
+>>>>>>> e3cbd88ae54b697b7211da3a3aad92b1c91abe82
