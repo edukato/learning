@@ -101,6 +101,12 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6">
+            <div class="bg-road_map text-center">
+                <a class="btn btn-success btn-lg mt-5" href="{{ url_for('home.road_map') }}">
+                    Дорожная карта
+                </a>
+            </div>
+            <br>
             <h2>Мои услуги:</h2>
             {% if active_services %}
             {% for service in active_services %}
@@ -121,7 +127,8 @@
             </div>
             {% endfor %}
             {% else %}
-            <h3> Кхм, чёт мы ничего не находим. Может за покупками в <a href="{{ url_for('home.shop') }}">магазин</a>.
+            <h3> Кхм, чёт мы ничего не находим. Может за покупками в <a
+                    href="{{ url_for('home.shop') }}">магазин</a>.
             </h3>
             {% endif %}
         </div>

@@ -70,15 +70,18 @@ def shop():
 def pay():
     return render_template('home/pay.html', title="Пополнение счёта")
 
+
 @home.route('/training')
 @login_required
 def training():
     return render_template('home/train/training.html', title="Тренировка")
 
+
 @home.route('/recommendation')
 @login_required
 def recommendation():
     return render_template('home/train/recommendation.html', title="Рекомендуем отработать")
+
 
 @home.route('/ege')
 @login_required
@@ -90,6 +93,7 @@ def ege():
 @login_required
 def help():
     return render_template('home/help.html', title="Служба поддержки")
+
 
 @home.route('/contacts')
 @login_required
@@ -148,3 +152,18 @@ def edit_account():
 
     return render_template('home/change_pers_inf.html', form=form,
                            client=client, title="Изменение персональных данных")
+
+
+@home.route('/transactions', methods=['GET', 'POST'])
+@login_required
+def transactions():
+    alltransactions = SellingLog.query.filter(SellingLog.client_id == current_user.id).all()
+    for transaction in alltransactions:
+        transaction.name = (Service.query.filter(Service.id == transaction.service_id).first()).name
+    return render_template('home/transactions.html', transactions=alltransactions, title='Транзакции')
+
+
+@home.route('/road_map', methods=['GET','POST'])
+@login_required
+def road_map():
+    return render_template('home/road_map.html', title='Дорожная карта')
