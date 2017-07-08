@@ -10,8 +10,7 @@
 }
 
 .bg-blackboard {
-    background: url('../images/bg-blackboard.jpg') no-repeat fixed center;
-    background-size: cover;
+    background: url('../images/bg-blackboard.jpg') no-repeat center;
     color: white;
 }
 
