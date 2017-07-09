@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% set active_page = "subjects" %}
+{% block title %}Клиенты{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Название</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            {% for subject in subjects %}
+            <tr>
+                <td>
+
+                </td>
+                <td>
+                    {{ subject.name }}
+                </td>
+                <td>
+                    {{ subject.description }}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+</div>
+{% endblock %}
