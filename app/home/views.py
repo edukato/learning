@@ -83,6 +83,7 @@ def training_subject():
 @home.route('/ege')
 @login_required
 def ege():
+
     return render_template('home/train/ege.html', title="Вариант ЕГЭ")
 
 @home.route('/recommendation_question')
@@ -109,7 +110,6 @@ def answers_ege():
 @login_required
 def results():
     return render_template('home/train/results.html', title="Результаты")
-
 
 @home.route('/help')
 @login_required

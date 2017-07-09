@@ -1,10 +1,10 @@
 {% extends "base.html" %}
-{% set active_page = "training" %}
+{% set active_page = "training_home" %}
 {% block title %}Выбор заданий{% endblock %}
 {% block body %}
 <div class="container" style="max-width: 850px">
     <H1>Выбор заданий</H1>
-    <form>
+    <form action="{{ url_for('home.results') }}" id="choice">
         <table class="table">
             <thead>
             <tr>
@@ -95,8 +95,9 @@
             </tbody>
         </table>
         <hr>
+        <button type="submit" class="btn btn-success">Перейти к решению</button>
     </form>
-    <a href="{{url_for('home.ege')}}" class="btn btn-success">Перейти к решению</a>
+
 
 </div>
 <br>
