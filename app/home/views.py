@@ -211,3 +211,9 @@ def road_map():
 @login_required
 def chat_bot():
     return render_template('home/chat-bot.html', title='Чат-бот')
+
+
+@home.route('/set_time', methods=['GET','POST'])
+@login_required
+def set_time():
+    return render_template('home/set_time.html', title='Указать расписание')

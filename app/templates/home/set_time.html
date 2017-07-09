@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block title %}Установить расписание{% endblock %}
+{% block body %}
+<style>
+    body {
+        background: #2C82C9;
+        color: white;
+    }
+</style>
+<div class="container text-center">
+
+    <h3>Твоим куратором будет</h3>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="container" style="max-width: 350px">
+                <img src="static/images/profile/{{ current_user.id }}.png"
+                     class="rounded-circle mb-2"
+                     alt="140x140"
+                     style="width: 120px; height: 120px;">
+                <h5>Какой-то аутист - твой куратор</h5>
+                <p style="font-size: 0.9em">Студент химического факультета МГУ. Обладатель золотой медали
+                    международной олимпиады по химии.</p>
+                <p class="no_mar"><span class="fa fa-envelope"></span> autist@edukato.ru</p>
+                <br/>
+            </div>
+            <hr>
+            <h3>Кстати, нужно согласовать время первой консультации</h3>
+            <p>Выбери время из расписния ниже:</p>
+            <small><p>Помни, что до 15.03.19 у тебя есть 4 консультации</p></small>
+            <table class="table">
+                <thead>
+                <th width="12.5%">Время</th>
+                <th width="12.5%">Пн</th>
+                <th width="12.5%">Вт</th>
+                <th width="12.5%">Ср</th>
+                <th width="12.5%">Чт</th>
+                <th width="12.5%">Пт</th>
+                <th width="12.5%">Сб</th>
+                <th width="12.5%">Вс</th>
+                </thead>
+                <tr>
+                    <td>10:00-10:30</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>10:30-11:00</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>11:00-11:30</td>
+                    <td></td>
+                    <td></td>
+                    <td><a href="#" class="btn btn-success">Выбрать</a></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>11:00-11:30</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>11:30-12:00</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>12:00-12:30</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>12:30-13:00</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
