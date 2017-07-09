@@ -3,16 +3,18 @@
 {% block title %}Магазин{% endblock %}
 {% block body %}
 <div class="container">
-    <div>
-        <h3>Тарифные планы
-            <small><span class="badge badge-default">{{ services_0_count}}</small>
-            </span></h3>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Тарифные планы
+                <small><span class="badge badge-default">{{ services_0_count}}</span></small>
+            </h3>
+            <hr>
+        </div>
     </div>
-    <br>
     <div class="row">
         {% if services_0 %}
         {% for service_0 in services_0 %}
-        <div class="col-md-3">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-6">
             <div class="card">
                 <div class="divgood">
                     <img class="card-img-top m-2 good" src="static/images/shop/{{ service_0.id }}.png"
@@ -23,16 +25,18 @@
                     <h4 class="card-title">{{ service_0.name }}</h4>
                     <p class="card-text">{{ service_0.description}}</p>
                     <a href="{{ url_for('home.confirm_transaction', id=service_0.id) }}"
-                       class="btn btn-success">Купить</a>
+                       class="btn btn-sm btn-success">Купить</a>
                     <a href="{{ url_for('home.show_service', id=service_0.id) }}"
-                       class="btn btn-secondary">Подробнее</a>
+                       class="btn btn-sm btn-secondary">Подробнее</a>
                 </div>
             </div>
-            <br>
+            <br/>
         </div>
         {% endfor %}
         {% else %}
-        <h3> Товаров пока нет, зайдите позже. </h3>
+        <div class="col-md-12">
+            <h3> Товаров пока нет, зайдите позже. </h3>
+        </div>
         {% endif %}
     </div>
     <div>
