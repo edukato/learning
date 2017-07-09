@@ -14,6 +14,18 @@
     color: white;
 }
 
+.bg-chat_bot {
+    background: url('../images/bg-chat_bot.jpg') no-repeat fixed center;
+    background-size: cover;
+    color:white;
+}
+
+.bg-contacts {
+    background: url('../images/bg-contacts.jpeg') no-repeat fixed center;
+    background-size: cover;
+    color:white;
+}
+
 .container {
     padding-top: 20px;
 }

@@ -187,3 +187,9 @@ def road_map():
     road_map_items = RoadMap.query.filter(RoadMap.client_id == current_user.id).order_by(
             RoadMap.step.asc()).all()
     return render_template('home/road_map.html', road_map_items=road_map_items, title='Дорожная карта')
+
+
+@home.route('/chat-bot', methods=['GET','POST'])
+@login_required
+def chat_bot():
+    return render_template('home/chat-bot.html', title='Чат-бот')
