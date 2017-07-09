@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% set active_page = "training" %}
+{% set active_page = "training_home" %}
 {% block title %}Результаты{% endblock %}
 {% block body %}
 <div class="container" style="max-width: 850px">
@@ -67,7 +67,7 @@
     <a href="{{ url_for('home.answers_ege') }}" class="btn btn-success">
         Посмотреть решения и ответы
     </a>
-    <a href="{{ url_for('home.training') }}" class="btn btn-danger">
+    <a href="{{ url_for('home.training_home') }}" class="btn btn-danger">
         Выйти
     </a>
     <br>
