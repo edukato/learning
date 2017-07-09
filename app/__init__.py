@@ -43,4 +43,10 @@ def create_app(config_name):
     from .home import home as home_blueprint
     app.register_blueprint(home_blueprint)
 
+    from .admin import admin as admin_blueprint
+    app.register_blueprint(admin_blueprint)
+
+    from .teacher import teacher as teacher_blueprint
+    app.register_blueprint(teacher_blueprint)
+
     return app

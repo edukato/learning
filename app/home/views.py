@@ -2,7 +2,7 @@
 
 import datetime, os
 
-from flask import flash, redirect, render_template, url_for
+from flask import flash, redirect, render_template, url_for, abort
 from flask_login import login_required, current_user
 
 from . import home
@@ -22,6 +22,12 @@ def homepage():
 @home.route('/account')
 @login_required
 def account():
+    if current_user.status == 2:
+        return redirect(url_for('admin.dashboard'))
+
+    if current_user.status == 3:
+        return redirect(url_for('teacher.dashboard'))
+
     active_services = SellingLog.query.filter(
         (SellingLog.client_id == current_user.id) & (SellingLog.access_start < datetime.datetime.now()) & (
             SellingLog.access_end > datetime.datetime.now())).all()
@@ -70,15 +76,18 @@ def shop():
 def pay():
     return render_template('home/pay.html', title="Пополнение счёта")
 
+
 @home.route('/training_home')
 @login_required
 def training_home():
     return render_template('home/train/training_home.html', title="Тренировка")
 
+
 @home.route('/training_subject')
 @login_required
 def training_subject():
     return render_template('home/train/training_subject.html', title="Тренировка")
+
 
 @home.route('/ege')
 @login_required
@@ -86,25 +95,30 @@ def ege():
 
     return render_template('home/train/ege.html', title="Вариант ЕГЭ")
 
+
 @home.route('/recommendation_question')
 @login_required
 def recommendation_question():
     return render_template('home/train/recommendation_question.html', title="Рекомендуем отработать")
+
 
 @home.route('/recommendation_answer')
 @login_required
 def recommendation_answer():
     return render_template('home/train/recommendation_answer.html', title="Рекомендуем отработать")
 
+
 @home.route('/choice')
 @login_required
 def choice():
     return render_template('home/train/choice.html', title="Выбор задания")
 
+
 @home.route('/answers_ege')
 @login_required
 def answers_ege():
     return render_template('home/train/answers_ege.html', title="Решения и ответы")
+
 
 @home.route('/results')
 @login_required
@@ -185,15 +199,15 @@ def transactions():
     return render_template('home/transactions.html', transactions=alltransactions, title='Транзакции')
 
 
-@home.route('/road_map', methods=['GET','POST'])
+@home.route('/road_map', methods=['GET', 'POST'])
 @login_required
 def road_map():
     road_map_items = RoadMap.query.filter(RoadMap.client_id == current_user.id).order_by(
-            RoadMap.step.asc()).all()
+        RoadMap.step.asc()).all()
     return render_template('home/road_map.html', road_map_items=road_map_items, title='Дорожная карта')
 
 
-@home.route('/chat-bot', methods=['GET','POST'])
+@home.route('/chat-bot', methods=['GET', 'POST'])
 @login_required
 def chat_bot():
     return render_template('home/chat-bot.html', title='Чат-бот')

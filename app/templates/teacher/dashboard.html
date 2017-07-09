@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% set active_page = "index" %}
+{% block title %}Главная страница{% endblock %}
+{% block body %}
+<div class="bg-chat_bot">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Знания свет — путь укажет нам.</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Кураторство</h3>
+            <hr>
+            <p>Вы пока никого не курируете. Странно. А ведь должны.</p>
+            <a class="btn btn-success btn-lg" href="">Записаться куратором</a>
+        </div>
+        <div class="col-md-6">
+            <h3>Предстоящие занятия</h3>
+            <hr>
+        </div>
+    </div>
+</div>
+{% endblock %}
