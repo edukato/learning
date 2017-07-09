@@ -122,7 +122,8 @@
                     </div>
                     <div class="float-right">
                         <a class="btn btn-sm btn-success">Написать в чатике</a>
-                        <a class="btn btn-sm btn-danger">Пожаловаться</a>
+                        <a href="#" class="btn btn-sm btn-danger" data-toggle="modal"
+                           data-target="#exampleModalLong_1">Пожаловаться</a>
                     </div>
                     <hr>
                 </div>
@@ -226,6 +227,29 @@
                     </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModalLong_1" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle_1">Пожаловаться</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label>Опять этот аутист накосячил. Ну что же, пишите, разберёмся с ним.</label>
+                <textarea class="form-control" id="exampleTextarea_1" rows="8"></textarea>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-success" data-toggle="modal"
+                   data-target="#exampleModalLong">
+                    Отправить
+                </a>
             </div>
         </div>
     </div>
