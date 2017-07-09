@@ -162,6 +162,8 @@ class Teacher(db.Model):
                                lazy='dynamic')
     schedlues = db.relationship('Schedlue', backref='teacher',
                                 lazy='dynamic')
+    operating_schedules = db.relationship('OperatingSchedules', backref='teacher',
+                            lazy='dynamic')
 
     def __repr__(self):
         return '<Teacher: {}>'.format(self.first_name)
@@ -344,6 +346,23 @@ class Subject(db.Model):
     description = db.Column(db.String)
     tasks = db.relationship('Task', backref='subject',
                             lazy='dynamic')
+    operating_schedules = db.relationship('OperatingSchedules', backref='subject',
+                            lazy='dynamic')
 
     def __repr__(self):
         return '<Subject: {}>'.format(self.id)
+
+class OperatingSchedules(db.Model):
+    __tablename__ = 'operating_schedules'
+
+    id = db.Column(db.Integer, primary_key=True)
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))
+    subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'))
+    day_of_the_week = db.Column(db.Integer)
+    interval_number = db.Column(db.Integer)
+    start_time = db.Column(db.DateTime)
+    end_time = db.Column(db.DateTime)
+
+
+    def __repr__(self):
+        return '<OperatingSchedules: {}>'.format(self.id)
