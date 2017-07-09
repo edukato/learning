@@ -38,6 +38,12 @@
     color:white;
 }
 
+.bg-info {
+    background: url('../images/bg-info.jpeg') no-repeat fixed center;
+    background-size: cover;
+    color:white;
+}
+
 .container {
     padding-top: 20px;
 }
