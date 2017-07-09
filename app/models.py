@@ -246,13 +246,15 @@ class Task(db.Model):
     __tablename__ = 'tasks'
 
     id = db.Column(db.Integer, primary_key=True)
-    subject = db.Column(db.String(300))
+    subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'))
     part = db.Column(db.String(300))
     number = db.Column(db.Integer)
     text = db.Column(db.String)
     image = db.Column(db.String)
     right_answer = db.Column(db.String)
     answers = db.relationship('Answer', backref='task',
+                              lazy='dynamic')
+    tasks_errors = db.relationship('TasksError', backref='task',
                               lazy='dynamic')
 
     def __repr__(self):
@@ -323,3 +325,25 @@ class TrainingRecommendationSession(db.Model):
 
     def __repr__(self):
         return '<TrainingRecommendationSession: {}>'.format(self.id)
+
+class TasksError(db.Model):
+    __tablename__ = 'tasks_errors'
+
+    id = db.Column(db.Integer, primary_key=True)
+    task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
+    error = db.Column(db.String)
+
+    def __repr__(self):
+        return '<TasksError: {}>'.format(self.id)
+
+class Subject(db.Model):
+    __tablename__ = 'subjects'
+
+    id = db.Column(db.Integer, primary_key=True)
+    subject = db.Column(db.String)
+    description = db.Column(db.String)
+    tasks = db.relationship('Task', backref='subject',
+                            lazy='dynamic')
+
+    def __repr__(self):
+        return '<Subject: {}>'.format(self.id)
