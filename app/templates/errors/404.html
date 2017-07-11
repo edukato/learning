@@ -20,7 +20,7 @@
 
 </head>
 
-<body style="background:url('static/images/404.jpg') no-repeat center; background-size: cover; padding-top: 0px">
+<body style="background:url('{{ url_for('static', filename='images/404.jpg') }}') no-repeat center; background-size: cover; padding-top: 0px">
 <div class="vertical-center">
     <div class="container" style="max-width: 600px; background-color: white; padding:20px;">
         <h3 align="center">Кажется, ты зашёл <br> не в тот район.</h3>

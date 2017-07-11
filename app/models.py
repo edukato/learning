@@ -35,7 +35,7 @@ class Client(UserMixin, db.Model):
     plan = db.Column(db.String(300))
     groups_list = db.Column(db.String)
     subjects = db.Column(db.String)
-    mentor = db.Column(db.Integer, db.ForeignKey('teachers.id'))
+    mentor = db.Column(db.Integer)
     selling_log = db.relationship('SellingLog', backref='client',
                                   lazy='dynamic')
     events = db.relationship('Event', backref='client',
@@ -46,7 +46,7 @@ class Client(UserMixin, db.Model):
                                lazy='dynamic')
     answers = db.relationship('Answer', backref='client',
                               lazy='dynamic')
-    schedlues = db.relationship('Schedlue', backref='client',
+    schedules = db.relationship('Schedule', backref='client',
                                 lazy='dynamic')
     skils = db.relationship('Skil', backref='client',
                                 lazy='dynamic')
@@ -145,22 +145,17 @@ class Teacher(db.Model):
     __tablename__ = 'teachers'
 
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(60))
-    last_name = db.Column(db.String(60))
-    middle = db.Column(db.String(60))
-    email = db.Column(db.String(60))
-    phone_num = db.Column(db.Integer)
-    description = db.Column(db.String(300))
-    image = db.Column(db.String(300))
-    clients = db.relationship('Client', backref='teacher',
-                             lazy='dynamic')
+    login_id = db.Column(db.Integer)
+    institution = db.Column(db.String)
+    course = db.Column(db.Integer)
+    achievements = db.Column(db.String)
     grades = db.relationship('Grade', backref='teacher',
                              lazy='dynamic')
     events = db.relationship('Event', backref='teacher',
                              lazy='dynamic')
     salaries = db.relationship('Salary', backref='teacher',
                                lazy='dynamic')
-    schedlues = db.relationship('Schedlue', backref='teacher',
+    schedules = db.relationship('Schedule', backref='teacher',
                                 lazy='dynamic')
     operating_schedules = db.relationship('OperatingSchedules', backref='teacher',
                             lazy='dynamic')
@@ -277,18 +272,19 @@ class Answer(db.Model):
     def __repr__(self):
         return '<Answer: {}>'.format(self.id)
 
-class Schedlue(db.Model):
-    __tablename__ = 'schedlues'
+class Schedule(db.Model):
+    __tablename__ = 'schedules'
 
     id = db.Column(db.Integer, primary_key=True)
     client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
     teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))
-    subject = db.Column(db.String(300))
+    subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'))
     time = db.Column(db.DateTime)
     if_done = db.Column(db.Boolean)
+    interval_number = db.Column(db.Integer)
 
     def __repr__(self):
-        return '<Schedlue: {}>'.format(self.id)
+        return '<Schedule: {}>'.format(self.id)
 
 class TrainingChoice(db.Model):
     __tablename__ = 'training_choices'
@@ -346,6 +342,8 @@ class Subject(db.Model):
     description = db.Column(db.String)
     tasks = db.relationship('Task', backref='subject',
                             lazy='dynamic')
+    schedules = db.relationship('Schedule', backref='subject',
+                                          lazy='dynamic')
     operating_schedules = db.relationship('OperatingSchedules', backref='subject',
                             lazy='dynamic')
 
@@ -362,6 +360,7 @@ class OperatingSchedules(db.Model):
     interval_number = db.Column(db.Integer)
     start_time = db.Column(db.DateTime)
     end_time = db.Column(db.DateTime)
+
 
 
     def __repr__(self):
