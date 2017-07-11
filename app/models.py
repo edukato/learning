@@ -35,7 +35,7 @@ class Client(UserMixin, db.Model):
     plan = db.Column(db.String(300))
     groups_list = db.Column(db.String)
     subjects = db.Column(db.String)
-    mentor = db.Column(db.Integer, db.ForeignKey('teachers.id'))
+    mentor = db.Column(db.Integer)
     selling_log = db.relationship('SellingLog', backref='client',
                                   lazy='dynamic')
     events = db.relationship('Event', backref='client',
@@ -145,15 +145,10 @@ class Teacher(db.Model):
     __tablename__ = 'teachers'
 
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(60))
-    last_name = db.Column(db.String(60))
-    middle = db.Column(db.String(60))
-    email = db.Column(db.String(60))
-    phone_num = db.Column(db.Integer)
-    description = db.Column(db.String(300))
-    image = db.Column(db.String(300))
-    clients = db.relationship('Client', backref='teacher',
-                             lazy='dynamic')
+    login_id = db.Column(db.Integer)
+    institution = db.Column(db.String)
+    course = db.Column(db.Integer)
+    achievements = db.Column(db.String)
     grades = db.relationship('Grade', backref='teacher',
                              lazy='dynamic')
     events = db.relationship('Event', backref='teacher',
@@ -209,7 +204,7 @@ class RoadMap(db.Model):
     step = db.Column(db.Integer)
     name = db.Column(db.String(300))
     description = db.Column(db.String(300))
-    if_done = db.Column(db.Binary)
+    if_done = db.Column(db.Boolean)
 
     def __repr__(self):
         return '<RoadMap: {}>'.format(self.id)

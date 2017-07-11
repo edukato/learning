@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% set active_page = "students" %}
+{% block title %}Изменение roadmap{% endblock %}
+{% block body %}
+<div class="bg-chat_bot">
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1>Доророжная карта</h1>
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            {% if road_map_items %}
+            <ul class="timeline">
+                <li>
+                    <div class="timeline-badge info">0</div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <h4 class="timeline-title">Ты начал готовиться с edukato</h4>
+                            <p>
+                                <small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11 сентября 2001
+                                    года
+                                </small>
+                            </p>
+                        </div>
+                        <div class="timeline-body">
+                            <p>edukato - это не просто сервис. Это чистая инновация. Технологии, которые меняют мир.
+                                Испокон веков люди пытались учиться лучше. Начиная с обучению стрельбе из лука и
+                                езде на лошади, заканчивая подготовкой специалистов для фабрик. Мы вступили в
+                                информационную эру и здест образование играет огромную роль. Получи билет в будущеее
+                                - готовся с edukato.</p>
+                        </div>
+                    </div>
+                </li>
+                {% for road_map_item in road_map_items %}
+                <li>
+                    <div class="timeline-badge">{{ road_map_item.step }}</div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <h4 class="timeline-title">{{ road_map_item.name }}</h4>
+                        </div>
+                        <div class="timeline-body">
+                            <p>{{ road_map_item.description }}</p>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>Что-то ничего нет. Печаль.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

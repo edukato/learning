@@ -2,7 +2,7 @@ from flask import flash, redirect, render_template, url_for, abort
 from flask_login import login_required, current_user
 
 from . import teacher
-from ..models import Client
+from ..models import Client, RoadMap
 from .. import db
 
 
@@ -37,3 +37,12 @@ def salary():
 def help():
     check_teacher()
     return render_template('teacher/help.html', title='Поддержка')
+
+@teacher.route('/teacher/change_roadmap/<int:id>', methods=['GET', 'POST'])
+@login_required
+def change_roadmap(id):
+    check_teacher()
+    client = Client.query.get_or_404(id)
+    road_map_items = RoadMap.query.filter(RoadMap.client_id == id).order_by(
+        RoadMap.step.asc()).all()
+    return render_template('teacher/change_roadmap.html', road_map_items=road_map_items, title='Изменение roadmap')
