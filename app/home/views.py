@@ -213,20 +213,19 @@ def chat_bot():
     return render_template('home/chat-bot.html', title='Чат-бот')
 
 
-@home.route('/set_time', methods=['GET','POST'])
+@home.route('/set_time', methods=['GET', 'POST'])
 @login_required
 def set_time():
     return render_template('home/set_time.html', title='Указать расписание')
-<<<<<<< HEAD
-=======
+
 
 @home.route('/materials_home')
 @login_required
 def materials_home():
     return render_template('home/materials_home.html', title='Материалы')
 
+
 @home.route('/material')
 @login_required
 def material():
     return render_template('home/material.html', title='Материал')
->>>>>>> 3af1b19dfda188d1869362b842a4cfc76e76d594
