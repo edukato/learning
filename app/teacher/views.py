@@ -42,10 +42,6 @@ def help():
     check_teacher()
     return render_template('teacher/help.html', title='Поддержка')
 
-<<<<<<< HEAD
-=======
-
->>>>>>> b865ea28d66cb4d36d1decbf476cdd8690323878
 @teacher.route('/teacher/change_roadmap/<int:id>', methods=['GET', 'POST'])
 @login_required
 def change_roadmap(id):
@@ -54,10 +50,6 @@ def change_roadmap(id):
     road_map_items = RoadMap.query.filter(RoadMap.client_id == id).order_by(
         RoadMap.step.asc()).all()
     return render_template('teacher/change_roadmap.html', road_map_items=road_map_items, title='Изменение roadmap')
-<<<<<<< HEAD
-=======
-
->>>>>>> b865ea28d66cb4d36d1decbf476cdd8690323878
 
 @teacher.route('/teacher/student/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -102,9 +94,6 @@ def get_schedule(id):
                     byweeks.append([[], [], [], [], [], [], []])
                 byweeks[(schedule_item.time - endweek).days // 7 + 1][schedule_item.dow].append(schedule_item)
 
-<<<<<<< HEAD
     return render_template('teacher/schedule.html', weekdays=weekdays, student=student, schedule=byweeks, title='Расписание')
-=======
     return render_template('teacher/schedule.html', weekdays=weekdays, student=student, schedule=byweeks,
                            title='Расписание')
->>>>>>> b865ea28d66cb4d36d1decbf476cdd8690323878
