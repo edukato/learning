@@ -222,3 +222,8 @@ def set_time():
 @login_required
 def materials_home():
     return render_template('home/materials_home.html', title='Материалы')
+
+@home.route('/material')
+@login_required
+def material():
+    return render_template('home/material.html', title='Материал')
