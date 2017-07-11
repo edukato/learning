@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{{ student.first_name}} {{ student.last_name}} {{ student.middle }}{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 text-center">
+            <h3>{{ student.first_name}} {{ student.last_name}} {{ student.middle }}</h3>
+            <div class="btn-group btn-group-sm" role="group" aria-label="Student toolbar">
+                <button type="button" class="btn btn-success"><span class="fa fa- fa-envelope"></span></button>
+                <button type="button" class="btn btn-warning">Проблема</button>
+                <button type="button" class="btn btn-danger">Нарушение</button>
+
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="bg-1">
+                <div class="container">
+                    <h3>Вы курируете этого клиента</h3>
+                </div>
+            </div>
+            <br>
+            <h3>Расписание занятий</h3>
+            <a href="{{ url_for('teacher.get_schedule', id = student.id) }}" class="btn btn-success"><span class="fa fa- fa-pencil"></span> Внести изменения</a>
+            <hr>
+            <h3>Последние проведенные занятия</h3>
+            <a href class="btn btn-secondary">Посмотреть ещё</a>
+            <hr>
+            <h3>Оплата</h3>
+        </div>
+    </div>
+</div>
+{% endblock %}
