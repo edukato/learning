@@ -217,3 +217,8 @@ def chat_bot():
 @login_required
 def set_time():
     return render_template('home/set_time.html', title='Указать расписание')
+
+@home.route('/materials_home')
+@login_required
+def materials_home():
+    return render_template('home/materials_home.html', title='Материалы')
