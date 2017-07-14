@@ -20,9 +20,32 @@
                 <div class="col-md-12 col-lg-12 col-sm-12" style="display: flex;justify-content: space-between;">
                     <h5>Вопрос 1 из 19</h5>
                     <H5>Время:&nbsp;<span id="time"></span></H5>
-                    <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModalLong_1">
+                    <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#error_modal_1">
                         Ошибка!
                     </a>
+                    <div class="modal fade" id="error_modal_1" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle_1">Сообщение об ошибке</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <label>Если вам всё-таки удалось найти ошибку в задании или решении, то вы можете
+                                        описать её здесь.</label>
+                                    <textarea class="form-control" id="exampleTextarea_1" rows="8"></textarea>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="javascript:send_error(1);" class="btn btn-success">
+                                        Отправить
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <hr>
@@ -48,208 +71,11 @@
                 </div>
             </div>
         </div>
-        <div class="task">
-            <br>
-            <div class="row">
-                <div class="col-md-12 col-lg-12 col-sm-12" style="display: flex;justify-content: space-between;">
-                    <h5>Вопрос 2 из 19</h5>
-                    <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModalLong_2">
-                        Ошибка!
-                    </a>
-                </div>
-            </div>
-            <hr>
-            <div class="par">
-                <p>
-                    Здесь будет очень каверзный вопрос на 100500 слов <br>
-                    Может быть даже на пикчу <br>
-                    вооот тут <br>
-                    разоримся <br>
-                    Очень <br>
-                    Много <br>
-                    Текста <br>
-                    Прям <br>
-                    Воообще <br>
-                </p>
-            </div>
-            <hr>
-            <div class="form-inline">
-                <label class="submit" for="inlineFormInputGroup_2">Введите ответ:&nbsp;</label>
-                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                    <input type="text" class="form-control" id="inlineFormInputGroup_2" placeholder=""
-                           style="max-width: 250px">
-                </div>
-
-            </div>
-        </div>
-        <div class="task">
-            <br>
-            <div class="row">
-                <div class="col-md-12 col-lg-12 col-sm-12" style="display: flex;justify-content: space-between;">
-                    <h5>Вопрос 3 из 19</h5>
-                    <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModalLong_3">
-                        Ошибка!
-                    </a>
-
-                </div>
-            </div>
-            <hr>
-            <div class="par">
-                <p>
-                    Здесь будет очень каверзный вопрос на 100500 слов <br>
-                    Может быть даже на пикчу <br>
-                    вооот тут <br>
-                    разоримся <br>
-                    Очень <br>
-                    Много <br>
-                    Текста <br>
-                    Прям <br>
-                    Воообще <br>
-                </p>
-            </div>
-            <hr>
-            <div class="form-inline">
-                <label class="submit" for="inlineFormInputGroup_3">Введите ответ:&nbsp;</label>
-                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                    <input type="text" class="form-control" id="inlineFormInputGroup_3" style="max-width: 250px">
-                </div>
-
-            </div>
-        </div>
-        <div class="task">
-            <br>
-            <div class="row">
-                <div class="col-md-12 col-lg-12 col-sm-12" style="display: flex;justify-content: space-between;">
-                    <h5>Вопрос 4 из 19</h5>
-                    <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModalLong_4">
-                        Ошибка!
-                    </a>
-
-                </div>
-            </div>
-            <hr>
-            <div class="par">
-                <p>
-                    Здесь будет очень каверзный вопрос на 100500 слов <br>
-                    Может быть даже на пикчу <br>
-                    вооот тут <br>
-                    разоримся <br>
-                    Очень <br>
-                    Много <br>
-                    Текста <br>
-                    Прям <br>
-                    Воообще <br>
-                </p>
-            </div>
-            <hr>
-            <div class="form-inline">
-                <label class="submit" for="inlineFormInputGroup_4">Введите ответ:&nbsp;</label>
-                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                    <input type="text" class="form-control" id="inlineFormInputGroup_4" style="max-width: 250px">
-                </div>
-            </div>
-        </div>
         <br>
         <button type="submit" class="btn btn-success">Результаты</button>
     </form>
 </div>
 <br>
-<div class="modal fade" id="exampleModalLong_1" tabindex="-1" role="dialog"
-     aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle_1">Сообщение об ошибке</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <label>Если вам всё-таки удалось найти ошибку в задании или решении, то вы можете
-                    описать её здесь.</label>
-                <textarea class="form-control" id="exampleTextarea_1" rows="8"></textarea>
-            </div>
-            <div class="modal-footer">
-                <a href="#" class="btn btn-success" data-toggle="modal"
-                   data-target="#exampleModalLong">
-                    Отправить
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="exampleModalLong_2" tabindex="-1" role="dialog"
-     aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle_2">Сообщение об ошибке</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <label>Если вам всё-таки удалось найти ошибку в задании или решении, то вы можете
-                    описать её здесь.</label>
-                <textarea class="form-control" id="exampleTextarea_2" rows="8"></textarea>
-            </div>
-            <div class="modal-footer">
-                <a href="#" class="btn btn-success" data-toggle="modal"
-                   data-target="#exampleModalLong">
-                    Отправить
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="exampleModalLong_3" tabindex="-1" role="dialog"
-     aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle_3">Сообщение об ошибке</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <label>Если вам всё-таки удалось найти ошибку в задании или решении, то вы можете
-                    описать её здесь.</label>
-                <textarea class="form-control" id="exampleTextarea_3" rows="8"></textarea>
-            </div>
-            <div class="modal-footer">
-                <a href="#" class="btn btn-success" data-toggle="modal"
-                   data-target="#exampleModalLong">
-                    Отправить
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="exampleModalLong_4" tabindex="-1" role="dialog"
-     aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle_4">Сообщение об ошибке</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <label>Если вам всё-таки удалось найти ошибку в задании или решении, то вы можете
-                    описать её здесь.</label>
-                <textarea class="form-control" id="exampleTextarea_4" rows="8"></textarea>
-            </div>
-            <div class="modal-footer">
-                <a href="#" class="btn btn-success" data-toggle="modal"
-                   data-target="#exampleModalLong">
-                    Отправить
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
 <script type="text/javascript">
 
     function trim(string) {
@@ -288,5 +114,16 @@
         init = 1;
     }
     findTIME();
+</script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<script type="text/javascript">
+    function send_error(task) {
+        $.post(("/ege/send_error/" + task), {
+            text: document.getElementById('exampleTextarea_' + task).value
+        }).done(function () {
+        }).fail(function () {
+        });
+        $('#error_modal_1').modal('hide');
+    }
 </script>
 {% endblock %}

@@ -2,11 +2,11 @@
 
 import datetime, os
 
-from flask import flash, redirect, render_template, url_for, abort
+from flask import flash, redirect, render_template, url_for, abort, request
 from flask_login import login_required, current_user
 
 from . import home
-from ..models import Service, SellingLog, Client, RoadMap
+from ..models import Service, SellingLog, Client, RoadMap, TasksError
 from .. import db
 from .forms import AccountEditForm
 
@@ -94,6 +94,12 @@ def training_subject():
 def ege():
     return render_template('home/train/ege.html', title="Вариант ЕГЭ")
 
+@home.route('/ege/send_error/<int:task_id>', methods=['GET', 'POST'])
+@login_required
+def send_error(task_id):
+    error = TasksError (task_id = task_id, error = request.form['text'])
+    db.session.add(error)
+    db.session.commit()
 
 @home.route('/recommendation_question')
 @login_required
