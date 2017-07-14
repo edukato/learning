@@ -22,8 +22,9 @@ def dashboard():
 @login_required
 def clients():
     check_admin()
-    list_clients = Client.query.all()
-    return render_template('admin/clients.html', clients=list_clients, title='Клиенты')
+    students = Client.query.filter(Client.status == 1).all()
+    teachers = Client.query.filter(Client.status == 3).all()
+    return render_template('admin/clients.html', students=students, teachers=teachers, title='Клиенты')
 
 
 @admin.route('/admin/subjects')
