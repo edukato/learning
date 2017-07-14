@@ -14,22 +14,12 @@
                 <a href="#" class="list-group-item justify-content-between list-group-item-action">
                     Главная
                 </a>
-                <a href="{{url_for('home.training_subject')}}"
-                   class="list-group-item justify-content-between list-group-item-action">
-                    Математика
-                </a>
-                <a href="{{url_for('home.training_subject')}}"
-                   class="list-group-item justify-content-between list-group-item-action">
-                    Химия
-                </a>
-                <a href="{{url_for('home.training_subject')}}"
-                   class="list-group-item justify-content-between list-group-item-action">
-                    Физика
-                </a>
-                <a href="{{url_for('home.training_subject')}}"
-                   class="list-group-item justify-content-between list-group-item-action">
-                    Русский язык
-                </a>
+                {% for student_subject in student_subjects %}
+                    <a href="{{url_for('home.training_subject' , subject_id = id_subjects[loop.index0])}}"
+                       class="list-group-item justify-content-between list-group-item-action">
+                        {{ student_subject }}
+                    </a>
+                {% endfor %}
             </ul>
             <br>
         </div>
@@ -89,7 +79,6 @@
             </div>
         </div>
     </div>
-
     <div class="row">
 
     </div>

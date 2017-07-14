@@ -6,7 +6,7 @@ from flask import flash, redirect, render_template, url_for, abort, request
 from flask_login import login_required, current_user
 
 from . import home
-from ..models import Service, SellingLog, Client, RoadMap, TasksError
+from ..models import Service, SellingLog, Client, RoadMap, TasksError, Subject
 from .. import db
 from .forms import AccountEditForm
 
@@ -80,13 +80,22 @@ def pay():
 @home.route('/training_home')
 @login_required
 def training_home():
-    return render_template('home/train/training_home.html', title="Тренировка")
+    client = current_user
+    id_subjects = client.subjects.split(",")
+    student_subjects = []
+    for id_subject in id_subjects:
+        new_subject = Subject.query.get_or_404(id_subject)
+        new_subject_name = new_subject.subject
+        student_subjects.append(new_subject_name)
+
+    return render_template('home/train/training_home.html', student_subjects=student_subjects,
+                           id_subjects=id_subjects, title="Тренировка")
 
 
-@home.route('/training_subject')
+@home.route('/training_subject/<int:subject_id>')
 @login_required
-def training_subject():
-    return render_template('home/train/training_subject.html', title="Тренировка")
+def training_subject(subject_id):
+    return render_template('home/train/training_subject.html', subject_id = subject_id, title="Тренировка")
 
 
 @home.route('/ege')
