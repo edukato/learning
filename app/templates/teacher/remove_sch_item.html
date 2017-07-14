@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Подтверждение удаления{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Подтвердите удаление</h1>
+            <p>Это нельзя отменить. После удаления преподаватель получит уведомление об отмене.</p>
+            <table class="table table-striped">
+                <tr>
+                    <td>Ученик:</td>
+                    <td>{{ student.first_name}} {{ student.last_name}} {{ student.middle }}</td>
+                </tr>
+                <tr>
+                    <td>Предмет:</td>
+                    <td>{{ subject.subject }}</td>
+                </tr>
+                <tr>
+                    <td>Преподаватель:</td>
+                    <td>{{ teacher.first_name}} {{ teacher.last_name}} {{ teacher.middle }}</td>
+                </tr>
+                <tr>
+                    <td>Дата:</td>
+                    <td>{{ schedule_item.time }}</td>
+                </tr>
+            </table>
+            <a class="btn btn-danger" href="{{ url_for('teacher.really_remove', id=schedule_item.id) }}">Удалить</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

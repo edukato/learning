@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Смена расписания{% endblock %}
+{% block body %}
+<div class="bg-1">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h5>Добавить предмет в расписание для...</h5>
+                <h3>{{ student.first_name}} {{ student.last_name}} {{ student.middle }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h5>Текущее расписание</h5>
+            <p>
+                <small>Для удаления занятия кликните по нему, чтобы обавить новое занятие кликните по кнопке внизу.
+                    Также вы можете перейти на <a href="">следующую неделю</a></small>
+            </p>
+            {% for week in byweeks %}
+            {% set week_loop = loop.index0 %}
+            <h1>{{ loop.index }} неделя</h1>
+            <hr>
+            {% for day in week %}
+            {% if day %}
+            <div class="row">
+                <div class="col-md-4">
+                    {{ weekdays[loop.index0] }}
+                </div>
+                <div class="col-md-8">
+                    <table class="table table-stripes table-hover">
+                        {% for item in day %}
+                        <tr>
+                            <td>{{ item.interval_number }}</td>
+                            <td>{{ item.teacher_name }}</td>
+                            <td><span class="badge badge-pill badge-info">{{ item.subject_name}}</span></td>
+                            <td>
+                                <a href="{{ url_for('teacher.schedule_addition', client_id = student.id, week = week_loop, id = item.id) }}"
+                                   class="btn btn-sm btn-success">Добавить элемент</a></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

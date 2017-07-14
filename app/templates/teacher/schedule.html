@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% set active_page = "help" %}
 {% block title %}Смена расписания{% endblock %}
 {% block body %}
 <div class="bg-1">
@@ -35,7 +34,7 @@
                         <tr>
                         <td>{{ item.subject_name }}</td>
                             <td>{{ item.time }}</td>
-                            <td><a href "><span class="fa fa- fa-times"></span></a></td>
+                            <td><a href="{{ url_for('teacher.remove_sch_item', id = item.id ) }}"><span class="fa fa- fa-times"></span></a></td>
                             </tr>
                         {% endfor %}
                     </table>
@@ -130,7 +129,7 @@
                 </table>
                 <br> -->
                 {% endfor %}
-                <a href="" class="btn btn-success btn-lg">Добавить занятие</a>
+                <a href="{{ url_for('teacher.schedule_add', id = student.id) }}" class="btn btn-success btn-lg">Добавить занятие</a>
         </div>
     </div>
 </div>
