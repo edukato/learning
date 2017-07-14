@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Страница предмета{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>{{ subject.subject }}</h1>
+            <p class="lead">{{ subject.description }}></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -18,7 +18,7 @@
                     {{ loop.index }}
                 </td>
                 <td>
-                    {{ subject.subject }}
+                    <a href="{{ url_for('admin.subject',id=subject.id) }}">{{ subject.subject }}</a>
                 </td>
                 <td>
                     {{ subject.description }}
