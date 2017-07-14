@@ -84,7 +84,10 @@ def pay():
 @login_required
 def training_home():
     client = current_user
-    id_subjects = client.subjects.split(",")
+    if client.subjects is not None:
+        id_subjects = client.subjects.split(",")
+    else:
+        id_subjects = []
     student_subjects = []
     for id_subject in id_subjects:
         new_subject = Subject.query.get_or_404(id_subject)
