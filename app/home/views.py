@@ -8,12 +8,8 @@ from flask import flash, redirect, render_template, url_for, abort, request
 from flask_login import login_required, current_user
 
 from . import home
-<<<<<<< HEAD
-from ..models import Service, SellingLog, Client, RoadMap, TasksError, Subject
-=======
 from ..models import Service, SellingLog, Client, RoadMap, TasksError, TrainingRecommendationSession, Answer, \
-    TrainingChoice, Task
->>>>>>> ed22cb2fd4322d5e7f41a7ae9f6fcfad9dc67b42
+    TrainingChoice, Task, Subject
 from .. import db
 from .forms import AccountEditForm
 
