@@ -1,12 +1,19 @@
 # app/home/views.py
 
-import datetime, os
+import datetime, os, random
+
+from numpy import random
 
 from flask import flash, redirect, render_template, url_for, abort, request
 from flask_login import login_required, current_user
 
 from . import home
+<<<<<<< HEAD
 from ..models import Service, SellingLog, Client, RoadMap, TasksError, Subject
+=======
+from ..models import Service, SellingLog, Client, RoadMap, TasksError, TrainingRecommendationSession, Answer, \
+    TrainingChoice, Task
+>>>>>>> ed22cb2fd4322d5e7f41a7ae9f6fcfad9dc67b42
 from .. import db
 from .forms import AccountEditForm
 
@@ -103,12 +110,14 @@ def training_subject(subject_id):
 def ege():
     return render_template('home/train/ege.html', title="Вариант ЕГЭ")
 
+
 @home.route('/ege/send_error/<int:task_id>', methods=['GET', 'POST'])
 @login_required
 def send_error(task_id):
-    error = TasksError (task_id = task_id, error = request.form['text'])
+    error = TasksError(task_id=task_id, error=request.form['text'])
     db.session.add(error)
     db.session.commit()
+
 
 @home.route('/recommendation_question')
 @login_required
@@ -244,3 +253,35 @@ def materials_home():
 @login_required
 def material():
     return render_template('home/material.html', title='Материал')
+
+
+@home.route('/training/<inLid>/start_rec')
+@login_required
+def start_rec(id):
+    n_que_subj = TrainingChoice.query.get_or_404(TrainingChoice.subject == id).number
+    weights = []
+    const = 0.1
+    for i in range(1, n_que_subj):
+        right_answ = 0
+        answers = Answer.query.filter(
+            (Answer.subject_id == id) & (Answer.client_id == current_user.id) & (Answer.task_num == i)).all()
+        for answer in answers:
+            right_answ += answer.right
+        if len(answers) != 0:
+            probability = 1 - (right_answ / len(answers))
+        else:
+            probability = 0
+        weights.append(probability + const)
+
+    n_questions = 10
+    questions_num = choice(range(1, n_que_subj), n_questions, p=weights)
+    questions_list = []
+    for question_num in questions_num:
+        question = Task.query.filter(Task.number == question_num).all()
+        questions_list.append(random.choice(question).id)
+    train_session = TrainingRecommendationSession(client_id=current_user.id, subject_id=id,
+                                                  start_date=datetime.datetime.now(), qustions=questions_list,
+                                                  current_question=1)
+    db.session.add(train_session)
+    db.session.commit()
+    return redirect()

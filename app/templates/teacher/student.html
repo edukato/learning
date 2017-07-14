@@ -10,10 +10,10 @@
             <p><span class="fa fa- fa-credit-card"></span> {{ student.balance }}₽</p>
             <div class="btn-group btn-group-sm" role="group" aria-label="Student toolbar">
                 <button type="button" class="btn btn-success"><span class="fa fa- fa-envelope"></span></button>
-                <button type="button" class="btn btn-warning">Проблема</button>
-                <button type="button" class="btn btn-danger">Нарушение</button>
-
+                <button type="button" class="btn btn-danger"><span class="fa fa-warning"></span></button>
             </div>
+            <a href="{{ url_for('teacher.change_roadmap', id=student.id) }}" class="btn btn-secondary">Дорожная
+                карта</a>
         </div>
         <div class="col-md-9">
             <div class="bg-1">
