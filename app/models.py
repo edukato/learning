@@ -267,6 +267,8 @@ class Answer(db.Model):
     right = db.Column(db.Boolean)
     training_type = db.Column(db.Integer)
     training_id = db.Column(db.Integer)
+    subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'))
+    task_number = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Answer: {}>'.format(self.id)
@@ -339,6 +341,8 @@ class Subject(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     subject = db.Column(db.String)
     description = db.Column(db.String)
+    answers = db.relationship('Answer', backref='subject',
+                            lazy='dynamic')
     tasks = db.relationship('Task', backref='subject',
                             lazy='dynamic')
     schedules = db.relationship('Schedule', backref='subject',
@@ -359,8 +363,6 @@ class OperatingSchedules(db.Model):
     interval_number = db.Column(db.Integer)
     start_time = db.Column(db.DateTime)
     end_time = db.Column(db.DateTime)
-
-
 
     def __repr__(self):
         return '<OperatingSchedules: {}>'.format(self.id)
