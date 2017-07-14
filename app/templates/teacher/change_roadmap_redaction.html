@@ -13,6 +13,7 @@
     </div>
     <div class="row">
         <div class="col-12 col-sm-12 col-md-6">
+            {% if road_map_items %}
             <ul class="timeline" style="margin-bottom: 0px">
                 <li>
                     <div class="timeline-badge info">0</div>
@@ -35,6 +36,7 @@
                     </div>
                 </li>
                 {% for road_map_item in road_map_items %}
+                {% if road_map_item.step != step %}
                 <li>
                     <div class="timeline-badge">{{ road_map_item.step }}</div>
                     <div class="timeline-panel">
@@ -55,22 +57,48 @@
                                                     хотите удалить этот пункт?</h5>
                                             </div>
                                             <div class="modal-footer">
-                                                <a href="{{url_for('teacher.delete_step', id=student_id, step_for_delete = road_map_item.step)}}"
-                                                   class="btn btn-success">Да</a>
+                                                <a href="{{url_for('teacher.delete_step', id=student_id, step_for_delete = road_map_item.step)}}" class="btn btn-success">Да</a>
                                                 <a href="#" data-dismiss="modal" class="btn btn-danger">Нет</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                             <h4 class="timeline-title">{{ road_map_item.name }}</h4>
+
                         </div>
                         <div class="timeline-body">
                             <p>{{ road_map_item.description }}</p>
                         </div>
                     </div>
                 </li>
+                {% else %}
+                <li>
+                    <div class="timeline-badge">{{ road_map_item.step }}</div>
+                    <div class="timeline-panel">
+                        <form action="{{url_for('teacher.change_step', id=student_id, step_for_change=step)}}" method="POST" name="step_add">
+                            <div class="timeline-heading">
+                                <div class="text-right">
+                                    <a href="{{url_for('teacher.change_roadmap_redaction', id=student_id, step = road_map_item.step)}}"><span
+                                            class="fa fa- fa-pencil mr-1"></span></a>
+                                    <a href="{{url_for('teacher.delete_step', id=student_id, step_for_delete = road_map_item.step)}}"><span class="fa fa- fa-times"></span></a>
+                                </div>
+                                <input type="text" class="form-control"
+                                       value="{{ road_map_item.name }}" name="heading_edit">
+                            </div>
+                            <br>
+                            <div class="timeline-body">
+                                <textarea class="form-control mb-3" rows=6" name="description_edit">{{ road_map_item.description }}</textarea>
+                            </div>
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-success">Сохранить изменения</button>
+                                <button type="submit" class="btn btn-danger">Отменить изменения</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </li>
+                {% endif %}
                 {% endfor %}
                 <h3 class="mb-4 ml-1">Добавить новое поле</h3>
                 <li>
@@ -80,13 +108,13 @@
                             <div class="form-group">
                                 <div class="timeline-heading">
                                     <input type="text" class="form-control"
-                                           placeholder="Введите загловок для нового шага" name="heading_new">
+                                           placeholder="Введите загловок для нового шага" name="heading">
                                 </div>
                                 <br>
 
                                 <div class="timeline-body">
                                 <textarea class="form-control mb-3" id="exampleTextarea" rows=6"
-                                          placeholder="Введите описание шага" name="description_new"></textarea>
+                                          placeholder="Введите описание шага" name="description"></textarea>
                                 </div>
                                 <div class="text-right">
                                     <button type="submit" class="btn btn-success">Добавить шаг</button>
@@ -96,6 +124,9 @@
                     </div>
                 </li>
             </ul>
+            {% else %}
+            <p>Что-то ничего нет. Печаль.</p>
+            {% endif %}
         </div>
     </div>
 </div>
