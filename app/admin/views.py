@@ -2,7 +2,7 @@ from flask import flash, redirect, render_template, url_for, abort
 from flask_login import login_required, current_user
 
 from . import admin
-from ..models import Client
+from ..models import Client,Subject
 from .. import db
 
 
@@ -31,5 +31,5 @@ def clients():
 @login_required
 def subjects():
     check_admin()
-    list_subjects = Client.query.all()
+    list_subjects = Subject.query.all()
     return render_template('admin/subjects.html', subjects=list_subjects, title='Клиенты')

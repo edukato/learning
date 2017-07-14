@@ -15,10 +15,10 @@
             {% for subject in subjects %}
             <tr>
                 <td>
-
+                    {{ loop.index }}
                 </td>
                 <td>
-                    {{ subject.name }}
+                    {{ subject.subject }}
                 </td>
                 <td>
                     {{ subject.description }}
