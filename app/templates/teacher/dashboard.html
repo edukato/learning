@@ -21,7 +21,8 @@
                 {% for client in clients %}
                 <tr>
 
-                    <td><a href="{{ url_for('teacher.show_student', id=client.id) }}" class="clearfix">{{client.first_name}} {{client.last_name}} {{client.middle}}</a></td>
+                    <td><a href="{{ url_for('teacher.show_student', id=client.id) }}" class="clearfix">{{client.first_name}}
+                        {{client.last_name}} {{client.middle}}</a></td>
                 </tr>
                 {% endfor %}
             </table>
@@ -33,6 +34,19 @@
         <div class="col-md-6">
             <h3>Предстоящие занятия</h3>
             <hr>
+            <table class="table table-hover">
+                {% for schedule_item in schedule %}
+                <tr>
+                    <td>{{ schedule_item.date }}</td>
+                    <td>{{ schedule_item.subject_name }}</td>
+                    <td>{{ schedule_item.student_name }}</td>
+                    <td>
+                        <a href class="fa fa-times"></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            <br>
         </div>
     </div>
 </div>

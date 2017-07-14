@@ -19,7 +19,22 @@ def check_teacher():
 def dashboard():
     check_teacher()
     clients = Client.query.filter(Client.mentor == current_user.id).all()
-    return render_template('teacher/dashboard.html', clients=clients, title='Главная страница')
+    schedule = Schedule.query.filter(
+        (Schedule.teacher_id == Teacher.query.filter(Teacher.login_id == current_user.id).first().id) & (
+        Schedule.time >= (datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)))).all()
+
+    months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября',
+              'декабря']
+
+    for schedule_item in schedule:
+        schedule_item.date = str(schedule_item.time.day) + ' ' + months[
+            schedule_item.time.month - 1] + ' ' + str(schedule_item.time.year)
+        schedule_item.subject_name = Subject.query.get_or_404(schedule_item.subject_id).subject
+        schedule_student = Client.query.get_or_404(schedule_item.client_id)
+        schedule_item.student_name = schedule_student.last_name + ' ' + schedule_student.first_name[0] + '. ' + \
+                                     schedule_student.middle[0] + '.'
+
+    return render_template('teacher/dashboard.html', schedule=schedule[0:5], clients=clients, title='Главная страница')
 
 
 @teacher.route('/teacher/students')
@@ -50,9 +65,10 @@ def change_roadmap(id):
     try:
         road_map_items = RoadMap.query.filter(RoadMap.client_id == id).order_by(
             RoadMap.step.asc()).all()
-        return render_template('teacher/change_roadmap.html', student_id = id, laststep = ((road_map_items[-1].step)+1), road_map_items=road_map_items, title='Изменение roadmap')
+        return render_template('teacher/change_roadmap.html', student_id=id, laststep=((road_map_items[-1].step) + 1),
+                               road_map_items=road_map_items, title='Изменение roadmap')
     except IndexError:
-        return render_template('teacher/change_roadmap.html', student_id = id, laststep = 1, title='Изменение roadmap')
+        return render_template('teacher/change_roadmap.html', student_id=id, laststep=1, title='Изменение roadmap')
 
 
 @teacher.route('/teacher/add_step/<int:id>', methods=['GET', 'POST'])
@@ -63,14 +79,16 @@ def add_step(id):
         road_map_items = RoadMap.query.filter(RoadMap.client_id == id).order_by(
             RoadMap.step.asc()).all()
         laststep = ((road_map_items[-1].step) + 1)
-        new_step = RoadMap(client_id = id, step = laststep, name = request.form['heading_new'], description = request.form['description_new'] , if_done = False)
+        new_step = RoadMap(client_id=id, step=laststep, name=request.form['heading_new'],
+                           description=request.form['description_new'], if_done=False)
     except IndexError:
         laststep = 1
         new_step = RoadMap(client_id=id, step=laststep, name=request.form['heading_new'],
                            description=request.form['description_new'], if_done=False)
     db.session.add(new_step)
     db.session.commit()
-    return redirect(url_for('teacher.change_roadmap', id = id))
+    return redirect(url_for('teacher.change_roadmap', id=id))
+
 
 @teacher.route('/teacher/change_roadmap_redaction/<int:id>/<int:step>', methods=['GET', 'POST'])
 @login_required
@@ -78,17 +96,22 @@ def change_roadmap_redaction(id, step):
     check_teacher()
     road_map_items = RoadMap.query.filter(RoadMap.client_id == id).order_by(
         RoadMap.step.asc()).all()
-    return render_template('teacher/change_roadmap_redaction.html', step = step, student_id = id, laststep = ((road_map_items[-1].step)+1), road_map_items=road_map_items, title='Изменение roadmap')
+    return render_template('teacher/change_roadmap_redaction.html', step=step, student_id=id,
+                           laststep=((road_map_items[-1].step) + 1), road_map_items=road_map_items,
+                           title='Изменение roadmap')
+
 
 @teacher.route('/teacher/change_step/<int:id>/<int:step_for_change>', methods=['GET', 'POST'])
 @login_required
 def change_step(id, step_for_change):
     check_teacher()
 
-    db.session.query(RoadMap).filter(RoadMap.client_id == id).filter(RoadMap.step == step_for_change).update({"name": (request.form['heading_edit']), "description": (request.form['description_edit'])})
+    db.session.query(RoadMap).filter(RoadMap.client_id == id).filter(RoadMap.step == step_for_change).update(
+        {"name": (request.form['heading_edit']), "description": (request.form['description_edit'])})
     db.session.commit()
 
-    return redirect(url_for('teacher.change_roadmap', id = id))
+    return redirect(url_for('teacher.change_roadmap', id=id))
+
 
 @teacher.route('/teacher/delete_step/<int:id>/<int:step_for_delete>', methods=['GET', 'POST'])
 @login_required
@@ -99,8 +122,9 @@ def delete_step(id, step_for_delete):
         RoadMap.step.asc()).all()
     laststep = ((road_map_items[-1].step) + 1)
     RoadMap.query.filter(RoadMap.client_id == id).filter(RoadMap.step == step_for_delete).delete()
-    for i in range(laststep-step_for_delete):
-        RoadMap.query.filter(RoadMap.client_id == id).filter(RoadMap.step == step_for_delete + i + 1).update({"step": step_for_delete +i })
+    for i in range(laststep - step_for_delete):
+        RoadMap.query.filter(RoadMap.client_id == id).filter(RoadMap.step == step_for_delete + i + 1).update(
+            {"step": step_for_delete + i})
 
     db.session.commit()
 
@@ -116,6 +140,7 @@ def show_student(id):
     return render_template('teacher/student.html',
                            student=student, title="ученик")
 
+
 @teacher.route('/teacher/schedule/<int:id>', methods=['GET', 'POST'])
 @login_required
 def get_schedule(id):
@@ -128,11 +153,19 @@ def get_schedule(id):
     weekdays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
     schedule = Schedule.query.filter((Schedule.client_id == id) & (Schedule.time > datetime.datetime.now())).all()
 
+    months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября',
+              'декабря']
+
     for schedule_item in schedule:
         schedule_item.day = schedule_item.time.day
         schedule_item.subject_name = Subject.query.get_or_404(schedule_item.subject_id).subject
         schedule_item.dow = schedule_item.time.weekday()
         schedule_item.day_of_week = weekdays[schedule_item.dow]
+        schedule_item.date = str(schedule_item.time.day) + ' ' + months[
+            schedule_item.time.month - 1] + ' ' + str(schedule_item.time.year)
+        schedule_teacher = Client.query.get_or_404(Teacher.query.get_or_404(schedule_item.teacher_id).login_id)
+        schedule_item.teacher_name = schedule_teacher.last_name + ' ' + schedule_teacher.first_name[0] + '. ' + \
+                                     schedule_teacher.middle[0] + '.'
 
     now = datetime.datetime.now()
     byweeks = [[[], [], [], [], [], [], []]]

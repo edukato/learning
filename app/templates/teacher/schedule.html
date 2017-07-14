@@ -32,104 +32,107 @@
                     <table class="table table-stripes table-hover">
                         {% for item in day %}
                         <tr>
-                        <td>{{ item.subject_name }}</td>
-                            <td>{{ item.time }}</td>
-                            <td><a href="{{ url_for('teacher.remove_sch_item', id = item.id ) }}"><span class="fa fa- fa-times"></span></a></td>
-                            </tr>
+                            <td>{{ item.subject_name }}</td>
+                            <td>{{ item.date }}</td>
+                            <td>{{ item.teacher_name }}</td>
+                            <td><a href="{{ url_for('teacher.remove_sch_item', id = item.id ) }}"><span
+                                    class="fa fa- fa-times"></span></a></td>
+                        </tr>
                         {% endfor %}
                     </table>
                 </div>
             </div>
             {% endif %}
             {% endfor %}
-            <brr>
-                <!--
-                <table class="table">
-                    <thead>
-                    <th width="12.5%">Время</th>
-                    <th width="12.5%">Пн</th>
-                    <th width="12.5%">Вт</th>
-                    <th width="12.5%">Ср</th>
-                    <th width="12.5%">Чт</th>
-                    <th width="12.5%">Пт</th>
-                    <th width="12.5%">Сб</th>
-                    <th width="12.5%">Вс</th>
-                    </thead>
-                    <tr>
-                        <td>10:00-10:30</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>10:30-11:00</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>11:00-11:30</td>
-                        <td></td>
-                        <td></td>
-                        <td><a href="#" class="badge badge-pill badge-danger" data-toggle="tooltip" data-placement="top"
-                               title="Белов Александр">Химия</a>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>11:00-11:30</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>11:30-12:00</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>12:00-12:30</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>12:30-13:00</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </table>
-                <br> -->
-                {% endfor %}
-                <a href="{{ url_for('teacher.schedule_add', id = student.id) }}" class="btn btn-success btn-lg">Добавить занятие</a>
+            <br>
+            <!--
+            <table class="table">
+                <thead>
+                <th width="12.5%">Время</th>
+                <th width="12.5%">Пн</th>
+                <th width="12.5%">Вт</th>
+                <th width="12.5%">Ср</th>
+                <th width="12.5%">Чт</th>
+                <th width="12.5%">Пт</th>
+                <th width="12.5%">Сб</th>
+                <th width="12.5%">Вс</th>
+                </thead>
+                <tr>
+                    <td>10:00-10:30</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>10:30-11:00</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>11:00-11:30</td>
+                    <td></td>
+                    <td></td>
+                    <td><a href="#" class="badge badge-pill badge-danger" data-toggle="tooltip" data-placement="top"
+                           title="Белов Александр">Химия</a>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>11:00-11:30</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>11:30-12:00</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>12:00-12:30</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>12:30-13:00</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            <br> -->
+            {% endfor %}
+            <a href="{{ url_for('teacher.schedule_add', id = student.id) }}" class="btn btn-success btn-lg">Добавить
+                занятие</a>
         </div>
     </div>
 </div>
