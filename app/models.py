@@ -200,7 +200,6 @@ class RoadMap(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
-    transaction_id = db.Column(db.Integer)
     step = db.Column(db.Integer)
     name = db.Column(db.String(300))
     description = db.Column(db.String(300))

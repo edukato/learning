@@ -1,4 +1,4 @@
-from flask import flash, redirect, render_template, url_for, abort
+from flask import flash, redirect, render_template, url_for, abort, request
 from flask_login import login_required, current_user
 
 import datetime
@@ -46,10 +46,64 @@ def help():
 @login_required
 def change_roadmap(id):
     check_teacher()
-    client = Client.query.get_or_404(id)
+    try:
+        road_map_items = RoadMap.query.filter(RoadMap.client_id == id).order_by(
+            RoadMap.step.asc()).all()
+        return render_template('teacher/change_roadmap.html', student_id = id, laststep = ((road_map_items[-1].step)+1), road_map_items=road_map_items, title='Изменение roadmap')
+    except IndexError:
+        return render_template('teacher/change_roadmap.html', student_id = id, laststep = 1, title='Изменение roadmap')
+
+
+@teacher.route('/teacher/add_step/<int:id>', methods=['GET', 'POST'])
+@login_required
+def add_step(id):
+    check_teacher()
+    try:
+        road_map_items = RoadMap.query.filter(RoadMap.client_id == id).order_by(
+            RoadMap.step.asc()).all()
+        laststep = ((road_map_items[-1].step) + 1)
+        new_step = RoadMap(client_id = id, step = laststep, name = request.form['heading_new'], description = request.form['description_new'] , if_done = False)
+    except IndexError:
+        laststep = 1
+        new_step = RoadMap(client_id=id, step=laststep, name=request.form['heading_new'],
+                           description=request.form['description_new'], if_done=False)
+    db.session.add(new_step)
+    db.session.commit()
+    return redirect(url_for('teacher.change_roadmap', id = id))
+
+@teacher.route('/teacher/change_roadmap_redaction/<int:id>/<int:step>', methods=['GET', 'POST'])
+@login_required
+def change_roadmap_redaction(id, step):
+    check_teacher()
     road_map_items = RoadMap.query.filter(RoadMap.client_id == id).order_by(
         RoadMap.step.asc()).all()
-    return render_template('teacher/change_roadmap.html', road_map_items=road_map_items, title='Изменение roadmap')
+    return render_template('teacher/change_roadmap_redaction.html', step = step, student_id = id, laststep = ((road_map_items[-1].step)+1), road_map_items=road_map_items, title='Изменение roadmap')
+
+@teacher.route('/teacher/change_step/<int:id>/<int:step_for_change>', methods=['GET', 'POST'])
+@login_required
+def change_step(id, step_for_change):
+    check_teacher()
+
+    db.session.query(RoadMap).filter(RoadMap.client_id == id).filter(RoadMap.step == step_for_change).update({"name": (request.form['heading_edit']), "description": (request.form['description_edit'])})
+    db.session.commit()
+
+    return redirect(url_for('teacher.change_roadmap', id = id))
+
+@teacher.route('/teacher/delete_step/<int:id>/<int:step_for_delete>', methods=['GET', 'POST'])
+@login_required
+def delete_step(id, step_for_delete):
+    check_teacher()
+
+    road_map_items = RoadMap.query.filter(RoadMap.client_id == id).order_by(
+        RoadMap.step.asc()).all()
+    laststep = ((road_map_items[-1].step) + 1)
+    RoadMap.query.filter(RoadMap.client_id == id).filter(RoadMap.step == step_for_delete).delete()
+    for i in range(laststep-step_for_delete):
+        RoadMap.query.filter(RoadMap.client_id == id).filter(RoadMap.step == step_for_delete + i + 1).update({"step": step_for_delete +i })
+
+    db.session.commit()
+
+    return redirect(url_for('teacher.change_roadmap', id=id))
 
 @teacher.route('/teacher/student/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -59,7 +113,6 @@ def show_student(id):
         abort(403)
     return render_template('teacher/student.html',
                            student=student, title="ученик")
-
 
 @teacher.route('/teacher/schedule/<int:id>', methods=['GET', 'POST'])
 @login_required
