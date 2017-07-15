@@ -53,9 +53,12 @@
             </div>
             <hr>
             <div class="par">
+                {% autoescape false %}
+
                 <p>
                     {{ task.text }}
                 </p>
+                {% endautoescape %}
             </div>
             <hr>
             <div class="form-inline">
