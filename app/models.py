@@ -291,7 +291,7 @@ class TrainingChoice(db.Model):
     __tablename__ = 'training_choices'
 
     id = db.Column(db.Integer, primary_key=True)
-    subject = db.Column(db.String)
+    subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'))
     number = db.Column(db.Integer)
     description = db.Column(db.String)
 
