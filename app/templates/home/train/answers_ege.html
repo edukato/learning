@@ -111,17 +111,23 @@
             </div>
             <hr>
             <div class="par">
+                {% autoescape false %}
                 <p>
                     {{ task.text }}
                 </p>
+                {% endautoescape %}
             </div>
         </div>
         <h5>Решение: </h5>
+        {% autoescape false %}
         <p>
             {{ task.solution }}
         </p>
+        {% endautoescape %}
         <h5>Ваш ответ: {{ answers[loop.index0] }} </h5>
+        {% autoescape false %}
         <h5>Правильный ответ: {{ task.right_answer }} </h5>
+        {% endautoescape %}
         <br>
         {% endfor %}
         <a href="{{ url_for('home.training_home') }}" class="btn btn-success">На главную</a>
