@@ -159,8 +159,8 @@ def task_add(id):
 
     form = TaskAddForm()
     if form.validate_on_submit():
-        task = Task(text=form.question.data,
-            right_answer=form.answer.data, subject_id=id)
+        task = Task(number=form.number.data, text=form.question.data,
+                    right_answer=form.answer.data, subject_id=id)
         try:
             db.session.add(task)
             db.session.commit()
