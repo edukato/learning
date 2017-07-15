@@ -13,20 +13,27 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
             <h3>Типы заданий</h3>
             <table class="table table-hover">
                 <thead>
-                    <th>Номер задания</th>
-                    <th>Описание заданя</th>
+                <th>Номер задания</th>
+                <th>Описание задания</th>
                 </thead>
                 {% for choice in choices %}
                 <tr>
                     <td>{{ choice.number }}</td>
                     <td>{{ choice.description }}</td>
+                    <td><a href="{{ url_for('admin.choice_edit',id=choice.id)}}"><span class="fa fa-pencil"></span></a></td>
+                    <td><a href="{{ url_for('admin.choice_delete',id=choice.id)}}"><span class="fa fa-times"></span></a></td>
                 </tr>
                 {% endfor %}
             </table>
+            <a href="{{ url_for('admin.choice_add',id=subject.id)}}" class="btn btn-success">Добавить тип заданий</a>
+        </div>
+        <div class="col-md-6">
+            <h3>База заданий</h3>
+            <a href="{{ url_for('admin.task_add', id=subject.id) }}" class="btn btn-success">Добавить задание</a>
         </div>
     </div>
 </div>

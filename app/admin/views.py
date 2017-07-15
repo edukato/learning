@@ -2,9 +2,9 @@ from flask import flash, redirect, render_template, url_for, abort
 from flask_login import login_required, current_user
 
 from . import admin
-from ..models import Client, Subject, TrainingChoice
+from ..models import Client, Subject, TrainingChoice, Task
 from .. import db
-from .forms import SubjectEditForm, SubjectAddForm
+from .forms import SubjectEditForm, SubjectAddForm, ChoiceAddForm, ChoiceEditForm, TaskAddForm
 
 
 def check_admin():
@@ -42,8 +42,8 @@ def subject(id):
     check_admin()
     subject = Subject.query.get_or_404(id)
 
-    choices = TrainingChoice.query.filter(TrainingChoice.subject_id)
-    return render_template('admin/subject.html', subject=subject, title=subject.subject)
+    choices = TrainingChoice.query.filter(TrainingChoice.subject_id == id).order_by(TrainingChoice.number.asc()).all()
+    return render_template('admin/subject.html', choices=choices, subject=subject, title=subject.subject)
 
 
 @admin.route('/admin/subject/<int:id>/edit', methods=['GET', 'POST'])
@@ -86,3 +86,86 @@ def subject_add():
         return redirect(url_for('admin.subjects'))
 
     return render_template('admin/subject_add.html', form=form, title='Добавить предмет')
+
+
+@admin.route('/admin/choice/<int:id>/add', methods=['GET', 'POST'])
+@login_required
+def choice_add(id):
+    check_admin()
+
+    subject = Subject.query.get_or_404(id)
+
+    form = ChoiceAddForm()
+    if form.validate_on_submit():
+        choice = TrainingChoice(
+            number=form.number.data,
+            description=form.description.data, subject_id=id)
+        if not TrainingChoice.query.filter(
+                        (TrainingChoice.number == choice.number) & (
+                            TrainingChoice.subject_id == choice.subject_id)).all():
+            try:
+                db.session.add(choice)
+                db.session.commit()
+                flash('Вы успешно добавили тип задания.')
+            except:
+                flash('Ошибка: тип задания существует.')
+        else:
+            flash('Задание существует')
+        return redirect(url_for('admin.subject', id=id))
+
+    return render_template('admin/choice_add.html', form=form, subject=subject, title='Добавить тип заданий')
+
+
+@admin.route('/admin/choice/<int:id>/edit', methods=['GET', 'POST'])
+@login_required
+def choice_edit(id):
+    check_admin()
+
+    choice = TrainingChoice.query.get_or_404(id)
+    subject = Subject.query.get_or_404(choice.subject_id)
+
+    form = ChoiceEditForm(obj=choice)
+    if form.validate_on_submit():
+        choice.description = form.description.data
+        try:
+            db.session.commit()
+        except:
+            flash('Ошибка')
+        return redirect(url_for('admin.subject', id=choice.subject_id))
+    return render_template('admin/choice_edit.html', subject=subject, form=form, methods=['GET', 'POST'])
+
+
+@admin.route('/admin/choice/<int:id>/delete', methods=['GET', 'POST'])
+@login_required
+def choice_delete(id):
+    check_admin()
+
+    choice = TrainingChoice.query.get_or_404(id)
+    try:
+        db.session.delete(choice)
+        db.session.commit()
+        flash('Удалено')
+    except:
+        flash('Ошибка')
+    return redirect(url_for('admin.subject', id=choice.subject_id))
+
+
+@admin.route('/admin/task/<int:id>/add', methods=['GET', 'POST'])
+@login_required
+def task_add(id):
+    check_admin()
+
+    subject = Subject.query.get_or_404(id)
+
+    form = TaskAddForm()
+    if form.validate_on_submit():
+        task = Task(text=form.question.data,
+            right_answer=form.answer.data, subject_id=id)
+        try:
+            db.session.add(task)
+            db.session.commit()
+            flash('Вы успешно добавили задание.')
+        except:
+            flash('Ошибка.')
+        return redirect(url_for('admin.subject', id=id))
+    return render_template('admin/task_add.html', form=form, subject=subject, title='Добавить задание')
