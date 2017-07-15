@@ -53,6 +53,10 @@
                                 <td>
                                     {{ student.plan }}
                                 </td>
+                                <td>
+                                    <a class="btn btn-sm btn-secondary"
+                                       href="{{ url_for('admin.student', id=student.id) }}">Подробности</a>
+                                </td>
                             </tr>
                             {% endfor %}
                         </table>
