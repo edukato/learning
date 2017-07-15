@@ -4,7 +4,7 @@
 {% block body %}
 <div class="container" style="max-width: 850px">
     <H1>Выбор заданий</H1>
-    <form action="{{ url_for('home.results') }}" id="choice">
+    <form action="{{ url_for('home.ege', subject_id = subject_id) }}" method="POST" id="choice">
         <table class="table">
             <thead>
             <tr>
@@ -19,7 +19,7 @@
                 <th scope="row">{{ loop.index }}</th>
                 <td> {{ description }}
                 </td>
-                <td><input class="form-control" type="number" value="0"></td>
+                <td><input name="{{loop.index}}" class="form-control" type="number" value="0"></td>
             </tr>
             {% endfor %}
 

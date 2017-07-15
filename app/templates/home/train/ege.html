@@ -14,16 +14,17 @@
 <div class="container" style="max-width: 850px">
     <h1>Вариант ЕГЭ</h1>
     <br>
-    <form action="{{ url_for('home.results') }}" id="answers">
+    <form action="{{ url_for('home.results', subject_id = subject_id, tasks = tasks) }}", method="POST", id="answers">
+        {% for task in tasks %}
         <div class="task">
             <div class="row">
                 <div class="col-md-12 col-lg-12 col-sm-12" style="display: flex;justify-content: space-between;">
-                    <h5>Вопрос 1 из 19</h5>
+                    <h5>Вопрос {{loop.index}} из {{ number_of_tasks }}</h5>
                     <H5>Время:&nbsp;<span id="time"></span></H5>
-                    <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#error_modal_1">
+                    <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="{{'#error_modal_' ~ task.id }}">
                         Ошибка!
                     </a>
-                    <div class="modal fade" id="error_modal_1" tabindex="-1" role="dialog"
+                    <div class="modal fade" id="{{'error_modal_' ~ task.id }}" tabindex="-1" role="dialog"
                          aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -36,10 +37,10 @@
                                 <div class="modal-body">
                                     <label>Если вам всё-таки удалось найти ошибку в задании или решении, то вы можете
                                         описать её здесь.</label>
-                                    <textarea class="form-control" id="exampleTextarea_1" rows="8"></textarea>
+                                    <textarea class="form-control" id="{{ 'error_text_' ~ task.id }}" rows="8"></textarea>
                                 </div>
                                 <div class="modal-footer">
-                                    <a href="javascript:send_error(1);" class="btn btn-success">
+                                    <a href="javascript:send_error({{ task.id }});" class="btn btn-success">
                                         Отправить
                                     </a>
                                 </div>
@@ -51,25 +52,27 @@
             <hr>
             <div class="par">
                 <p>
-                    Здесь будет очень каверзный вопрос на 100500 слов <br>
-                    Может быть даже на пикчу <br>
-                    вооот тут <br>
-                    разоримся <br>
-                    Очень <br>
-                    Много <br>
-                    Текста <br>
-                    Прям <br>
-                    Воообще <br>
+                    {{ task.text }}
                 </p>
             </div>
             <hr>
             <div class="form-inline">
-                <label class="submit" for="inlineFormInputGroup_1">Введите ответ:&nbsp;</label>
+                <label class="submit" for="{{ 'answer_' ~ task.id }}">Введите ответ:&nbsp;</label>
                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                    <input type="text" class="form-control" id="inlineFormInputGroup_1"
+                    <input type="text" class="form-control" id="{{ 'answer_' ~ task.id }}"
                            style="max-width: 250px">
                 </div>
             </div>
+        </div>
+        <div class="fade">
+            <input type="text" id="{{ 'id_for_task_' ~ loop.index }}" value="{{ task.id }}"
+                           style="max-width: 250px">
+        </div>
+        <br>
+        {% endfor %}
+        <div class="fade">
+            <input type="text" id="number_of_tasks" value="{{ tasks|length }}"
+                           style="max-width: 250px">
         </div>
         <br>
         <button type="submit" class="btn btn-success">Результаты</button>
@@ -119,11 +122,11 @@
 <script type="text/javascript">
     function send_error(task) {
         $.post(("/ege/send_error/" + task), {
-            text: document.getElementById('exampleTextarea_' + task).value
+            text: document.getElementById('error_text_' + task).value
         }).done(function () {
         }).fail(function () {
         });
-        $('#error_modal_1').modal('hide');
+        $('#error_modal_' + task).modal('hide');
     }
 </script>
 {% endblock %}

@@ -27,7 +27,7 @@
             <h1 align="center" class="mb-1">{{ student_subjects[subject_id - 1] }}</h1>
             <h3 align="center" class="mb-3">Режим тренировки</h3>
             <ul class="list-group text-center">
-                <a href="{{ url_for('home.ege') }}" class="list-group-item justify-content-between list-group-item-action ">
+                <a href="{{ url_for('home.ege', subject_id = subject_id) }}" class="list-group-item justify-content-between list-group-item-action ">
                     <div class="col-md-12">
                         <h4 align="center">Вариант ЕГЭ</h4>
                     </div>

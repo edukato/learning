@@ -341,6 +341,7 @@ class Subject(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     subject = db.Column(db.String)
     description = db.Column(db.String)
+    tasks_number = db.Column(db.Integer)
     answers = db.relationship('Answer', backref='subject',
                             lazy='dynamic')
     tasks = db.relationship('Task', backref='subject',
