@@ -127,7 +127,7 @@ def ege(subject_id, training_type):
             final_tasks.append(final_task)
 
         return render_template('home/train/ege.html', tasks=final_tasks, subject_id=subject_id,
-                               number_of_tasks=number_of_tasks, title="Вариант ЕГЭ")
+                               tasks_quantity=number_of_tasks, title="Вариант ЕГЭ")
 
     if training_type == 1:
         tasks = []
@@ -158,12 +158,14 @@ def ege(subject_id, training_type):
             tasks.append(random.choice(task))
 
         return render_template('home/train/ege.html', tasks=tasks, subject_id=subject_id,
-                               number_of_tasks=number_of_tasks, title='Рекомендумые задания')
+                            tasks_quantity = n_questions, title='Рекомендумые задания')
 
     if training_type == 2:
         tasks = []
+        tasks_quantity = 0
         for i in range(number_of_tasks):
             tasks.append(int(request.form[str(i + 1)]))
+            tasks_quantity += int(request.form[str(i + 1)])
 
         final_tasks = []
         task_type_counter = 0
@@ -175,7 +177,7 @@ def ege(subject_id, training_type):
                 final_tasks.append(final_task)
                 _tasks.remove(final_task)
         return render_template('home/train/ege.html', tasks=final_tasks, subject_id=subject_id,
-                               number_of_tasks=number_of_tasks, title="Вариант ЕГЭ")
+                            tasks_quantity = tasks_quantity, title="Вариант ЕГЭ")
 
 
 @home.route('/ege/send_error/<int:task_id>', methods=['GET', 'POST'])
