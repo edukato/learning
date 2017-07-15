@@ -114,11 +114,24 @@ def training_subject(subject_id):
     return render_template('home/train/training_subject.html', subject_id = subject_id, student_subjects=student_subjects,
                            id_subjects=id_subjects, title="Тренировка")
 
-
-@home.route('/ege')
+@home.route('/ege/<int:subject_id>', methods=['GET', 'POST'])
 @login_required
-def ege():
-    return render_template('home/train/ege.html', title="Вариант ЕГЭ")
+def ege(subject_id):
+    number_of_tasks = Subject.query.get_or_404(subject_id).tasks_number
+    tasks = []
+    for i in range(number_of_tasks):
+        tasks.append(int(request.form[str(i + 1)]))
+
+    final_tasks = []
+    task_type_counter = 0
+    for task_type in tasks:
+        task_type_counter += 1
+        tasks = Task.query.filter((Task.subject_id == subject_id) & (Task.number == task_type_counter)).all()
+        for i in range(task_type):
+            final_task = random.choice(tasks)
+            final_tasks.append(final_task)
+            tasks.remove(final_task)
+    return render_template('home/train/ege.html', tasks = final_tasks, subject_id = subject_id , number_of_tasks = number_of_tasks, title="Вариант ЕГЭ")
 
 
 @home.route('/ege/send_error/<int:task_id>', methods=['GET', 'POST'])
@@ -144,13 +157,12 @@ def recommendation_answer():
 @home.route('/choice/<int:subject_id>')
 @login_required
 def choice(subject_id):
-    clients = Client.query.filter(Client.mentor == current_user.id).all()
     training_choices = TrainingChoice.query.filter(TrainingChoice.subject_id == subject_id).all()
     descriptions = []
     for training_choice in training_choices:
         descriptions.append(training_choice.description)
 
-    return render_template('home/train/choice.html', descriptions = descriptions, title="Выбор задания")
+    return render_template('home/train/choice.html', subject_id = subject_id, descriptions = descriptions, title="Выбор задания")
 
 
 @home.route('/answers_ege')
@@ -158,10 +170,17 @@ def choice(subject_id):
 def answers_ege():
     return render_template('home/train/answers_ege.html', title="Решения и ответы")
 
-
-@home.route('/results')
+@home.route('/results/<int:subject_id>')
 @login_required
-def results():
+def results(subject_id, tasks):
+    number_of_tasks = Subject.query.get_or_404(subject_id).tasks_number
+    result = []
+    for task in tasks:
+        if (task.right_answer == request.form[('answer_' + str(task.id))]):
+            task.append(True)
+        else:
+            task.append(False)
+
     return render_template('home/train/results.html', title="Результаты")
 
 
