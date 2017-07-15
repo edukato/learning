@@ -243,7 +243,7 @@ class Task(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'))
-    part = db.Column(db.String(300))
+    solution = db.Column(db.String)
     number = db.Column(db.Integer)
     text = db.Column(db.String)
     image = db.Column(db.String)
