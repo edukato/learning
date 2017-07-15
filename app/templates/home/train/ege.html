@@ -14,7 +14,7 @@
 <div class="container" style="max-width: 850px">
     <h1>Вариант ЕГЭ</h1>
     <br>
-    <form action="{{ url_for('home.results', subject_id = subject_id, tasks = tasks) }}", method="POST", id="answers">
+    <form action="{{ url_for('home.answers_ege', subject_id = subject_id)}}", method="POST", id="answers">
         {% for task in tasks %}
         <div class="task">
             <div class="row">
@@ -59,19 +59,19 @@
             <div class="form-inline">
                 <label class="submit" for="{{ 'answer_' ~ task.id }}">Введите ответ:&nbsp;</label>
                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                    <input type="text" class="form-control" id="{{ 'answer_' ~ task.id }}"
+                    <input type="text" class="form-control" id="{{ 'answer_' ~ task.id }}" name="{{ 'answer_' ~ loop.index }}"
                            style="max-width: 250px">
                 </div>
             </div>
         </div>
-        <div class="fade">
-            <input type="text" id="{{ 'id_for_task_' ~ loop.index }}" value="{{ task.id }}"
+        <div style="display: none">
+            <input type="text" name="{{ 'id_for_task_' ~ loop.index }}" value="{{ task.id }}"
                            style="max-width: 250px">
         </div>
         <br>
         {% endfor %}
-        <div class="fade">
-            <input type="text" id="number_of_tasks" value="{{ tasks|length }}"
+        <div style="display: none">
+            <input type="text" name="number_of_tasks" value="{{ tasks|length }}"
                            style="max-width: 250px">
         </div>
         <br>

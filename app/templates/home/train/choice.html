@@ -4,7 +4,7 @@
 {% block body %}
 <div class="container" style="max-width: 850px">
     <H1>Выбор заданий</H1>
-    <form action="{{ url_for('home.ege', subject_id = subject_id) }}" method="POST" id="choice">
+    <form action="{{ url_for('home.ege', subject_id = subject_id, training_type = 2) }}" method="POST" id="choice">
         <table class="table">
             <thead>
             <tr>
