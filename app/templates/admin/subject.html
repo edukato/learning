@@ -1,11 +1,32 @@
 {% extends "base.html" %}
+{% import "bootstrap/utils.html" as utils %}
 {% block title %}Страница предмета{% endblock %}
 {% block body %}
+{{ utils.flashed_messages() }}
 <div class="container">
     <div class="row">
         <div class="col-md-12">
             <h1>{{ subject.subject }}</h1>
             <p class="lead">{{ subject.description }}></p>
+            <a href="{{ url_for('admin.subject_edit',id=subject.id)}}" class="btn btn-success btn-lg">Изменить</a>
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Типы заданий</h3>
+            <table class="table table-hover">
+                <thead>
+                    <th>Номер задания</th>
+                    <th>Описание заданя</th>
+                </thead>
+                {% for choice in choices %}
+                <tr>
+                    <td>{{ choice.number }}</td>
+                    <td>{{ choice.description }}</td>
+                </tr>
+                {% endfor %}
+            </table>
         </div>
     </div>
 </div>
