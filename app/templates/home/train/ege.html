@@ -20,7 +20,9 @@
             <div class="row">
                 <div class="col-md-12 col-lg-12 col-sm-12" style="display: flex;justify-content: space-between;">
                     <h5>Вопрос {{loop.index}} из {{ number_of_tasks }}</h5>
+                    {% if loop.index == 1 %}
                     <H5>Время:&nbsp;<span id="time"></span></H5>
+                    {% endif %}
                     <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="{{'#error_modal_' ~ task.id }}">
                         Ошибка!
                     </a>
