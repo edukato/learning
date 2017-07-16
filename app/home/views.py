@@ -14,10 +14,22 @@ from .. import db
 from .forms import AccountEditForm
 
 
+def check_student():
+    if current_user.status != 1:
+        abort(403)
+
+
 @home.route('/')
 def homepage():
     if current_user.is_authenticated:
-        return redirect(url_for('home.account'))
+        if current_user.status == 1:
+            return redirect(url_for('home.account'))
+        else:
+            if current_user.status == 2:
+                return redirect(url_for('admin.dashboard'))
+            else:
+                if current_user.status == 3:
+                    return redirect(url_for('teacher.dashboard'))
     else:
         return render_template('home/index.html', title="Добро пожаловать в edukato!")
 
@@ -25,6 +37,8 @@ def homepage():
 @home.route('/account')
 @login_required
 def account():
+    check_student()
+
     if current_user.status == 2:
         return redirect(url_for('admin.dashboard'))
 
@@ -80,7 +94,7 @@ def account():
     plan = Service.query.filter(Service.id == current_user.plan).first()
 
     return render_template('home/account.html', plan=plan, schedule=byweeks, weekdays=weekdays,
-                           active_services=active_services, mentor = mentor, teacher = teacher,
+                           active_services=active_services, mentor=mentor, teacher=teacher,
                            title="Мой аккаунт")
 
 @home.route('/account/send_claim/<int:teacher_id>', methods = ['GET', 'POST'])
@@ -90,15 +104,11 @@ def account_send_claim(teacher_id):
     db.session.add(claim)
     db.session.commit()
 
-@home.route('/feed')
-@login_required
-def feed():
-    return render_template('home/feed.html', title="Лента")
-
-
 @home.route('/shop')
 @login_required
 def shop():
+    check_student()
+
     services_0 = Service.query.filter(
         (Service.expiration_date > datetime.datetime.now()) & (
             Service.start_date < datetime.datetime.now()) & (Service.type == '0')).all()
@@ -125,12 +135,16 @@ def shop():
 @home.route('/pay')
 @login_required
 def pay():
+    check_student()
+
     return render_template('home/pay.html', title="Пополнение счёта")
 
 
 @home.route('/training_home')
 @login_required
 def training_home():
+    check_student()
+
     client = current_user
     if client.subjects is not None:
         id_subjects = client.subjects.split(",")
@@ -149,6 +163,8 @@ def training_home():
 @home.route('/training_subject/<int:subject_id>')
 @login_required
 def training_subject(subject_id):
+    check_student()
+
     client = current_user
     if client.subjects is not None:
         id_subjects = client.subjects.split(",")
@@ -166,6 +182,8 @@ def training_subject(subject_id):
 @home.route('/ege/<int:subject_id>/<int:training_type>', methods=['GET', 'POST'])
 @login_required
 def ege(subject_id, training_type):
+    check_student()
+
     number_of_tasks = Subject.query.get_or_404(subject_id).tasks_number
     if training_type == 0:
         final_tasks = []
@@ -231,6 +249,8 @@ def ege(subject_id, training_type):
 @home.route('/ege/send_error/<int:task_id>', methods=['GET', 'POST'])
 @login_required
 def send_error(task_id):
+    check_student()
+
     error = TasksError(task_id=task_id, error=request.form['text'])
     db.session.add(error)
     db.session.commit()
@@ -239,6 +259,8 @@ def send_error(task_id):
 @home.route('/recommendation_question')
 @login_required
 def recommendation_question():
+    check_student()
+
     return render_template('home/train/recommendation_question.html', title="Рекомендуем отработать")
 
 
@@ -251,6 +273,8 @@ def recommendation_answer():
 @home.route('/choice/<int:subject_id>')
 @login_required
 def choice(subject_id):
+    check_student()
+
     training_choices = TrainingChoice.query.filter(TrainingChoice.subject_id == subject_id).all()
     descriptions = []
     for training_choice in training_choices:
@@ -263,6 +287,8 @@ def choice(subject_id):
 @home.route('/answers_ege/<int:subject_id>', methods=['GET', 'POST'])
 @login_required
 def answers_ege(subject_id):
+    check_student()
+
     tasks = []
     task = Task
     number_of_tasks = int(request.form['number_of_tasks'])
@@ -297,6 +323,8 @@ def answers_ege(subject_id):
 @home.route('/results/<int:subject_id>')
 @login_required
 def results(subject_id, tasks):
+    check_student()
+
     result = []
     for task in tasks:
         if (task.right_answer == request.form[('answer_' + str(task.id))]):
@@ -310,18 +338,24 @@ def results(subject_id, tasks):
 @home.route('/help')
 @login_required
 def help():
+    check_student()
+
     return render_template('home/help.html', title="Служба поддержки")
 
 
 @home.route('/contacts')
 @login_required
 def contacts():
+    check_student()
+
     return render_template('home/contacts.html', title="Контакты")
 
 
 @home.route('/shop/confirm/<int:id>', methods=['GET', 'POST'])
 @login_required
 def confirm_transaction(id):
+    check_student()
+
     service = Service.query.get_or_404(id)
 
     # Когда-нибудь проверить несовпадение дат
@@ -332,6 +366,8 @@ def confirm_transaction(id):
 @home.route('/shop/confirmed/<int:id>', methods=['GET', 'POST'])
 @login_required
 def confirmed_transaction(id):
+    check_student()
+
     service = Service.query.get_or_404(id)
     transaction = SellingLog(client_id=current_user.id, service_id=id, date_time=datetime.datetime.now(),
                              access_start=datetime.datetime.now(), access_end=service.expiration_date)
@@ -344,6 +380,8 @@ def confirmed_transaction(id):
 @home.route('/shop/show/<int:id>', methods=['GET', 'POST'])
 @login_required
 def show_service(id):
+    check_student()
+
     service = Service.query.get_or_404(id)
     return render_template('home/service.html',
                            service=service, title="Показать услугу")
@@ -352,6 +390,8 @@ def show_service(id):
 @home.route('/account/edit', methods=['GET', 'POST'])
 @login_required
 def edit_account():
+    check_student()
+
     client = Client.query.get_or_404(current_user.id)
 
     form = AccountEditForm(obj=client)
@@ -375,6 +415,8 @@ def edit_account():
 @home.route('/transactions', methods=['GET', 'POST'])
 @login_required
 def transactions():
+    check_student()
+
     alltransactions = SellingLog.query.filter(SellingLog.client_id == current_user.id).all()
     for transaction in alltransactions:
         transaction.name = (Service.query.filter(Service.id == transaction.service_id).first()).name
@@ -384,6 +426,8 @@ def transactions():
 @home.route('/road_map', methods=['GET', 'POST'])
 @login_required
 def road_map():
+    check_student()
+
     road_map_items = RoadMap.query.filter(RoadMap.client_id == current_user.id).order_by(
         RoadMap.step.asc()).all()
     return render_template('home/road_map.html', road_map_items=road_map_items, title='Дорожная карта')
@@ -392,22 +436,30 @@ def road_map():
 @home.route('/chat-bot', methods=['GET', 'POST'])
 @login_required
 def chat_bot():
+    check_student()
+
     return render_template('home/chat-bot.html', title='Чат-бот')
 
 
 @home.route('/set_time', methods=['GET', 'POST'])
 @login_required
 def set_time():
+    check_student()
+
     return render_template('home/set_time.html', title='Указать расписание')
 
 
 @home.route('/materials_home')
 @login_required
 def materials_home():
+    check_student()
+
     return render_template('home/materials_home.html', title='Материалы')
 
 
 @home.route('/material')
 @login_required
 def material():
+    check_student()
+
     return render_template('home/material.html', title='Материал')
