@@ -84,12 +84,6 @@ def account():
                            title="Мой аккаунт")
 
 
-@home.route('/feed')
-@login_required
-def feed():
-    return render_template('home/feed.html', title="Лента")
-
-
 @home.route('/shop')
 @login_required
 def shop():
