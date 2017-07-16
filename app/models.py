@@ -195,6 +195,7 @@ class Salary(db.Model):
     teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))
     date = db.Column(db.DateTime)
     description = db.Column(db.String(300))
+    amount = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Salary: {}>'.format(self.id)

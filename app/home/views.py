@@ -72,10 +72,15 @@ def account():
                     byweeks.append([[], [], [], [], [], [], []])
                 byweeks[(schedule_item.time - endweek).days // 7 + 1][schedule_item.dow].append(schedule_item)
 
+    teacher = Teacher.query.filter(Teacher.login_id == current_user.mentor).first()
+    mentor = None
+    if not (teacher == None):
+        mentor = Client.query.get_or_404(teacher.login_id)
+
     plan = Service.query.filter(Service.id == current_user.plan).first()
 
     return render_template('home/account.html', plan=plan, schedule=byweeks, weekdays=weekdays,
-                           active_services=active_services,
+                           active_services=active_services, mentor = mentor, teacher = teacher,
                            title="Мой аккаунт")
 
 
