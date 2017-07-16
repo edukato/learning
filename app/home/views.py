@@ -9,7 +9,7 @@ from flask_login import login_required, current_user
 
 from . import home
 from ..models import Service, SellingLog, Client, RoadMap, TasksError, TrainingRecommendationSession, Answer, \
-    TrainingChoice, Task, Subject, TrainingChoice
+    TrainingChoice, Task, Subject, TrainingChoice, Schedule, Teacher
 from .. import db
 from .forms import AccountEditForm
 
@@ -39,7 +39,41 @@ def account():
         service.name = service_info.name
         service.description = service_info.description
 
-    return render_template('home/account.html', active_services=active_services, title="Мой аккаунт")
+    weekdays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
+    schedule = Schedule.query.filter(
+        (Schedule.client_id == current_user.id) & (Schedule.time > datetime.datetime.now())).all()
+
+    months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября',
+              'декабря']
+
+    for schedule_item in schedule:
+        schedule_item.day = schedule_item.time.day
+        schedule_item.subject_name = Subject.query.get_or_404(schedule_item.subject_id).subject
+        schedule_item.dow = schedule_item.time.weekday()
+        schedule_item.day_of_week = weekdays[schedule_item.dow]
+        schedule_item.date = str(schedule_item.time.day) + ' ' + months[
+            schedule_item.time.month - 1] + ' ' + str(schedule_item.time.year)
+        schedule_teacher = Client.query.get_or_404(Teacher.query.get_or_404(schedule_item.teacher_id).login_id)
+        schedule_item.teacher_name = schedule_teacher.last_name + ' ' + schedule_teacher.first_name[0] + '. ' + \
+                                     schedule_teacher.middle[0] + '.'
+
+    now = datetime.datetime.now()
+    byweeks = [[[], [], [], [], [], [], []]]
+    endweek = now + datetime.timedelta(days=(7 - now.weekday()))
+    endweek = endweek.replace(hour=0, minute=0, second=0, microsecond=0)
+    for schedule_item in schedule:
+        if schedule_item.time < endweek:
+            byweeks[0][schedule_item.dow].append(schedule_item)
+        else:
+            try:
+                byweeks[(schedule_item.time - endweek).days // 7 + 1][schedule_item.dow].append(schedule_item)
+            except IndexError:
+                for _ in range(((schedule_item.time - endweek).days // 7 + 1) - len(byweeks) + 1):
+                    byweeks.append([[], [], [], [], [], [], []])
+                byweeks[(schedule_item.time - endweek).days // 7 + 1][schedule_item.dow].append(schedule_item)
+
+    return render_template('home/account.html', schedule=byweeks, weekdays=weekdays, active_services=active_services,
+                           title="Мой аккаунт")
 
 
 @home.route('/feed')
@@ -137,7 +171,7 @@ def ege(subject_id, training_type):
             right_answ = 0
             answers = Answer.query.filter(
                 (Answer.subject_id == subject_id) & (Answer.client_id == current_user.id) & (
-                Answer.task_number == (i + 1))).all()
+                    Answer.task_number == (i + 1))).all()
             for answer in answers:
                 right_answ += answer.right
             if len(answers) != 0:
@@ -150,7 +184,7 @@ def ege(subject_id, training_type):
         for weight in weights:
             weights_summ += weight
         for i in range(len(weights)):
-            weights[i]=weights[i]/weights_summ
+            weights[i] = weights[i] / weights_summ
         n_questions = 5
         questions_num = random.choice(range(1, number_of_tasks + 1), n_questions, p=weights)
         for question_num in questions_num:
@@ -158,7 +192,7 @@ def ege(subject_id, training_type):
             tasks.append(random.choice(task))
 
         return render_template('home/train/ege.html', tasks=tasks, subject_id=subject_id,
-                            tasks_quantity = n_questions, title='Рекомендумые задания')
+                               tasks_quantity=n_questions, title='Рекомендумые задания')
 
     if training_type == 2:
         tasks = []
@@ -177,7 +211,7 @@ def ege(subject_id, training_type):
                 final_tasks.append(final_task)
                 _tasks.remove(final_task)
         return render_template('home/train/ege.html', tasks=final_tasks, subject_id=subject_id,
-                            tasks_quantity = tasks_quantity, title="Вариант ЕГЭ")
+                               tasks_quantity=tasks_quantity, title="Вариант ЕГЭ")
 
 
 @home.route('/ege/send_error/<int:task_id>', methods=['GET', 'POST'])
