@@ -72,7 +72,10 @@ def account():
                     byweeks.append([[], [], [], [], [], [], []])
                 byweeks[(schedule_item.time - endweek).days // 7 + 1][schedule_item.dow].append(schedule_item)
 
-    return render_template('home/account.html', schedule=byweeks, weekdays=weekdays, active_services=active_services,
+    plan = Service.query.filter(Service.id == current_user.plan).first()
+
+    return render_template('home/account.html', plan=plan, schedule=byweeks, weekdays=weekdays,
+                           active_services=active_services,
                            title="Мой аккаунт")
 
 
