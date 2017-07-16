@@ -63,30 +63,34 @@
             </div>
             <br>
             <div class="bg-blackboard" style="padding: 10px;">
+                {% if mentor %}
                 <div>
-                    <img src="static/images/profile/{{ current_user.id }}.png"
+                    <img src="static/images/profile/{{ 'teacher_' ~ mentor.id }}.png"
                          class="rounded-circle img-fluid float-left mr-3 ml-2"
                          alt="140x140"
                          style="width: 120px; height: 120px;">
                     <div>
-                        {% if mentor %}
-                        <h5>{{ mentor.name ~ " " ~ mentor.lastname }} - твой куратор</h5>
-                        <p style="font-size: 0.9em">{{ teacher.achivments }}</p>
+                        <h5>{{ mentor.first_name ~ " " ~ mentor.last_name }} - твой куратор</h5>
+                        <p style="font-size: 0.9em">{{ teacher.achievements }}</p>
                         <p class="no_mar"><span class="fa fa-envelope"></span> {{ mentor.email }} </p>
-                        {% else %}
-                        <h5>У тебя пока нет куратора, но ты не отчаивайся</h5>
-                        <p style="font-size: 0.9em"> три четыре </p>
-                        <p class="no_mar"><span class="fa fa-envelope"></span> раз два </p>
-                        {% endif %}
-                        <br><br>
+                        <br>
                     </div>
                     <div class="float-right">
                         <a class="btn btn-sm btn-success" style="display: none">Написать в чатике</a>
                         <a href="#" class="btn btn-sm btn-danger" data-toggle="modal"
-                           data-target="#exampleModalLong_1">Пожаловаться</a>
+                           data-target="#claim_modal">Пожаловаться</a>
                     </div>
                     <hr>
                 </div>
+                {% else %}
+                <div>
+                    <div>
+                        <h5 align="center">Почему-то мы не можем найти куратора, что очень странно, пожалуйста, напиши в поддержку как можно скорее!</h5>
+
+                    </div>
+
+                </div>
+                {% endif %}
             </div>
             <br>
             <h2>Мои услуги:</h2>
@@ -146,7 +150,7 @@
     </div>
 </div>
 <form action="{{ url_for('home.account') }}">
-    <div class="modal fade" id="exampleModalLong_1" tabindex="-1" role="dialog"
+    <div class="modal fade" id="claim_modal" tabindex="-1" role="dialog"
          aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -158,13 +162,24 @@
                 </div>
                 <div class="modal-body">
                     <label>Опять этот аутист накосячил. Ну что же, пишите, разберёмся с ним.</label>
-                    <textarea class="form-control" id="exampleTextarea_1" rows="8"></textarea>
+                    <textarea class="form-control" id="claim_text" rows="8"></textarea>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Отправить</button>
+                    <a href="javascript:send_claim({{ teacher.id }});" class="btn btn-success">Отправить</a>
                 </div>
             </div>
         </div>
     </div>
 </form>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<script type="text/javascript">
+    function send_claim(mentor_id) {
+        $.post(("/account/send_claim/" + mentor_id), {
+            text: document.getElementById('claim_text').value
+        }).done(function () {
+        }).fail(function () {
+        });
+        $('#claim_modal').modal('hide');
+    }
+</script>
 {% endblock %}
