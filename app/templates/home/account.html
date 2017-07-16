@@ -69,14 +69,19 @@
                          alt="140x140"
                          style="width: 120px; height: 120px;">
                     <div>
-                        <h5>Какой-то аутист - твой куратор</h5>
-                        <p style="font-size: 0.9em">Студент химического факультета МГУ. Обладатель золотой медали
-                            международной олимпиады по химии.</p>
-                        <p class="no_mar"><span class="fa fa-envelope"></span> autist@edukato.ru</p>
-                        <br>
+                        {% if mentor %}
+                        <h5>{{ mentor.name ~ " " ~ mentor.lastname }} - твой куратор</h5>
+                        <p style="font-size: 0.9em">{{ teacher.achivments }}</p>
+                        <p class="no_mar"><span class="fa fa-envelope"></span> {{ mentor.email }} </p>
+                        {% else %}
+                        <h5>У тебя пока нет куратора, но ты не отчаивайся</h5>
+                        <p style="font-size: 0.9em"> три четыре </p>
+                        <p class="no_mar"><span class="fa fa-envelope"></span> раз два </p>
+                        {% endif %}
+                        <br><br>
                     </div>
                     <div class="float-right">
-                        <a class="btn btn-sm btn-success">Написать в чатике</a>
+                        <a class="btn btn-sm btn-success" style="display: none">Написать в чатике</a>
                         <a href="#" class="btn btn-sm btn-danger" data-toggle="modal"
                            data-target="#exampleModalLong_1">Пожаловаться</a>
                     </div>
@@ -162,5 +167,4 @@
         </div>
     </div>
 </form>
-
 {% endblock %}
