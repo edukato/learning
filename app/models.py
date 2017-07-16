@@ -32,7 +32,7 @@ class Client(UserMixin, db.Model):
     school = db.Column(db.String(300))
     home_address = db.Column(db.String(300))
     image = db.Column(db.String(300))
-    plan = db.Column(db.String(300))
+    plan = db.Column(db.Integer)
     groups_list = db.Column(db.String)
     subjects = db.Column(db.String)
     mentor = db.Column(db.Integer)
@@ -51,6 +51,8 @@ class Client(UserMixin, db.Model):
     skils = db.relationship('Skil', backref='client',
                                 lazy='dynamic')
     training_recommendation_sessions = db.relationship('TrainingRecommendationSession', backref='client',
+                            lazy='dynamic')
+    mentors_claims = db.relationship('MentorsClaim', backref='client',
                             lazy='dynamic')
 
     @property
@@ -159,6 +161,8 @@ class Teacher(db.Model):
                                 lazy='dynamic')
     operating_schedules = db.relationship('OperatingSchedules', backref='teacher',
                             lazy='dynamic')
+    mentors_claims = db.relationship('MentorsClaim', backref='teacher',
+                             lazy='dynamic')
 
     def __repr__(self):
         return '<Teacher: {}>'.format(self.first_name)
@@ -367,3 +371,14 @@ class OperatingSchedules(db.Model):
 
     def __repr__(self):
         return '<OperatingSchedules: {}>'.format(self.id)
+
+class MentorsClaim(db.Model):
+    __tablename__ = 'mentors_claims'
+
+    id = db.Column(db.Integer, primary_key=True)
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))
+    client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
+    claim = db.Column(db.String)
+
+    def __repr__(self):
+        return '<MentorsClaim: {}>'.format(self.id)
