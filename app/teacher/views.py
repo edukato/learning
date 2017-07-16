@@ -21,7 +21,7 @@ def dashboard():
     clients = Client.query.filter(Client.mentor == current_user.id).all()
     schedule = Schedule.query.filter(
         (Schedule.teacher_id == Teacher.query.filter(Teacher.login_id == current_user.id).first().id) & (
-        Schedule.time >= (datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)))).all()
+            Schedule.time >= (datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)))).all()
 
     months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября',
               'декабря']
@@ -40,8 +40,61 @@ def dashboard():
 @teacher.route('/teacher/students')
 @login_required
 def students():
+    months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября',
+              'декабря']
+
     check_teacher()
-    return render_template('teacher/students.html', title='Ваши ученики')
+
+    mentorship = Client.query.filter(Client.mentor == current_user.id).all()
+
+    schedule_after = Schedule.query.filter(
+        (Schedule.teacher_id == Teacher.query.filter(Teacher.login_id == current_user.id).first().id) & (
+            Schedule.time >= (datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)))).order_by(
+        Schedule.time.asc()).all()
+
+    schedule_before = Schedule.query.filter(
+        (Schedule.teacher_id == Teacher.query.filter(Teacher.login_id == current_user.id).first().id) & (
+            Schedule.time < (datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)))).order_by(
+        Schedule.time.desc()).all()
+
+    schedule_after_1 = []
+    for schedule_after_item in schedule_after:
+        i = True
+        if schedule_after_1:
+            for schedule_after_item_inner in schedule_after_1:
+                if schedule_after_item_inner.client_id == schedule_after_item.client_id:
+                    i = False
+        if i:
+            schedule_after_1.append(schedule_after_item)
+
+    schedule_before_1 = []
+    for schedule_before_item in schedule_before:
+        i = True
+        if schedule_before_1:
+            for schedule_before_item_inner in schedule_before_1:
+                if schedule_before_item_inner.client_id == schedule_before_item.client_id:
+                    i = False
+        if i:
+            schedule_before_1.append(schedule_before_item)
+
+
+    for schedule_after_item in schedule_after_1:
+        schedule_after_item_client = Client.query.get_or_404(schedule_after_item.client_id)
+        schedule_after_item.date = str(schedule_after_item.time.day) + ' ' + months[
+            schedule_after_item.time.month - 1] + ' ' + str(schedule_after_item.time.year)
+        schedule_after_item.client_name = schedule_after_item_client.last_name + ' ' + \
+                                          schedule_after_item_client.first_name + ' ' + \
+                                          schedule_after_item_client.middle
+
+    for schedule_before_item in schedule_before_1:
+        schedule_before_item_client = Client.query.get_or_404(schedule_before_item.client_id)
+        schedule_before_item.date = str(schedule_before_item.time.day) + ' ' + months[
+            schedule_before_item.time.month - 1] + ' ' + str(schedule_before_item.time.year)
+        schedule_before_item.client_name = schedule_before_item_client.last_name + ' ' + \
+                                           schedule_before_item_client.first_name + ' ' + \
+                                           schedule_before_item_client.middle
+    return render_template('teacher/students.html', schedule_after=schedule_after_1, schedule_before=schedule_before_1,
+                           mentorship=mentorship, title='Ваши ученики')
 
 
 @teacher.route('/teacher/salary')
