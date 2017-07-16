@@ -13,6 +13,22 @@
 </div>
 <div class="container">
     <div class="row">
+        <div class="col-md-12">
+            <table class="table table-hover table-striped">
+                <thead>
+                <th>Дата начисления</th>
+                <th>Начисленная сумма</th>
+                <th>Описание</th>
+                </thead>
+                {% for salary in salaries %}
+                <tr>
+                    <td>{{ salary.date }}</td>
+                    <td>{{ salary.amount }}</td>
+                    <td>{{ salary.description }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 </div>
 {% endblock %}
