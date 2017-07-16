@@ -9,7 +9,7 @@ from flask_login import login_required, current_user
 
 from . import home
 from ..models import Service, SellingLog, Client, RoadMap, TasksError, TrainingRecommendationSession, Answer, \
-    TrainingChoice, Task, Subject, TrainingChoice, Schedule, Teacher
+    TrainingChoice, Task, Subject, TrainingChoice, Schedule, Teacher, MentorsClaim
 from .. import db
 from .forms import AccountEditForm
 
@@ -83,6 +83,12 @@ def account():
                            active_services=active_services, mentor = mentor, teacher = teacher,
                            title="Мой аккаунт")
 
+@home.route('/account/send_claim/<int:teacher_id>', methods = ['GET', 'POST'])
+@login_required
+def account_send_claim(teacher_id):
+    claim = MentorsClaim(client_id = current_user.id, teacher_id = teacher_id, claim = request.form['text'])
+    db.session.add(claim)
+    db.session.commit()
 
 @home.route('/feed')
 @login_required

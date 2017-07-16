@@ -36,6 +36,12 @@ class Client(UserMixin, db.Model):
     groups_list = db.Column(db.String)
     subjects = db.Column(db.String)
     mentor = db.Column(db.Integer)
+    chat_bot_1 = db.Column(db.Boolean)
+    chat_bot_2 = db.Column(db.Boolean)
+    chat_bot_3 = db.Column(db.Boolean)
+    chat_bot_4 = db.Column(db.Boolean)
+    chat_bot_5 = db.Column(db.Boolean)
+    chat_bot_6 = db.Column(db.Boolean)
     selling_log = db.relationship('SellingLog', backref='client',
                                   lazy='dynamic')
     events = db.relationship('Event', backref='client',
