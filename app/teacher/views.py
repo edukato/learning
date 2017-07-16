@@ -5,7 +5,7 @@ import datetime
 
 from . import teacher
 from ..models import Client, RoadMap
-from ..models import Client, Schedule, Subject, OperatingSchedules, Teacher
+from ..models import Client, Schedule, Subject, OperatingSchedules, Teacher, Salary
 from .. import db
 
 
@@ -48,7 +48,10 @@ def students():
 @login_required
 def salary():
     check_teacher()
-    return render_template('teacher/salary.html', title='Зарплата')
+
+    teacher = Teacher.query.filter(Teacher.login_id == current_user.id).first()
+    salaries = Salary.query.filter(Salary.teacher_id == teacher.id).all()
+    return render_template('teacher/salary.html', salaries=salaries, title='Зарплата')
 
 
 @teacher.route('/teacher/help')
