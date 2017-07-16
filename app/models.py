@@ -75,13 +75,6 @@ class Client(UserMixin, db.Model):
         """
         return check_password_hash(self.password_hash, password)
 
-    def last_n_transactions(self, n):
-        list_of_trans = SellingLog.query.filter(SellingLog.client_id == self.id).order_by(
-            SellingLog.id.desc()).limit(n)
-        for last_transaction in list_of_trans:
-            last_transaction.name = (Service.query.filter(Service.id == last_transaction.service_id).first()).name
-        return list_of_trans
-
     def __repr__(self):
         return '<Client: {}>'.format(self.id)
 

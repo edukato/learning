@@ -110,34 +110,8 @@
                         <b>{{ current_user.balance }}₽</b> на счёте
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <div class="m-3" style="width: 275px">
-                            <h5>Последние операции:</h5>
-                            <table class="table table-striped table-hover table-sm"
-                                   style="font-size:0.7rem !important;">
-                                <thead>
-                                <tr>
-                                    <th>Услуга</th>
-                                    <th>Сумма, ₽</th>
-                                    <th>Дата и время</th>
-                                </tr>
-                                </thead>
-                                {% for last_transaction in current_user.last_n_transactions(3) %}
-                                <tr class="clickable-row"
-                                    data-href="{{ url_for('home.show_service', id = last_transaction.service_id) }}">
-                                    <td>
-                                        {{ last_transaction.name }}
-                                    </td>
-                                    <td>
-                                        {{ last_transaction.price }}
-                                    </td>
-                                    <td>
-                                        {{ last_transaction.date_time }}
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </table>
-                            <a class="btn btn-sm btn-success" href="{{ url_for('home.transactions') }}">Хочу ещё</a>
-                        </div>
+                        <a class="dropdown-item" href="{{ url_for('home.transactions') }}"><span
+                                class="fa fa-list"></span> Посмотреть последние операции</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ url_for('home.pay') }}"><span
                                 class="fa fa- fa-credit-card"></span> Пополнить баланс</a>
