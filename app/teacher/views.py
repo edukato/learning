@@ -7,7 +7,7 @@ from . import teacher
 from ..models import Client, RoadMap
 from ..models import Client, Schedule, Subject, OperatingSchedules, Teacher, Salary
 from .. import db
-
+from .forms import MaterialEditForm
 
 def check_teacher():
     if not (current_user.status == 3):
@@ -335,3 +335,10 @@ def schedule_add(id):
 
     return render_template('teacher/teachers_schedule.html', student=student, weekdays=weekdays, byweeks=byweeks,
                            title='Добавить элемент')
+
+
+@teacher.route('/teacher/material/edit',methods=['GET','POST'])
+@login_required
+def edit_material():
+    form = MaterialEditForm()
+    return render_template('teacher/edit_material.html', form=form, title='Изменить материал')

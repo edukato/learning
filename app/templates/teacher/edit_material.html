@@ -1,0 +1,25 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}Добавить предмет{% endblock %}
+{% block body %}
+<script src="https://cdn.ckeditor.com/4.7.1/standard/ckeditor.js"></script>
+<div class="bg-info">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Изменить материал</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            {{ wtf.quick_form(form,enctype="multipart/form-data") }}
+            <script>
+                CKEDITOR.replace('text');
+            </script>
+        </div>
+    </div>
+</div>
+{% endblock %}
