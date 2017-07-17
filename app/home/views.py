@@ -9,7 +9,7 @@ from flask_login import login_required, current_user
 
 from . import home
 from ..models import Service, SellingLog, Client, RoadMap, TasksError, TrainingRecommendationSession, Answer, \
-    TrainingChoice, Task, Subject, TrainingChoice, Schedule, Teacher, MentorsClaim
+    TrainingChoice, Task, Subject, TrainingChoice, Schedule, Teacher, MentorsClaim, Skil
 from .. import db
 from .forms import AccountEditForm
 
@@ -97,12 +97,14 @@ def account():
                            active_services=active_services, mentor=mentor, teacher=teacher,
                            title="Мой аккаунт")
 
-@home.route('/account/send_claim/<int:teacher_id>', methods = ['GET', 'POST'])
+
+@home.route('/account/send_claim/<int:teacher_id>', methods=['GET', 'POST'])
 @login_required
 def account_send_claim(teacher_id):
-    claim = MentorsClaim(client_id = current_user.id, teacher_id = teacher_id, claim = request.form['text'])
+    claim = MentorsClaim(client_id=current_user.id, teacher_id=teacher_id, claim=request.form['text'])
     db.session.add(claim)
     db.session.commit()
+
 
 @home.route('/shop')
 @login_required
@@ -289,6 +291,7 @@ def choice(subject_id):
 def answers_ege(subject_id):
     check_student()
 
+    subject = Subject.query.get_or_404(subject_id)
     tasks = []
     task = Task
     number_of_tasks = int(request.form['number_of_tasks'])
@@ -315,7 +318,41 @@ def answers_ege(subject_id):
         ans = Answer(client_id=current_user.id, task_id=tasks[i].id, answer=answers[i], right=results[i],
                      subject_id=subject_id, task_number=tasks[i].number)
         db.session.add(ans)
-    db.session.commit()
+
+    type_tasks = [[]]
+
+    for i in range(subject.tasks_number):
+        for a in range(number_of_tasks):
+            if(tasks[a].number == (i+1)):
+                type_tasks[i].append(tasks[a])
+                print('В тип заданий ' + str(i) + ' добавлено задание № ' + str(a))
+        if(len(type_tasks) < subject.tasks_number):
+            type_tasks.append([])
+        print('Заданий ' + str(len(type_tasks[i])) + ' в типе заданий ' + str(i))
+
+    right_answers_amount = 0
+    answers_amount = 0
+    c = 0
+    print('Тут результатыыыыыыыыыыыыыыыыыыыыыыыы')
+    print(results)
+    for i in range(subject.tasks_number):
+        answers_amount = len(Answer.query.filter(Answer.client_id == current_user.id).filter(
+            Answer.subject_id == subject_id).filter(Answer.task_number == i+1).all())
+        old_skil = (Skil.query.filter(Skil.client_id == current_user.id).filter(Skil.subject == subject_id).filter(
+            Skil.number==(i+1)).all())[0]
+        old_percent = old_skil.right_percent
+
+        new_right_answers_amount = 0
+        new_answers_amount = 0
+        for a in range(len(type_tasks[i])):
+            new_right_answers_amount += results[c]
+            new_answers_amount += 1
+            c += 1
+        right_answers_amount = (answers_amount-new_answers_amount) * old_percent
+        new_right_percent = ((right_answers_amount+new_right_answers_amount)/(answers_amount))
+        old_skil.right_percent = new_right_percent
+        db.session.commit()
+
     return render_template('home/train/answers_ege.html', tasks=tasks, descriptions=descriptions, subject_id=subject_id,
                            number_of_tasks=number_of_tasks, results=results, answers=answers, title="Решения и ответы")
 

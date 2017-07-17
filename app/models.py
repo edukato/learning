@@ -310,6 +310,7 @@ class Skil(db.Model):
     subject = db.Column(db.String)
     number = db.Column(db.Integer)
     level = db.Column(db.Integer)
+    right_percent = db.Column(db.Float)
 
     def __repr__(self):
         return '<Skil: {}>'.format(self.id)
