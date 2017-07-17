@@ -478,6 +478,28 @@ def chat_bot():
     return render_template('home/chat-bot.html', title='Чат-бот')
 
 
+@home.route('/chat-bot/update', methods=['POST'])
+@login_required
+def chat_bot_upd():
+    check_student()
+
+    client = Client.query.get_or_404(current_user.id)
+    if request.form.get('social'):
+        client.social_network = request.form['social']
+    if request.form.get('1'):
+        client.chat_bot_1 = True
+    if request.form.get('2'):
+        client.chat_bot_2 = True
+    if request.form.get('3'):
+        client.chat_bot_3 = True
+    if request.form.get('4'):
+        client.chat_bot_4 = True
+    if request.form.get('5'):
+        client.chat_bot_5 = True
+    db.session.commit()
+    return redirect(url_for('home.chat_bot'))
+
+
 @home.route('/set_time', methods=['GET', 'POST'])
 @login_required
 def set_time():
