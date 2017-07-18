@@ -150,6 +150,8 @@ class Teacher(db.Model):
     institution = db.Column(db.String)
     course = db.Column(db.Integer)
     achievements = db.Column(db.String)
+    materials = db.relationship('Material', backref='teacher',
+                             lazy='dynamic')
     grades = db.relationship('Grade', backref='teacher',
                              lazy='dynamic')
     events = db.relationship('Event', backref='teacher',
@@ -310,6 +312,7 @@ class Skil(db.Model):
     subject = db.Column(db.String)
     number = db.Column(db.Integer)
     level = db.Column(db.Integer)
+    right_percent = db.Column(db.Float)
 
     def __repr__(self):
         return '<Skil: {}>'.format(self.id)
@@ -346,6 +349,8 @@ class Subject(db.Model):
     subject = db.Column(db.String)
     description = db.Column(db.String)
     tasks_number = db.Column(db.Integer)
+    materials = db.relationship('Material', backref='subject',
+                              lazy='dynamic')
     answers = db.relationship('Answer', backref='subject',
                             lazy='dynamic')
     tasks = db.relationship('Task', backref='subject',
@@ -382,3 +387,17 @@ class MentorsClaim(db.Model):
 
     def __repr__(self):
         return '<MentorsClaim: {}>'.format(self.id)
+
+class Material(db.Model):
+    __tablename__ = 'materials'
+
+    id = db.Column(db.Integer, primary_key=True)
+    subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'))
+    date = db.Column(db.DateTime)
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))
+    title = db.Column(db.String)
+    description = db.Column(db.String)
+    text = db.Column(db.String)
+
+    def __repr__(self):
+        return '<Material: {}>'.format(self.id)
