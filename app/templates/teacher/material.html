@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% set active_page = "account" %}
+{% block title %}Материалы{% endblock %}
+{% block body %}
+<style>
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: "/";
+    }
+
+    .breadcrumb {
+        border: none;
+        background-color: white;
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+
+    .author {
+        font-size: 12pt;
+    }
+
+    .content {
+        font-size: 11pt;
+    }
+</style>
+<div class="container" style="max-width: 850px">
+    <div class="card-block">
+        <div class="row mb-2">
+            <div class="col-12 col-md-auto text-left" style="padding-right: 5px">
+                <img class="rounded-circle" width="50px" src="static/images/profile/1.png">
+            </div>
+            <div class="col text-left">
+                <p class="author" style="margin-bottom: 2px">{{ current_user.first_name }} {{ current_user.last_name
+                    }}</p>
+                <p class="author" style="margin-bottom: 12px">{{ current_user.description }}</p>
+            </div>
+        </div>
+        <h4>{{ material.title }}</h4>
+        {% autoescape false %}
+        {{ material.text }}
+        {% endautoescape %}
+    </div>
+</div>
+{% endblock %}

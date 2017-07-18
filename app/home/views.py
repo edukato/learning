@@ -12,12 +12,7 @@ from ..models import Service, SellingLog, Client, RoadMap, TasksError, TrainingR
     TrainingChoice, Task, Subject, TrainingChoice, Schedule, Teacher, MentorsClaim, Skil, Material
 from .. import db
 from .forms import AccountEditForm
-
-
-def awesome_date(date):
-    months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября',
-              'декабря']
-    return str(date.day) + ' ' + months[date.month - 1] + ' ' + str(date.year)
+from ..utils import awesome_date
 
 
 def check_student():
