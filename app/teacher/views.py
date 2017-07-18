@@ -5,9 +5,11 @@ import datetime
 
 from . import teacher
 from ..models import Client, RoadMap
-from ..models import Client, Schedule, Subject, OperatingSchedules, Teacher, Salary
+from ..models import Client, Schedule, Subject, OperatingSchedules, Teacher, Salary, Material
 from .. import db
 from .forms import MaterialEditForm
+from ..utils import awesome_date
+
 
 def check_teacher():
     if not (current_user.status == 3):
@@ -77,19 +79,16 @@ def students():
         if i:
             schedule_before_1.append(schedule_before_item)
 
-
     for schedule_after_item in schedule_after_1:
         schedule_after_item_client = Client.query.get_or_404(schedule_after_item.client_id)
-        schedule_after_item.date = str(schedule_after_item.time.day) + ' ' + months[
-            schedule_after_item.time.month - 1] + ' ' + str(schedule_after_item.time.year)
+        schedule_after_item.date = awesome_date(schedule_after_item.time)
         schedule_after_item.client_name = schedule_after_item_client.last_name + ' ' + \
                                           schedule_after_item_client.first_name + ' ' + \
                                           schedule_after_item_client.middle
 
     for schedule_before_item in schedule_before_1:
         schedule_before_item_client = Client.query.get_or_404(schedule_before_item.client_id)
-        schedule_before_item.date = str(schedule_before_item.time.day) + ' ' + months[
-            schedule_before_item.time.month - 1] + ' ' + str(schedule_before_item.time.year)
+        schedule_before_item.date = awesome_date(schedule_before_item.time)
         schedule_before_item.client_name = schedule_before_item_client.last_name + ' ' + \
                                            schedule_before_item_client.first_name + ' ' + \
                                            schedule_before_item_client.middle
@@ -337,8 +336,49 @@ def schedule_add(id):
                            title='Добавить элемент')
 
 
-@teacher.route('/teacher/material/edit',methods=['GET','POST'])
+@teacher.route('/teacher/material/<int:id>/edit', methods=['GET', 'POST'])
 @login_required
-def edit_material():
-    form = MaterialEditForm()
+def edit_material(id):
+    check_teacher()
+
+    material = Material.query.get_or_404(id)
+
+    form = MaterialEditForm(obj=material)
+    if form.validate_on_submit():
+        material.title = form.title.data
+        material.description = form.description.data
+        material.text = form.text.data
+        db.session.commit()
+        return redirect(url_for('teacher.materials'))
+
+    form.title.data = material.title
+    form.description.data = material.description
+    form.text.data = material.text
     return render_template('teacher/edit_material.html', form=form, title='Изменить материал')
+
+
+@teacher.route('/teacher/material', methods=['GET', 'POST'])
+@login_required
+def materials():
+    check_teacher()
+
+    materials = Material.query.filter(
+        Material.teacher_id == Teacher.query.filter(Teacher.login_id == current_user.id).first().id).all()
+
+    for material in materials:
+        material.date_t = awesome_date(material.date)
+
+    return render_template('teacher/materials.html', materials=materials, title='Материалы')
+
+
+@teacher.route('/teacher/material/<int:id>', methods=['GET', 'POST'])
+@login_required
+def material(id):
+    check_teacher()
+
+    material = Material.query.get_or_404(id)
+    if Teacher.query.get_or_404(material.teacher_id).login_id != current_user.id:
+        abort(403)
+
+    material.date_t = awesome_date(material.date)
+    return render_template('teacher/material.html', material=material, title='Материал')

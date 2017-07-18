@@ -2,6 +2,7 @@
 {% set active_page = "chat-bot" %}
 {% block title %}Чат-бот{% endblock %}
 {% block body %}
+<script src="https://vk.com/js/api/openapi.js?146" type="text/javascript"></script>
 <div class="bg-chat_bot">
     <div class="container">
         <div class="row">
@@ -37,10 +38,13 @@
             <P>Всё просто - это можно сделать за пару минут:</P>
             <ol>
                 <li>Укажи здесь в настройках адрес своей страницы ВК и желаемый функционал</li>
-                <li>Перейди по <a href="#">ссылке</a></li>
-                <li>Напиши в сообщения сообщества</li>
-            </ol>
-            <br>
+                <li>Согласись на получение сообщений от сообщества
+                    <div id="vk_allow_messages_from_community"></div>
+                    <script type="text/javascript">
+                        VK.Widgets.AllowMessagesFromCommunity("vk_allow_messages_from_community", {height: 24}, 146414858);
+                    </script>
+                </li>
+                <br>
         </div>
         <div class="col-md-6">
             <h3>Настройки</h3>

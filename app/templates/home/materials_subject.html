@@ -12,10 +12,7 @@
 </style>
 <div class="container" style="max-width: 850px">
     <div class="form-inline mb-2">
-        <H1 class="mr-3">Материалы</H1>
-        {% for subject in subjects %}
-        <a href="{{ url_for('home.materials_subj',id = subject[0]) }}"><span class="badge badge-pill badge-primary mr-3">{{ subject[1] }}</span></a>
-        {% endfor %}
+        <h1 class="mr-3">{{ subject }} - материалы</h1>
     </div>
     {% for material in materials %}
     <div class="card text-center">

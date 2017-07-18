@@ -2,6 +2,7 @@
 {% set active_page = "help" %}
 {% block title %}Поддержка{% endblock %}
 {% block body %}
+<script src="https://vk.com/js/api/openapi.js?146" type="text/javascript"></script>
 <div class="bg-1">
     <div class="container">
         <img src="{{ url_for('static', filename=('images/help.png')) }}"
@@ -87,4 +88,11 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="//vk.com/js/api/openapi.js?146"></script>
+
+<!-- VK Widget -->
+<div id="vk_community_messages"></div>
+<script type="text/javascript">
+VK.Widgets.CommunityMessages("vk_community_messages", 146414858, {expanded: "1",disableExpandChatSound: "1",tooltipButtonText: "Есть вопрос?"});
+</script>
 {% endblock %}

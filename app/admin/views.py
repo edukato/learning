@@ -4,10 +4,10 @@ from flask import flash, redirect, render_template, url_for, abort
 from flask_login import login_required, current_user
 
 from . import admin
-from ..models import Client, Subject, TrainingChoice, Task, Schedule, Teacher
+from ..models import Client, Subject, TrainingChoice, Task, Schedule, Teacher, Material
 from .. import db
 from .forms import SubjectEditForm, SubjectAddForm, ChoiceAddForm, ChoiceEditForm, TaskAddForm
-
+from ..utils import awesome_date
 
 def check_admin():
     if not (current_user.status == 2):
@@ -231,3 +231,18 @@ def teacher(id):
 
     return render_template('admin/teacher.html', teacher=teacher,
                            title=(teacher.last_name + teacher.first_name + teacher.middle))
+
+
+@admin.route('/admin/materials', methods=['GET', 'POST'])
+@login_required
+def materials():
+    check_admin()
+
+    materials = Material.query.all()
+
+    for material in materials:
+        material.date_t = awesome_date(material.date)
+        teacher = Client.query.get_or_404(Teacher.query.get_or_404(material.teacher_id).login_id)
+        material.teacher_name = teacher.first_name + ' ' + teacher.last_name
+
+    return render_template('admin/materials.html', materials=materials, title='Материалы')

@@ -9,9 +9,10 @@ from flask_login import login_required, current_user
 
 from . import home
 from ..models import Service, SellingLog, Client, RoadMap, TasksError, TrainingRecommendationSession, Answer, \
-    TrainingChoice, Task, Subject, TrainingChoice, Schedule, Teacher, MentorsClaim, Skil
+    TrainingChoice, Task, Subject, TrainingChoice, Schedule, Teacher, MentorsClaim, Skil, Material
 from .. import db
 from .forms import AccountEditForm
+from ..utils import awesome_date
 
 
 def check_student():
@@ -57,16 +58,12 @@ def account():
     schedule = Schedule.query.filter(
         (Schedule.client_id == current_user.id) & (Schedule.time > datetime.datetime.now())).all()
 
-    months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября',
-              'декабря']
-
     for schedule_item in schedule:
         schedule_item.day = schedule_item.time.day
         schedule_item.subject_name = Subject.query.get_or_404(schedule_item.subject_id).subject
         schedule_item.dow = schedule_item.time.weekday()
         schedule_item.day_of_week = weekdays[schedule_item.dow]
-        schedule_item.date = str(schedule_item.time.day) + ' ' + months[
-            schedule_item.time.month - 1] + ' ' + str(schedule_item.time.year)
+        schedule_item.date = awesome_date(schedule_item.time)
         schedule_teacher = Client.query.get_or_404(Teacher.query.get_or_404(schedule_item.teacher_id).login_id)
         schedule_item.teacher_name = schedule_teacher.last_name + ' ' + schedule_teacher.first_name[0] + '. ' + \
                                      schedule_teacher.middle[0] + '.'
@@ -347,6 +344,10 @@ def answers_ege(subject_id):
         for a in range(number_of_tasks):
             if (tasks[a].number == (i + 1)):
                 type_tasks[i].append(tasks[a])
+<<<<<<< HEAD
+=======
+                print('В тип заданий ' + str(i) + ' добавлено задание № ' + str(a))
+>>>>>>> b9750fb14267cf9c7572e75ba1f75cd709726790
         if (len(type_tasks) < subject.tasks_number):
             type_tasks.append([])
 
@@ -365,6 +366,7 @@ def answers_ege(subject_id):
         b = 0
         answers_amount = len(Answer.query.filter(Answer.client_id == current_user.id).filter(
             Answer.subject_id == subject_id).filter(Answer.task_number == i + 1).all())
+<<<<<<< HEAD
         if (answers_amount > 0):
             old_skil = (Skil.query.filter(Skil.client_id == current_user.id).filter(Skil.subject == subject_id).filter(
                 Skil.number == (i + 1)).all())[0]
@@ -412,6 +414,22 @@ def answers_ege(subject_id):
             else:
                 show_skils.append(False)
             db.session.commit()
+=======
+        old_skil = (Skil.query.filter(Skil.client_id == current_user.id).filter(Skil.subject == subject_id).filter(
+            Skil.number == (i + 1)).all())[0]
+        old_percent = old_skil.right_percent
+
+        new_right_answers_amount = 0
+        new_answers_amount = 0
+        for a in range(len(type_tasks[i])):
+            new_right_answers_amount += results[c]
+            new_answers_amount += 1
+            c += 1
+        right_answers_amount = (answers_amount - new_answers_amount) * old_percent
+        new_right_percent = ((right_answers_amount + new_right_answers_amount) / (answers_amount))
+        old_skil.right_percent = new_right_percent
+        db.session.commit()
+>>>>>>> b9750fb14267cf9c7572e75ba1f75cd709726790
 
     return render_template('home/train/answers_ege.html', tasks=tasks, descriptions=descriptions, subject_id=subject_id,
                            number_of_tasks=number_of_tasks, results=results, answers=answers, levels_up=levels_up,
@@ -572,17 +590,92 @@ def set_time():
     return render_template('home/set_time.html', title='Указать расписание')
 
 
-@home.route('/materials_home')
+@home.route('/materials/home')
 @login_required
 def materials_home():
     check_student()
 
-    return render_template('home/materials_home.html', title='Материалы')
+    if current_user.subjects is not None:
+        id_subjects = current_user.subjects.split(",")
+    else:
+        id_subjects = []
+    student_subjects = []
+    for id_subject in id_subjects:
+        new_subject = Subject.query.get_or_404(id_subject)
+        new_subject_name = new_subject.subject
+        student_subjects.append([id_subject, new_subject_name])
+
+    materials = Material.query.filter(Material.date <= datetime.datetime.now()).all()
+    for material in materials:
+        for id_subject in id_subjects:
+            if int(material.subject_id) != int(id_subject):
+                print('kek')
+                materials.remove(material)
+
+    for material in materials:
+        teacher = Client.query.get_or_404(Teacher.query.get_or_404(material.teacher_id).login_id)
+        material.teacher_name = teacher.first_name + ' ' + teacher.last_name
+        material.teacher_descript = teacher.description
+        material.date_t = awesome_date(material.date)
+
+    return render_template('home/materials_home.html', materials=materials, subjects=student_subjects,
+                           title='Материалы')
 
 
-@home.route('/material')
+@home.route('/materials/<int:id>')
 @login_required
-def material():
+def materials_subj(id):
     check_student()
 
-    return render_template('home/material.html', title='Материал')
+    subject = Subject.query.get_or_404(id).subject
+
+    if current_user.subjects is not None:
+        id_subjects = current_user.subjects.split(",")
+    else:
+        id_subjects = []
+
+    key = False
+
+    for id_subject in id_subjects:
+        if int(id) == int(id_subject):
+            key = True
+    if not key:
+        abort(403)
+
+    materials = Material.query.filter((Material.date <= datetime.datetime.now()) & (Material.subject_id == id)).all()
+
+    for material in materials:
+        teacher = Client.query.get_or_404(Teacher.query.get_or_404(material.teacher_id).login_id)
+        material.teacher_name = teacher.first_name + ' ' + teacher.last_name
+        material.teacher_descript = teacher.description
+        material.date_t = awesome_date(material.date)
+
+    return render_template('home/materials_subject.html', materials=materials, subject=subject,
+                           title='Материалы')
+
+
+@home.route('/material/<int:id>')
+@login_required
+def material(id):
+    check_student()
+
+    material = Material.query.get_or_404(id)
+    if current_user.subjects is not None:
+        id_subjects = current_user.subjects.split(",")
+    else:
+        id_subjects = []
+
+    key = False
+
+    for id_subject in id_subjects:
+        if int(id_subject) == int(material.subject_id):
+            key = True
+
+    if not key:
+        abort(403)
+
+    material.date_t = awesome_date(material.date)
+    teacher = Client.query.get_or_404(Teacher.query.get_or_404(material.teacher_id).login_id)
+    material.teacher_name = teacher.first_name + ' ' + teacher.last_name
+    material.teacher_descript = teacher.description
+    return render_template('home/material.html', material=material, title='Материал')

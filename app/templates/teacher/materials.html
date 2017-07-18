@@ -3,36 +3,38 @@
 {% block title %}Материалы{% endblock %}
 {% block body %}
 <style>
-    .author{
-        font-size:12pt;
+    .author {
+        font-size: 12pt;
     }
-    .content{
-        font-size:12pt;
+
+    .content {
+        font-size: 12pt;
     }
 </style>
 <div class="container" style="max-width: 850px">
     <div class="form-inline mb-2">
-        <H1 class="mr-3">Материалы</H1>
-        {% for subject in subjects %}
-        <a href="{{ url_for('home.materials_subj',id = subject[0]) }}"><span class="badge badge-pill badge-primary mr-3">{{ subject[1] }}</span></a>
-        {% endfor %}
+        <H1 class="mr-3">Ваши материалы</H1>
     </div>
     {% for material in materials %}
     <div class="card text-center">
         <div class="card-block">
             <div class="row">
                 <div class="col-12 col-md-auto text-left" style="padding-right: 5px">
-                    <img  class="rounded-circle" width="50px" src="{{ url_for('static', filename=('images/profile/' ~ material.teacher_id ~ '.png')) }}">
+                    <img class="rounded-circle" width="50px"
+                         src="{{ url_for('static', filename=('images/profile/' ~ current_user.id ~ '.png')) }}">
                 </div>
                 <div class="col text-left">
-                    <p class="author" style="margin-bottom: 2px">{{ material.teacher_name }}</p>
-                    <p class="author" style="margin-bottom: 12px">{{ material.teacher_descript }}</p>
+                    <p class="author" style="margin-bottom: 2px">{{ current_user.first_name }} {{ current_user.last_name
+                        }}</p>
+                    <p class="author" style="margin-bottom: 12px">{{ current_user.description }}</p>
                 </div>
             </div>
             <h4 class="card-title mb-1">{{ material.title }}</h4>
             <p class="card-text text-left content">{{ material.description }}</p>
             <div class="text-left">
-                <a href="{{url_for('home.material', id = material.id)}}" class="btn btn-primary">Читать</a>
+                <a href="{{url_for('teacher.material', id = material.id)}}" class="btn btn-primary">Читать</a>
+                <a href="{{ url_for('teacher.edit_material', id = material.id )}}"
+                   class="btn btn-secondary">Редактировать</a>
             </div>
         </div>
         <div class="card-footer text-muted text-left">
