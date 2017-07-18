@@ -147,6 +147,13 @@ def pay():
 def training_home():
     check_student()
     client = current_user
+    rec = True
+    if (client.loboda_date != None):
+        if ((client.loboda_date.replace(hour=0, minute=0, second=0, microsecond=0)) == (
+        datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0))):
+            rec = True
+        else:
+            rec = False
     if client.subjects is not None:
         id_subjects = client.subjects.split(",")
     else:
@@ -166,7 +173,7 @@ def training_home():
 
     return render_template('home/train/training_home.html', student_subjects=student_subjects,
                            student_subjects_small=student_subjects_small,
-                           id_subjects=id_subjects, rec_subject=rec_subject, title="Тренировка")
+                           id_subjects=id_subjects, rec_subject=rec_subject, rec = rec, title="Тренировка")
 
 
 @home.route('/training_subject/<int:subject_id>')
@@ -206,7 +213,7 @@ def ege(subject_id, training_type):
             final_tasks.append(final_task)
 
         return render_template('home/train/ege.html', tasks=final_tasks, subject_id=subject_id,
-                               tasks_quantity=number_of_tasks, training_type = training_type, title="Вариант ЕГЭ")
+                               tasks_quantity=number_of_tasks, training_type=training_type, title="Вариант ЕГЭ")
 
     if training_type == 1:
         tasks = []
@@ -237,7 +244,7 @@ def ege(subject_id, training_type):
             tasks.append(random.choice(task))
 
         return render_template('home/train/ege.html', tasks=tasks, subject_id=subject_id,
-                               tasks_quantity=n_questions, training_type = training_type, title='Рекомендумые задания')
+                               tasks_quantity=n_questions, training_type=training_type, title='Рекомендумые задания')
 
     if training_type == 2:
         tasks = []
@@ -256,7 +263,7 @@ def ege(subject_id, training_type):
                 final_tasks.append(final_task)
                 _tasks.remove(final_task)
         return render_template('home/train/ege.html', tasks=final_tasks, subject_id=subject_id,
-                               tasks_quantity=tasks_quantity, training_type = training_type, title="Вариант ЕГЭ")
+                               tasks_quantity=tasks_quantity, training_type=training_type, title="Вариант ЕГЭ")
 
 
 @home.route('/ege/send_error/<int:task_id>', methods=['GET', 'POST'])
@@ -301,9 +308,11 @@ def choice(subject_id):
 @login_required
 def answers_ege(subject_id):
     check_student()
-    training_type = request.form['type_of_train']
-    if(training_type == 1):
-        current_user.loboda_date = datetime.datetime.now()
+    training_type = int(request.form['type_of_train'])
+    if (training_type == 1):
+        client = Client.query.get_or_404(current_user.id)
+        client.loboda_date = datetime.datetime.now()
+        db.session.commit()
     subject = Subject.query.get_or_404(subject_id)
     tasks = []
     task = Task
@@ -329,7 +338,7 @@ def answers_ege(subject_id):
 
     for i in range(number_of_tasks):
         ans = Answer(client_id=current_user.id, task_id=tasks[i].id, answer=answers[i], right=results[i],
-                     subject_id=subject_id, task_number=tasks[i].number, training_type = training_type)
+                     subject_id=subject_id, task_number=tasks[i].number, training_type=training_type)
         db.session.add(ans)
 
     type_tasks = [[]]
@@ -356,7 +365,7 @@ def answers_ege(subject_id):
         b = 0
         answers_amount = len(Answer.query.filter(Answer.client_id == current_user.id).filter(
             Answer.subject_id == subject_id).filter(Answer.task_number == i + 1).all())
-        if(answers_amount > 0):
+        if (answers_amount > 0):
             old_skil = (Skil.query.filter(Skil.client_id == current_user.id).filter(Skil.subject == subject_id).filter(
                 Skil.number == (i + 1)).all())[0]
             old_percent = old_skil.right_percent
@@ -388,11 +397,11 @@ def answers_ege(subject_id):
                 if (new_skil_level == 5):
                     new_skil_level = 4
                 new_skil_levels.append(new_skil_level)
-                if (old_skil_level > new_skil_level):
+                if (int(old_skil_level) > int(new_skil_level)):
                     levels_down.append(True)
                     levels_up.append(False)
                     change_down = True
-                if (new_skil_level > old_skil_level):
+                elif (int(new_skil_level) > int(old_skil_level)):
                     levels_down.append(False)
                     levels_up.append(True)
                     change_up = True

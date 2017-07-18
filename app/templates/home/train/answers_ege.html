@@ -31,11 +31,11 @@
                     <td>
                         {{ descriptions[loop.index0] }}
                     </td>
-                    <td>
+                    <td style="color:green">
                         {% if show_skils_first_time[loop.index0] %}
-                        {{' -> ' ~ new_skil_levels[loop.index0]}}
+                        {{' → ' ~ new_skil_levels[loop.index0]}}
                         {% else %}
-                        {{ old_skil_levels[loop.index0] ~ ' -> ' ~ new_skil_levels[loop.index0]}}
+                        {{ old_skil_levels[loop.index0] ~ ' → ' ~ new_skil_levels[loop.index0]}}
                         {% endif %}
                     </td>
                 </tr>
@@ -60,11 +60,11 @@
                 <td>
                     {{ descriptions[loop.index0] }}
                 </td>
-                <td>
+                <td style="color: red">
                     {% if show_skils_first_time[loop.index0] %}
-                    {{' -> ' ~ new_skil_levels[loop.index0]}}
+                    {{' → ' ~ new_skil_levels[loop.index0]}}
                     {% else %}
-                    {{ old_skil_levels[loop.index0] ~ ' -> ' ~ new_skil_levels[loop.index0]}}
+                    {{ old_skil_levels[loop.index0] ~ ' → ' ~ new_skil_levels[loop.index0]}}
                     {% endif %}
                 </td>
             </tr>
