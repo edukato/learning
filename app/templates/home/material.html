@@ -26,7 +26,7 @@
     <ol class="breadcrumb mb-0" >
         <li class="breadcrumb-item"><a href="{{url_for('home.account')}}">Главная</a></li>
         <li class="breadcrumb-item breadcrumb-item"><a href="{{url_for('home.materials_home')}}">Материалы</a></li>
-        <li class="breadcrumb-item active">Химия</li>
+        <li class="breadcrumb-item active">{{ material.subject.subject }}</li>
     </ol>
     <div class="card-block">
         <div class="row mb-2">
@@ -34,24 +34,12 @@
                 <img class="rounded-circle" width="50px" src="static/images/profile/1.png">
             </div>
             <div class="col text-left">
-                <p class="author" style="margin-bottom: 2px">Дмитрий Гущин</p>
-                <p class="author" style="margin-bottom: 12px">Автор спижженых заданий</p>
+                <p class="author" style="margin-bottom: 2px">{{ material.teacher_name }}</p>
+                <p class="author" style="margin-bottom: 12px">{{ material.teacher_descript }}</p>
             </div>
         </div>
-        <h4>Углеродные материалы</h4>
-        <p class="content">Увлекательный рассказ о том, как нужно хайпить на углеродных материалах.&nbsp;
-            Вам потребуется: электронный микроскоп - 1шт,&nbsp; Женя - 1шт <br>
-            И <br>
-            Ещё <br>
-            Много <br>
-            Текста <br>
-            О <br>
-            ч <br>
-            е <br>
-            н <br>
-            ь <br>
-            Много <br>
-        </p>
+        <h4>{{ material.title }}</h4>
+        {{ material.text }}
     </div>
 </div>
 {% endblock %}
