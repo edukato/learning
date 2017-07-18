@@ -344,10 +344,6 @@ def answers_ege(subject_id):
         for a in range(number_of_tasks):
             if (tasks[a].number == (i + 1)):
                 type_tasks[i].append(tasks[a])
-<<<<<<< HEAD
-=======
-                print('В тип заданий ' + str(i) + ' добавлено задание № ' + str(a))
->>>>>>> b9750fb14267cf9c7572e75ba1f75cd709726790
         if (len(type_tasks) < subject.tasks_number):
             type_tasks.append([])
 
@@ -366,7 +362,6 @@ def answers_ege(subject_id):
         b = 0
         answers_amount = len(Answer.query.filter(Answer.client_id == current_user.id).filter(
             Answer.subject_id == subject_id).filter(Answer.task_number == i + 1).all())
-<<<<<<< HEAD
         if (answers_amount > 0):
             old_skil = (Skil.query.filter(Skil.client_id == current_user.id).filter(Skil.subject == subject_id).filter(
                 Skil.number == (i + 1)).all())[0]
@@ -414,7 +409,6 @@ def answers_ege(subject_id):
             else:
                 show_skils.append(False)
             db.session.commit()
-=======
         old_skil = (Skil.query.filter(Skil.client_id == current_user.id).filter(Skil.subject == subject_id).filter(
             Skil.number == (i + 1)).all())[0]
         old_percent = old_skil.right_percent
@@ -429,7 +423,6 @@ def answers_ege(subject_id):
         new_right_percent = ((right_answers_amount + new_right_answers_amount) / (answers_amount))
         old_skil.right_percent = new_right_percent
         db.session.commit()
->>>>>>> b9750fb14267cf9c7572e75ba1f75cd709726790
 
     return render_template('home/train/answers_ege.html', tasks=tasks, descriptions=descriptions, subject_id=subject_id,
                            number_of_tasks=number_of_tasks, results=results, answers=answers, levels_up=levels_up,
