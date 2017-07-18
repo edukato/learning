@@ -39,7 +39,9 @@
             </div>
         </div>
         <h4>{{ material.title }}</h4>
+        {% autoescape false %}
         {{ material.text }}
+        {% endautoescape %}
     </div>
 </div>
 {% endblock %}
