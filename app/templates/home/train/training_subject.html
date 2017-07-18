@@ -3,22 +3,23 @@
 {% block title %}Тренировка{% endblock %}
 {% block body %}
 <style>
-   .par {
-    font-size: 12pt; /* Размер шрифта в пунктах */
-   }
+    .par {
+        font-size: 12pt; /* Размер шрифта в пунктах */
+    }
 </style>
 <div class="container">
     <div class="row">
         <div class="col-md-3">
             <ul class="list-group">
-                <a href="{{url_for('home.training_home')}}" class="list-group-item justify-content-between list-group-item-action">
+                <a href="{{url_for('home.training_home')}}"
+                   class="list-group-item justify-content-between list-group-item-action">
                     Главная
                 </a>
                 {% for student_subject in student_subjects %}
-                    <a href="{{url_for('home.training_subject' , subject_id = id_subjects[loop.index0])}}"
-                       class="list-group-item justify-content-between list-group-item-action">
-                        {{ student_subject }}
-                    </a>
+                <a href="{{url_for('home.training_subject' , subject_id = id_subjects[loop.index0])}}"
+                   class="list-group-item justify-content-between list-group-item-action">
+                    {{ student_subject }}
+                </a>
                 {% endfor %}
             </ul>
             <br>
@@ -27,7 +28,8 @@
             <h1 align="center" class="mb-1">{{ student_subjects[subject_id - 1] }}</h1>
             <h3 align="center" class="mb-3">Режим тренировки</h3>
             <ul class="list-group text-center">
-                <a href="{{ url_for('home.ege', subject_id = subject_id, training_type = 0) }}" class="list-group-item justify-content-between list-group-item-action ">
+                <a href="{{ url_for('home.ege', subject_id = subject_id, training_type = 0) }}"
+                   class="list-group-item justify-content-between list-group-item-action ">
                     <div class="col-md-12">
                         <h4 align="center">Вариант ЕГЭ</h4>
                     </div>
@@ -38,7 +40,8 @@
                         </p>
                     </div>
                 </a>
-                <a href="{{url_for('home.ege', subject_id = subject_id, training_type = 1)}}" class="list-group-item justify-content-between list-group-item-action">
+                <a href="{{url_for('home.ege', subject_id = subject_id, training_type = 1)}}"
+                   class="list-group-item justify-content-between list-group-item-action">
                     <div class="col-md-12">
                         <h4 align="center">Рекомендуем отработать</h4>
                     </div>
@@ -49,20 +52,64 @@
                         </p>
                     </div>
                 </a>
-                <a href="{{ url_for('home.choice', subject_id = subject_id) }}" class="list-group-item justify-content-between list-group-item-action">
+                <a href="{{ url_for('home.choice', subject_id = subject_id) }}"
+                   class="list-group-item justify-content-between list-group-item-action">
                     <div class="col-md-12">
                         <h4 align="center">Выборочное тестирование</h4>
                     </div>
                     <div class="par">
                         <p>
-                            Вариант ЕГЭ составленный из заданий, выбранных пользователем для отработки определенных умений
+                            Вариант ЕГЭ составленный из заданий, выбранных пользователем для отработки определенных
+                            умений
                             и навыков, необходимых для успешной сдачи экзамена.
                         </p>
                     </div>
                 </a>
             </ul>
+            <br>
+            <h3 align="center" class="mb-4">Уровень готовности: </h3>
+            <table class="table" style="margin: 0px">
+                <thead>
+                <th>№</th>
+                <th>Описание задания</th>
+                <th>Уровень готовности</th>
+                </thead>
+                <tbody>
+                {% for skil in skils %}
+                {% if skil.answers_amount >= 5 %}
+                <tr>
+                    <th scope="row">{{loop.index}}</th>
+                    <td>
+                        {{ descriptions[loop.index0] }}
+                    </td>
+                    <td>
+                        {{ skil.level }}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+
+                    <th scope="row">{{loop.index}}</th>
+                    <td>
+                        {{ descriptions[loop.index0] }}
+                    </td>
+                    <td>
+                        {% if skil.answers_amount == 0 %}
+                        Необходио решить ещё {{ ' ' ~ (5 - skil.answers_amount) ~' ' }} заданий.
+                        {% elif (skil.answers_amount < 4) and (skil.answers_amount > 0) %}
+                        Необходио решить ещё {{ ' ' ~ (5 - skil.answers_amount) ~' ' }} задания.
+                        {% elif skil.answers_amount == 4 %}
+                        Необходио решить ещё {{ ' ' ~ (5 - skil.answers_amount) ~' ' }} задание.
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
+
 
     <div class="row">
 

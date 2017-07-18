@@ -15,53 +15,71 @@
     <br>
     <h1>Результаты</h1>
     <br>
+    {% if change_up or change_down %}
     <div class="row">
+        {% if change_up %}
         <div class="col">
-            <h5 align="center">Уровень готовности повышен</h5>
+            <h5 align="center" class="mb-3">Уровень готовности повышен</h5>
             <table class="table" style="margin: 0px">
                 <thead>
                 </thead>
                 <tbody>
-                {% for task in tasks %}
-                {% if results[loop.index0] %}
+                {% for level in levels_up %}
+                {% if level and show_skils[loop.index0] %}
                 <tr>
-                    <th scope="row">{{ task.number }}</th>
+                    <th scope="row">{{ loop.index }}</th>
                     <td>
                         {{ descriptions[loop.index0] }}
                     </td>
+                    <td style="color:green">
+                        {% if show_skils_first_time[loop.index0] %}
+                        {{' → ' ~ new_skil_levels[loop.index0]}}
+                        {% else %}
+                        {{ old_skil_levels[loop.index0] ~ ' → ' ~ new_skil_levels[loop.index0]}}
+                        {% endif %}
+                    </td>
                 </tr>
-                <tr>
-                    {% endif %}
-                    {% endfor %}
+                {% endif %}
+                {% endfor %}
                 </tbody>
             </table>
             <hr style="margin-top: 0px; margin-bottom: 20px">
         </div>
+        {% else %}
         <div class="col">
-            <h5 align="center">Уровень готовности понижен</h5>
+            <h5 align="center" class="mb-3">Уровень готовности понижен</h5>
             <table class="table"
             <hr style="margin: 0px">
             <thead>
             </thead>
             <tbody>
-            {% for task in tasks %}
-            {% if not results[loop.index0] %}
+            {% for level in levels_down %}
+            {% if level and show_skils[loop.index0] %}
             <tr>
-                <th scope="row">{{ task.number }}</th>
+                <th scope="row">{{ loop.index }}</th>
                 <td>
                     {{ descriptions[loop.index0] }}
+                </td>
+                <td style="color: red">
+                    {% if show_skils_first_time[loop.index0] %}
+                    {{' → ' ~ new_skil_levels[loop.index0]}}
+                    {% else %}
+                    {{ old_skil_levels[loop.index0] ~ ' → ' ~ new_skil_levels[loop.index0]}}
+                    {% endif %}
                 </td>
             </tr>
             <tr>
                 {% endif %}
                 {% endfor %}
             </tbody>
-            <tbody>
-            </tbody>
             </table>
             <hr style="margin-top: 0px; margin-bottom: 20px">
         </div>
+        {% endif %}
     </div>
+    {% else %}
+    <h4>Уровень подготовки не изменился</h4>
+    {% endif %}
     <br>
 
     <h1>Решения и ответы</h1>

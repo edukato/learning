@@ -143,27 +143,45 @@ def pay():
 @login_required
 def training_home():
     check_student()
-
     client = current_user
+    rec = True
+    if (client.loboda_date != None):
+        if ((client.loboda_date.replace(hour=0, minute=0, second=0, microsecond=0)) == (
+        datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0))):
+            rec = True
+        else:
+            rec = False
     if client.subjects is not None:
         id_subjects = client.subjects.split(",")
     else:
         id_subjects = []
     student_subjects = []
+    student_subjects_small = []
     for id_subject in id_subjects:
         new_subject = Subject.query.get_or_404(id_subject)
         new_subject_name = new_subject.subject
         student_subjects.append(new_subject_name)
+        student_subjects_small.append(new_subject_name.lower())
+
+    deltatime = datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) - client.date_of_reg.replace(
+        hour=0, minute=0, second=0, microsecond=0)
+
+    rec_subject = (int(deltatime.days) % len(student_subjects)) + 1
 
     return render_template('home/train/training_home.html', student_subjects=student_subjects,
-                           id_subjects=id_subjects, title="Тренировка")
+                           student_subjects_small=student_subjects_small,
+                           id_subjects=id_subjects, rec_subject=rec_subject, rec = rec, title="Тренировка")
 
 
 @home.route('/training_subject/<int:subject_id>')
 @login_required
 def training_subject(subject_id):
     check_student()
-
+    descriptions = []
+    skils = Skil.query.filter(Skil.client_id == current_user.id).filter(Skil.subject == subject_id).all()
+    training_choices = TrainingChoice.query.filter(TrainingChoice.subject_id == subject_id).all()
+    for training_choice in training_choices:
+        descriptions.append(training_choice.description)
     client = current_user
     if client.subjects is not None:
         id_subjects = client.subjects.split(",")
@@ -175,7 +193,7 @@ def training_subject(subject_id):
         new_subject_name = new_subject.subject
         student_subjects.append(new_subject_name)
     return render_template('home/train/training_subject.html', subject_id=subject_id, student_subjects=student_subjects,
-                           id_subjects=id_subjects, title="Тренировка")
+                           id_subjects=id_subjects, skils=skils, descriptions=descriptions, title="Тренировка")
 
 
 @home.route('/ege/<int:subject_id>/<int:training_type>', methods=['GET', 'POST'])
@@ -192,7 +210,7 @@ def ege(subject_id, training_type):
             final_tasks.append(final_task)
 
         return render_template('home/train/ege.html', tasks=final_tasks, subject_id=subject_id,
-                               tasks_quantity=number_of_tasks, title="Вариант ЕГЭ")
+                               tasks_quantity=number_of_tasks, training_type=training_type, title="Вариант ЕГЭ")
 
     if training_type == 1:
         tasks = []
@@ -219,11 +237,11 @@ def ege(subject_id, training_type):
         n_questions = 5
         questions_num = random.choice(range(1, number_of_tasks + 1), n_questions, p=weights)
         for question_num in questions_num:
-            task = Task.query.filter(Task.number == int(question_num)).all()
+            task = Task.query.filter(Task.number == int(question_num)).filter(Task.subject_id == subject_id).all()
             tasks.append(random.choice(task))
 
         return render_template('home/train/ege.html', tasks=tasks, subject_id=subject_id,
-                               tasks_quantity=n_questions, title='Рекомендумые задания')
+                               tasks_quantity=n_questions, training_type=training_type, title='Рекомендумые задания')
 
     if training_type == 2:
         tasks = []
@@ -242,7 +260,7 @@ def ege(subject_id, training_type):
                 final_tasks.append(final_task)
                 _tasks.remove(final_task)
         return render_template('home/train/ege.html', tasks=final_tasks, subject_id=subject_id,
-                               tasks_quantity=tasks_quantity, title="Вариант ЕГЭ")
+                               tasks_quantity=tasks_quantity, training_type=training_type, title="Вариант ЕГЭ")
 
 
 @home.route('/ege/send_error/<int:task_id>', methods=['GET', 'POST'])
@@ -287,7 +305,11 @@ def choice(subject_id):
 @login_required
 def answers_ege(subject_id):
     check_student()
-
+    training_type = int(request.form['type_of_train'])
+    if (training_type == 1):
+        client = Client.query.get_or_404(current_user.id)
+        client.loboda_date = datetime.datetime.now()
+        db.session.commit()
     subject = Subject.query.get_or_404(subject_id)
     tasks = []
     task = Task
@@ -296,9 +318,9 @@ def answers_ege(subject_id):
         task = Task.query.get_or_404(request.form['id_for_task_' + str(i + 1)])
         tasks.append(task)
     descriptions = []
-    for i in range(number_of_tasks):
+    for i in range(subject.tasks_number):
         training_choice = TrainingChoice.query.filter(TrainingChoice.subject_id == subject_id).filter(
-            TrainingChoice.number == tasks[i].number).all()
+            TrainingChoice.number == (i + 1)).all()
         description = training_choice[0].description
         descriptions.append(description)
     answers = []
@@ -313,7 +335,7 @@ def answers_ege(subject_id):
 
     for i in range(number_of_tasks):
         ans = Answer(client_id=current_user.id, task_id=tasks[i].id, answer=answers[i], right=results[i],
-                     subject_id=subject_id, task_number=tasks[i].number)
+                     subject_id=subject_id, task_number=tasks[i].number, training_type=training_type)
         db.session.add(ans)
 
     type_tasks = [[]]
@@ -322,19 +344,71 @@ def answers_ege(subject_id):
         for a in range(number_of_tasks):
             if (tasks[a].number == (i + 1)):
                 type_tasks[i].append(tasks[a])
-                print('В тип заданий ' + str(i) + ' добавлено задание № ' + str(a))
         if (len(type_tasks) < subject.tasks_number):
             type_tasks.append([])
-        print('Заданий ' + str(len(type_tasks[i])) + ' в типе заданий ' + str(i))
 
     right_answers_amount = 0
     answers_amount = 0
     c = 0
-    print('Тут результатыыыыыыыыыыыыыыыыыыыыыыыы')
-    print(results)
+    change_up = False
+    change_down = False
+    levels_up = []
+    levels_down = []
+    old_skil_levels = []
+    new_skil_levels = []
+    show_skils = []
+    show_skils_first_time = []
     for i in range(subject.tasks_number):
+        b = 0
         answers_amount = len(Answer.query.filter(Answer.client_id == current_user.id).filter(
             Answer.subject_id == subject_id).filter(Answer.task_number == i + 1).all())
+        if (answers_amount > 0):
+            old_skil = (Skil.query.filter(Skil.client_id == current_user.id).filter(Skil.subject == subject_id).filter(
+                Skil.number == (i + 1)).all())[0]
+            old_percent = old_skil.right_percent
+
+            new_right_answers_amount = 0
+            new_answers_amount = 0
+            for a in range(len(type_tasks[i])):
+                new_right_answers_amount += results[c]
+                new_answers_amount += 1
+                c += 1
+                b += 1
+            right_answers_amount = (answers_amount - new_answers_amount) * old_percent
+            new_right_percent = ((right_answers_amount + new_right_answers_amount) / (answers_amount))
+            old_skil.right_percent = new_right_percent
+            old_skil.answers_amount += b
+            if (old_skil.answers_amount >= 5):
+                if (old_skil.answers_amount == 5):
+                    show_skils_first_time.append(True)
+                else:
+                    show_skils_first_time.append(False)
+                show_skils.append(True)
+                if (old_skil.answers_amount > 5):
+                    old_skil_level = old_skil.level
+                    old_skil_levels.append(old_skil_level)
+                else:
+                    old_skil_level = 0
+                    old_skil_levels.append(old_skil_level)
+                new_skil_level = int(((new_right_percent * 100) // (25)) + 1)
+                if (new_skil_level == 5):
+                    new_skil_level = 4
+                new_skil_levels.append(new_skil_level)
+                if (int(old_skil_level) > int(new_skil_level)):
+                    levels_down.append(True)
+                    levels_up.append(False)
+                    change_down = True
+                elif (int(new_skil_level) > int(old_skil_level)):
+                    levels_down.append(False)
+                    levels_up.append(True)
+                    change_up = True
+                else:
+                    levels_down.append(False)
+                    levels_up.append(False)
+                old_skil.level = int(new_skil_level)
+            else:
+                show_skils.append(False)
+            db.session.commit()
         old_skil = (Skil.query.filter(Skil.client_id == current_user.id).filter(Skil.subject == subject_id).filter(
             Skil.number == (i + 1)).all())[0]
         old_percent = old_skil.right_percent
@@ -351,7 +425,11 @@ def answers_ege(subject_id):
         db.session.commit()
 
     return render_template('home/train/answers_ege.html', tasks=tasks, descriptions=descriptions, subject_id=subject_id,
-                           number_of_tasks=number_of_tasks, results=results, answers=answers, title="Решения и ответы")
+                           number_of_tasks=number_of_tasks, results=results, answers=answers, levels_up=levels_up,
+                           levels_down=levels_down, old_skil_levels=old_skil_levels,
+                           new_skil_levels=new_skil_levels, show_skils=show_skils,
+                           show_skils_first_time=show_skils_first_time, change_down=change_down, change_up=change_up,
+                           title="Решения и ответы")
 
 
 @home.route('/results/<int:subject_id>')

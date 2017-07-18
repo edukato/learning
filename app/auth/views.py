@@ -8,6 +8,8 @@ from .forms import LoginForm, RegistrationForm
 from .. import db
 from ..models import Client
 
+import datetime
+
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
@@ -20,7 +22,8 @@ def register():
         user = Client(email=form.email.data,
                             first_name=form.first_name.data,
                             last_name=form.last_name.data,
-                            password=form.password.data)
+                            password=form.password.data,
+                            date_of_reg = datetime.datetime.now())
 
         # add employee to the database
         db.session.add(user)

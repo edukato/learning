@@ -42,6 +42,7 @@ class Client(UserMixin, db.Model):
     chat_bot_4 = db.Column(db.Boolean)
     chat_bot_5 = db.Column(db.Boolean)
     chat_bot_6 = db.Column(db.Boolean)
+    loboda_date = db.Column(db.DateTime)
     selling_log = db.relationship('SellingLog', backref='client',
                                   lazy='dynamic')
     events = db.relationship('Event', backref='client',
@@ -313,6 +314,7 @@ class Skil(db.Model):
     number = db.Column(db.Integer)
     level = db.Column(db.Integer)
     right_percent = db.Column(db.Float)
+    answers_amount = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Skil: {}>'.format(self.id)

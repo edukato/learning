@@ -24,29 +24,49 @@
             <br>
         </div>
         <div class="col-md-9">
+            {% if not rec %}
             <div class="bg-3">
                 <div class="row">
-                    <div class="col text-center">
+                    <div class="col text-center pr-0">
                         <br>
-                        <img height="200px" align="middle" src="/static/images/пикча.svg">
+                        <img height="200px" align="middle" src="/static/images/klee.png">
                     </div>
-                    <div class="col text-center">
+                    <div class="col text-center pl-0">
                         <br><br>
-                        <h3>Привет<br> Сегодня у нас теология <br> Сразу 20 вопросов</h3>
+                        <h3>Привет<br> Сегодня у нас {{ ' ' ~ student_subjects_small[rec_subject] }} <br> Сразу 5 вопросов</h3>
                         <br>
-                        <a align="center" href="{{url_for('home.ege', subject_id = 1, training_type = 1)}}"
+                        <a align="center" href="{{url_for('home.ege', subject_id = id_subjects[rec_subject], training_type = 1)}}"
                            class="btn btn-success">
-                            За Русь на мид ворвусь!
+                            Вперёд за знаниями!
                         </a>
                     </div>
                 </div>
             </div>
+            {% else %}
+            <div class="bg-3">
+                <div class="row">
+                    <div class="col text-center pr-0">
+                        <br>
+                        <img height="200px" align="middle" src="/static/images/done.png">
+                    </div>
+                    <div class="col text-center pl-0">
+                        <br><br><br>
+                        <h3 class="mt-2"> Молодчина, так держать! </h3>
+                        <br>
+                        <a align="center" href="{{url_for('home.ege', subject_id = id_subjects[rec_subject], training_type = 1)}}"
+                           class="btn btn-success">
+                            Продолжить грызть гранит науки!
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
             <br>
             <h3 align="center">Но есть и другие варианты:</h3>
             <br>
             <div class="row">
                 <div class="col-md-6 col-sm-12 mb-3">
-                    <a href="{{ url_for('home.ege', subject_id = 1, training_type = 0) }}"
+                    <a href="{{ url_for('home.ege', subject_id = id_subjects[rec_subject], training_type = 0) }}"
                        class="list-group-item justify-content-between list-group-item-action ">
                         <div class="col-md-12">
                             <h4 align="center">Вариант ЕГЭ</h4>
@@ -62,7 +82,7 @@
                 </div>
                 <br>
                 <div class="col-md-6 col-sm-12" >
-                    <a href="{{ url_for('home.choice', subject_id = 1) }}"
+                    <a href="{{ url_for('home.choice', subject_id = id_subjects[rec_subject], training_type = 2) }}"
                        class="list-group-item justify-content-between list-group-item-action">
                         <div class="col-md-12">
                             <h4 align="center">Выборочное тестирование</h4>
