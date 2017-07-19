@@ -1,6 +1,8 @@
 {% extends "base.html" %}
+{% import "bootstrap/utils.html" as utils %}
 {% block title %}{{ student.first_name}} {{ student.last_name}} {{ student.middle }}{% endblock %}
 {% block body %}
+{{ utils.flashed_messages() }}
 <div class="container">
     <div class="row">
         <div class="col-md-3 text-center">
@@ -29,8 +31,32 @@
             <h3>Последние проведенные занятия</h3>
             <a href class="btn btn-secondary">Посмотреть ещё</a>
             <hr>
+            <h3 class="mb-3">Предметы</h3>
+            {% for subject in subjects %}
+            <div class="row mb-2">
+                <div class="col">
+                    <h4>{{subject.subject }}</h4>
+                </div>
+                <div class="col">
+                    <div class="text-right">
+                        <a href="{{url_for('teacher.delete_subject', id = student.id, subject_id = subject.id)}}" class="btn btn-danger">Удалить предмет</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <hr>
+            <form action="{{ url_for('teacher.add_subject', id = student.id )}}" , method="POST">
+                <input type="text" name="subject_name" value=""
+                       style="max-width: 250px" class="mr-2">
+                <button type="submit" class="btn btn-success">Добавить предмет</button>
+                <div style="display: none">
+                    <input type="text" name="student_id" value="{{ student.id }}"
+                           style="max-width: 250px">
+            </form>
+            <hr>
             <h3>Оплата</h3>
         </div>
     </div>
+</div>
 </div>
 {% endblock %}

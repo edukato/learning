@@ -92,8 +92,18 @@ def account():
 
     plan = Service.query.filter(Service.id == current_user.plan).first()
 
+    list_of_serv = Service.query.filter(Service.type == 0).all()
+    id_for_serv = []
+    for serv in list_of_serv:
+        id_for_serv.append(serv.id)
+
+    sel_log = SellingLog.query.filter(SellingLog.client_id == current_user.id).filter(
+        SellingLog.service_id.in_(id_for_serv)).order_by(SellingLog.id.desc()).first()
+
+    next_pay = awesome_date(sel_log.access_end)
+
     return render_template('home/account.html', plan=plan, schedule=byweeks, weekdays=weekdays,
-                           active_services=active_services, mentor=mentor, teacher=teacher,
+                           active_services=active_services, mentor=mentor, teacher=teacher, next_pay=next_pay,
                            title="Мой аккаунт")
 
 
@@ -174,7 +184,11 @@ def training_home():
 
     return render_template('home/train/training_home.html', student_subjects=student_subjects,
                            student_subjects_small=student_subjects_small,
+<<<<<<< HEAD
                            id_subjects=id_subjects, rec_subject=rec_subject - 1, rec=rec, title="Тренировка")
+=======
+                           id_subjects=id_subjects, rec_subject=rec_subject, rec=rec, title="Тренировка")
+>>>>>>> 86d19ee76bfabf16a1a9039dd8070657007ef303
 
 
 @home.route('/training_subject/<int:subject_id>')
