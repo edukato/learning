@@ -5,7 +5,7 @@ import datetime
 
 from . import teacher
 from ..models import Client, RoadMap
-from ..models import Client, Schedule, Subject, OperatingSchedules, Teacher, Salary, Material
+from ..models import Client, Schedule, Subject, OperatingSchedules, Teacher, Salary, Material, Skil
 from .. import db
 from .forms import MaterialEditForm
 from ..utils import awesome_date
@@ -189,12 +189,93 @@ def delete_step(id, step_for_delete):
 @teacher.route('/teacher/student/<int:id>', methods=['GET', 'POST'])
 @login_required
 def show_student(id):
+    check_teacher()
     student = Client.query.get_or_404(id)
+    if (student.subjects != None):
+        subjects_id = student.subjects.split(",")
+        subjects = []
+        for subject_id in subjects_id:
+            subjects.append(Subject.query.get_or_404(int(subject_id)))
+    else:
+        subjects = []
+
     if student.mentor != current_user.id:
         abort(403)
     return render_template('teacher/student.html',
-                           student=student, title="ученик")
+                           student=student, subjects = subjects, title="ученик")
 
+@teacher.route('/teacher/student/<int:id>/add_subject/', methods=['GET', 'POST'])
+@login_required
+def add_subject(id):
+    check_teacher()
+    student = Client.query.get_or_404(id)
+    subject_name = request.form['subject_name']
+    subject = Subject.query.filter(Subject.subject == subject_name).first()
+    add = True
+
+    if(student.subjects != None):
+        student_subjects = student.subjects.split(",")
+    else:
+        student_subjects = []
+
+    if(subject != None):
+        for student_subject in student_subjects:
+            if(subject.id == int(student_subject)):
+                add = False
+
+    if (subject != None and add == True):
+        if (student.subjects != None):
+            old_subjects = student.subjects
+            new_subjects = str(old_subjects) + "," + str(subject.id)
+        else:
+            old_subjects = ""
+            new_subjects = str(subject.id)
+
+        student.subjects = new_subjects
+        for i in range(subject.tasks_number):
+            new_skil = Skil(client_id = id, subject = subject.id, number = i+1, level = 1, right_percent = 0, answers_amount = 0)
+            db.session.add(new_skil)
+        db.session.commit()
+        flash("Оки-доки")
+    elif (subject != None and add == False):
+        flash("Данный предмет уже присутствует в списке! Разуй глаза, блеать!")
+    else:
+        flash("В базе данных нет предмета с указанным названием")
+
+    return redirect(url_for('teacher.show_student', id=int(request.form['student_id']), title="ученик"))
+
+@teacher.route('/teacher/student/<int:id>/delete_subject/<int:subject_id>', methods=['GET','POST'])
+@login_required
+def delete_subject(id, subject_id):
+    check_teacher()
+    student = Client.query.get_or_404(id)
+    subject = Subject.query.get_or_404(subject_id)
+    student_subjects_id = str(student.subjects).split(",")
+    new_student_subjects_id = []
+    new_student_subjects = ""
+    for student_subject_id in student_subjects_id:
+        if(subject_id  != int(student_subject_id)):
+            new_student_subjects_id.append(student_subject_id)
+
+    for student_subject_id in new_student_subjects_id:
+        if (new_student_subjects != ""):
+            new_student_subjects = new_student_subjects + "," + str(student_subject_id)
+        else:
+            new_student_subjects = str(student_subject_id)
+
+    if(new_student_subjects != ""):
+        student.subjects = new_student_subjects
+    else:
+        student.subjects = None
+
+    rows_for_delete = Skil.query.filter(Skil.client_id == id).filter(Skil.subject == subject_id).all()
+
+    for i in range(subject.tasks_number):
+        db.session.delete(rows_for_delete[i])
+
+    db.session.commit()
+
+    return redirect(url_for('teacher.show_student', id=student.id, title="ученик"))
 
 @teacher.route('/teacher/schedule/<int:id>', methods=['GET', 'POST'])
 @login_required
