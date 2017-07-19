@@ -184,11 +184,7 @@ def training_home():
 
     return render_template('home/train/training_home.html', student_subjects=student_subjects,
                            student_subjects_small=student_subjects_small,
-<<<<<<< HEAD
                            id_subjects=id_subjects, rec_subject=rec_subject - 1, rec=rec, title="Тренировка")
-=======
-                           id_subjects=id_subjects, rec_subject=rec_subject, rec=rec, title="Тренировка")
->>>>>>> 86d19ee76bfabf16a1a9039dd8070657007ef303
 
 
 @home.route('/training_subject/<int:subject_id>')
