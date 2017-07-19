@@ -7,6 +7,8 @@ from numpy import random
 from flask import flash, redirect, render_template, url_for, abort, request
 from flask_login import login_required, current_user
 
+from werkzeug.utils import secure_filename
+
 from . import home
 from ..models import Service, SellingLog, Client, RoadMap, TasksError, TrainingRecommendationSession, Answer, \
     TrainingChoice, Task, Subject, TrainingChoice, Schedule, Teacher, MentorsClaim, Skil, Material
@@ -147,10 +149,12 @@ def training_home():
     rec = True
     if (client.loboda_date != None):
         if ((client.loboda_date.replace(hour=0, minute=0, second=0, microsecond=0)) == (
-        datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0))):
+                datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0))):
             rec = True
         else:
             rec = False
+    else:
+        rec = False
     if client.subjects is not None:
         id_subjects = client.subjects.split(",")
     else:
@@ -170,7 +174,7 @@ def training_home():
 
     return render_template('home/train/training_home.html', student_subjects=student_subjects,
                            student_subjects_small=student_subjects_small,
-                           id_subjects=id_subjects, rec_subject=rec_subject, rec = rec, title="Тренировка")
+                           id_subjects=id_subjects, rec_subject=rec_subject - 1, rec=rec, title="Тренировка")
 
 
 @home.route('/training_subject/<int:subject_id>')
@@ -470,7 +474,17 @@ def confirm_transaction(id):
 
     service = Service.query.get_or_404(id)
 
-    # Когда-нибудь проверить несовпадение дат
+    key = False
+    if service.type == 0:
+        active_services = SellingLog.query.filter(
+            (SellingLog.client_id == current_user.id) & (SellingLog.access_start < datetime.datetime.now()) & (
+                SellingLog.access_end > datetime.datetime.now())).all()
+        for active_service in active_services:
+            if Service.query.get_or_404(active_service.service_id).type == 0:
+                key = True
+
+    if key:
+        flash('У вас активирован другой тарифный план. При покупке этого предыдущий будет сброшен.')
 
     return render_template('home/confirm_transaction.html', service=service, title="Подтверждение транзакции")
 
@@ -482,7 +496,12 @@ def confirmed_transaction(id):
 
     service = Service.query.get_or_404(id)
     transaction = SellingLog(client_id=current_user.id, service_id=id, date_time=datetime.datetime.now(),
-                             access_start=datetime.datetime.now(), access_end=service.expiration_date)
+                             access_start=datetime.datetime.now(), access_end=service.expiration_date,
+                             price=service.price)
+    client = Client.query.get_or_404(current_user.id)
+    client.balance -= service.price
+    if service.type == 0:
+        client.plan = service.id
     db.session.add(transaction)
     db.session.commit()
     flash('Поздравляем с покупкой!')
@@ -512,7 +531,9 @@ def edit_account():
         client.last_name = form.last_name.data
         client.password = form.password.data
         if form.photo.data is not None:
-            form.photo.data.save('app/static/images/profile/' + str(current_user.id) + '.png')
+            form.photo.data.save(
+                'app/static/images/profile/' + str(current_user.id) + secure_filename(form.photo.data.filename))
+            client.image = str(current_user.id) + secure_filename(form.photo.data.filename)
         db.session.commit()
         flash('Ваше задание выполнено, капитан.')
         return redirect(url_for('home.account'))

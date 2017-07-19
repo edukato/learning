@@ -36,7 +36,7 @@
 
 {% set navigation_bar_admin = [
 ('/admin', 'index', 'Главная страница'),('/admin/clients','clients','Клиенты'), ('/admin/subjects','subjects',
-'Предметы'), ('admin/materials','materials','Материалы')
+'Предметы'), ('/admin/materials','materials','Материалы'), ('/admin/salaries','salaries','Зарплата')
 ] -%}
 
 {% set navigation_bar_teacher = [
@@ -127,9 +127,17 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <div class="m-3" style="width: 275px">
-                            <img src="{{ url_for('static', filename=('images/profile/' ~ current_user.id ~ '.png')) }}"
+                            {% if current_user.image %}
+                            <img src="{{ url_for('static', filename=('images/profile/' ~ current_user.image)) }}"
                                  class="rounded-circle img-fluid float-left mr-3"
                                  style="width: 75px; height: 75px;">
+                            {% else %}
+                            <div id="avatar" class="rounded-circle float-left mr-3 align-middle"
+                                 style="width: 75px; height: 75px; color: white; font-size:45px;
+                                 text-align: center;"></div>
+                            <div class="user-info-name" id="name" style="display: none">{{ current_user.first_name }}
+                            </div>
+                            {% endif %}
                             <h5>{{ current_user.first_name }} {{ current_user.last_name }}</h5>
                             <p class="no_mar"><span class="fa fa-envelope"></span> {{ current_user.email }} </p>
                             <p><span class="fa fa-phone"></span> {{ current_user.phone_num }} </p>
@@ -172,6 +180,43 @@
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
+</script>
+<script>
+    var stringToColor = function stringToColor(str) {
+        var hash = 0;
+        var color = '#';
+        var i;
+        var value;
+        var strLength;
+
+        if (!str) {
+            return color + '333333';
+        }
+
+        strLength = str.length;
+
+        for (i = 0; i < strLength; i++) {
+            hash = str.charCodeAt(i) + ((hash << 5) - hash);
+        }
+
+        for (i = 0; i < 3; i++) {
+            value = (hash >> (i * 8)) & 0xFF;
+            color += ('00' + value.toString(16)).substr(-2);
+        }
+
+        return color;
+    };
+
+    var name = document.getElementById('name').innerHTML;
+    var letter = name.substr(0, 1);
+    var backgroundColor = stringToColor(name);
+    var elementAvatar = document.getElementById('avatar');
+    var elementName = document.getElementById('name');
+
+    elementName.innerHTML = name;
+    elementAvatar.innerHTML = letter;
+    elementAvatar.style.backgroundColor = backgroundColor;
+
 </script>
 </body>
 </html>

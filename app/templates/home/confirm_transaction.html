@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "bootstrap/utils.html" as utils %}
 {% block title %}Подтвердите покупку{% endblock %}
 {% block body %}
 <div class="bg-1">
@@ -25,6 +26,8 @@
         <h3>Подтверждение покупки</h3>
         <p> При приобретении курса "{{ service.name }}" с вашего счета будет
             списано {{ service.price }} рублей, подтвердите покупку.</p>
+        {{ utils.flashed_messages() }}
+
         <p>
             <small>edukato не обманывает своих клиентов. Мы никогда не снимем деньги без вашего ведома. По всем
                 вопросам

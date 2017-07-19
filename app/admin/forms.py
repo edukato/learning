@@ -32,3 +32,8 @@ class TaskAddForm(FlaskForm):
     answer = StringField('Ответ', validators=[DataRequired()])
     solution = TextAreaField('Решение', validators=[DataRequired()])
     submit = SubmitField('Добавить')
+
+class SalaryForm(FlaskForm):
+    amount = IntegerField('Сумма, ₽', validators=[DataRequired()])
+    description = TextAreaField('Описание')
+    submit = SubmitField('Готово')

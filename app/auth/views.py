@@ -55,7 +55,7 @@ def login():
             login_user(user)
 
             # redirect to the dashboard page after login
-            return redirect(url_for('home.account'))
+            return redirect(url_for('home.index'))
 
         # when login details are incorrect
         else:

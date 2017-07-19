@@ -4,10 +4,11 @@ from flask import flash, redirect, render_template, url_for, abort
 from flask_login import login_required, current_user
 
 from . import admin
-from ..models import Client, Subject, TrainingChoice, Task, Schedule, Teacher, Material
+from ..models import Client, Subject, TrainingChoice, Task, Schedule, Teacher, Material, Salary
 from .. import db
-from .forms import SubjectEditForm, SubjectAddForm, ChoiceAddForm, ChoiceEditForm, TaskAddForm
+from .forms import SubjectEditForm, SubjectAddForm, ChoiceAddForm, ChoiceEditForm, TaskAddForm, SalaryForm
 from ..utils import awesome_date
+
 
 def check_admin():
     if not (current_user.status == 2):
@@ -224,12 +225,40 @@ def student(id):
 def teacher(id):
     check_admin()
 
-    teacher = Client.query.get_or_404
+    teacher = Client.query.get_or_404(id)
     if teacher.status != 3:
         flash('Это не учитель')
         return redirect(url_for('admin.clients'))
 
-    return render_template('admin/teacher.html', teacher=teacher,
+    weekdays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
+    schedule = Schedule.query.filter((Schedule.teacher_id == id) & (Schedule.time > datetime.datetime.now())).all()
+
+    for schedule_item in schedule:
+        schedule_item.day = schedule_item.time.day
+        schedule_item.subject_name = Subject.query.get_or_404(schedule_item.subject_id).subject
+        schedule_item.dow = schedule_item.time.weekday()
+        schedule_item.day_of_week = weekdays[schedule_item.dow]
+        schedule_item.date = awesome_date(schedule_item.time)
+        schedule_student = Client.query.get_or_404(Client.query.get_or_404(schedule_item.client_id).login_id)
+        schedule_item.student = schedule_student.last_name + ' ' + schedule_student.first_name[0] + '. ' + \
+                                schedule_student.middle[0] + '.'
+
+    now = datetime.datetime.now()
+    byweeks = [[[], [], [], [], [], [], []]]
+    endweek = now + datetime.timedelta(days=(7 - now.weekday()))
+    endweek = endweek.replace(hour=0, minute=0, second=0, microsecond=0)
+    for schedule_item in schedule:
+        if schedule_item.time < endweek:
+            byweeks[0][schedule_item.dow].append(schedule_item)
+        else:
+            try:
+                byweeks[(schedule_item.time - endweek).days // 7 + 1][schedule_item.dow].append(schedule_item)
+            except IndexError:
+                for _ in range(((schedule_item.time - endweek).days // 7 + 1) - len(byweeks) + 1):
+                    byweeks.append([[], [], [], [], [], [], []])
+                byweeks[(schedule_item.time - endweek).days // 7 + 1][schedule_item.dow].append(schedule_item)
+
+    return render_template('admin/teacher.html', schedule=byweeks, weekdays=weekdays, teacher=teacher,
                            title=(teacher.last_name + teacher.first_name + teacher.middle))
 
 
@@ -246,3 +275,32 @@ def materials():
         material.teacher_name = teacher.first_name + ' ' + teacher.last_name
 
     return render_template('admin/materials.html', materials=materials, title='Материалы')
+
+
+@admin.route('/admin/salaries')
+@login_required
+def salary():
+    check_admin()
+
+    salaries = Salary.query.all()
+    return render_template('admin/salaries.html', salaries=salaries, title='Зарплата')
+
+
+@admin.route('/admin/salary/<int:id>/pay', methods=['GET', 'POST'])
+@login_required
+def salary_pay(id):
+    check_admin()
+
+    teacher = Client.query.get_or_404(id)
+    form = SalaryForm()
+    if form.validate_on_submit():
+        salary = Salary(amount=form.amount.data,
+                        description=form.description.data, date=datetime.datetime.now())
+        try:
+            db.session.add(salary)
+            db.session.commit()
+        except:
+            flash('Ошибка')
+        return redirect(url_for('admin.teacher', id=id))
+
+    return render_template('admin/salary_pay.html', teacher=teacher, form=form, methods=['GET', 'POST'])

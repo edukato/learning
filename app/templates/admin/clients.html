@@ -70,8 +70,6 @@
                                 <th>Имя</th>
                                 <th>Отчество</th>
                                 <th>email</th>
-                                <th>Баланс</th>
-                                <th>Тарифный план</th>
                             </tr>
                             </thead>
                             {% for teacher in teachers %}
@@ -92,10 +90,8 @@
                                     {{ teacher.email }}
                                 </td>
                                 <td>
-                                    {{ teacher.balance }}
-                                </td>
-                                <td>
-                                    {{ teacher.plan }}
+                                    <a class="btn btn-sm btn-secondary"
+                                       href="{{ url_for('admin.teacher', id=teacher.id) }}">Подробности</a>
                                 </td>
                             </tr>
                             {% endfor %}
