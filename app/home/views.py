@@ -532,8 +532,17 @@ def show_service(id):
     check_student()
 
     service = Service.query.get_or_404(id)
+
+    review_list = []
+
+    if service.reviews:
+        reviews = service.reviews.split('(secret-splitter)')
+
+        for review in reviews:
+            review_list.append(review.split('(secret-splitter-1)'))
+
     return render_template('home/service.html',
-                           service=service, title="Показать услугу")
+                           service=service, review_list=review_list, title="Показать услугу")
 
 
 @home.route('/account/edit', methods=['GET', 'POST'])
@@ -718,3 +727,10 @@ def material(id):
     material.teacher_descript = teacher.description
     material.teacher_image = teacher.image
     return render_template('home/material.html', material=material, title='Материал')
+
+
+@home.route('/wizard')
+@login_required
+def wizard():
+
+    return render_template('home/wizard.html')
