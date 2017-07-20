@@ -6,7 +6,7 @@ from flask_login import login_required, current_user
 from . import admin
 from ..models import Client, Subject, TrainingChoice, Task, Schedule, Teacher, Material, Salary
 from .. import db
-from .forms import SubjectEditForm, SubjectAddForm, ChoiceAddForm, ChoiceEditForm, TaskAddForm, SalaryForm
+from .forms import SubjectEditForm, SubjectAddForm, ChoiceAddForm, ChoiceEditForm, TaskAddForm, SalaryForm, AddMaterial
 from ..utils import awesome_date
 
 
@@ -273,6 +273,8 @@ def materials():
         material.date_t = awesome_date(material.date)
         teacher = Client.query.get_or_404(Teacher.query.get_or_404(material.teacher_id).login_id)
         material.teacher_name = teacher.first_name + ' ' + teacher.last_name
+        print(teacher.image)
+        material.teacher_image = teacher.image
 
     return render_template('admin/materials.html', materials=materials, title='Материалы')
 
@@ -304,3 +306,30 @@ def salary_pay(id):
         return redirect(url_for('admin.teacher', id=id))
 
     return render_template('admin/salary_pay.html', teacher=teacher, form=form, methods=['GET', 'POST'])
+
+
+@admin.route('/admin/material/add', methods=['GET', 'POST'])
+@login_required
+def add_material():
+    check_admin()
+    form = AddMaterial()
+    if form.validate_on_submit():
+        teacher = Client.query.filter(
+            (Client.first_name == form.first_name.data) & (Client.last_name == form.last_name.data) & (
+                Client.status == 3)).first()
+        print(teacher)
+        subject = Subject.query.filter(Subject.subject == form.subject.data).first()
+        teacher.tid = Teacher.query.filter(Teacher.login_id == teacher.id).first().id
+        subject
+        if teacher:
+            material = Material(teacher_id=teacher.tid, subject_id=subject.id, date = form.date.data)
+            try:
+                db.session.add(material)
+                db.session.commit()
+                flash('Вы успешно добавили материал.')
+            except:
+                # in case department name already exists
+                flash('Ошибка.')
+            return redirect(url_for('admin.materials'))
+
+    return render_template('admin/add_material.html', form=form, title='Добавить материалы')

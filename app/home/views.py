@@ -54,7 +54,9 @@ def account():
     for service in active_services:
         service_info = Service.query.get_or_404(service.service_id)
         service.name = service_info.name
+        service._id = service_info.id
         service.description = service_info.description
+        service.end_date = awesome_date(service.access_end)
 
     weekdays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
     schedule = Schedule.query.filter(
@@ -511,7 +513,8 @@ def confirmed_transaction(id):
 
     service = Service.query.get_or_404(id)
     transaction = SellingLog(client_id=current_user.id, service_id=id, date_time=datetime.datetime.now(),
-                             access_start=datetime.datetime.now(), access_end=service.expiration_date,
+                             access_start=datetime.datetime.now(),
+                             access_end=datetime.datetime.now() + datetime.timedelta(days=30),
                              price=service.price)
     client = Client.query.get_or_404(current_user.id)
     client.balance -= service.price
@@ -635,16 +638,21 @@ def materials_home():
         student_subjects.append([id_subject, new_subject_name])
 
     materials = Material.query.filter(Material.date <= datetime.datetime.now()).all()
-    for material in materials:
-        for id_subject in id_subjects:
-            if int(material.subject_id) != int(id_subject):
-                print('kek')
-                materials.remove(material)
 
+    for material in materials:
+        key = False
+        for id_subject in id_subjects:
+            if int(material.subject_id) == int(id_subject):
+                key = True
+        if not key:
+            materials.remove(material)
+
+    print(materials)
     for material in materials:
         teacher = Client.query.get_or_404(Teacher.query.get_or_404(material.teacher_id).login_id)
         material.teacher_name = teacher.first_name + ' ' + teacher.last_name
         material.teacher_descript = teacher.description
+        material.teacher_image = teacher.image
         material.date_t = awesome_date(material.date)
 
     return render_template('home/materials_home.html', materials=materials, subjects=student_subjects,
@@ -677,6 +685,7 @@ def materials_subj(id):
         teacher = Client.query.get_or_404(Teacher.query.get_or_404(material.teacher_id).login_id)
         material.teacher_name = teacher.first_name + ' ' + teacher.last_name
         material.teacher_descript = teacher.description
+        material.teacher_image = teacher.image
         material.date_t = awesome_date(material.date)
 
     return render_template('home/materials_subject.html', materials=materials, subject=subject,
@@ -707,4 +716,5 @@ def material(id):
     teacher = Client.query.get_or_404(Teacher.query.get_or_404(material.teacher_id).login_id)
     material.teacher_name = teacher.first_name + ' ' + teacher.last_name
     material.teacher_descript = teacher.description
+    material.teacher_image = teacher.image
     return render_template('home/material.html', material=material, title='Материал')

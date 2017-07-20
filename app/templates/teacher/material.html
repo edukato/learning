@@ -26,7 +26,7 @@
     <div class="card-block">
         <div class="row mb-2">
             <div class="col-12 col-md-auto text-left" style="padding-right: 5px">
-                <img class="rounded-circle" width="50px" src="static/images/profile/1.png">
+                <img class="rounded-circle" width="50px" height="50px" src="{{ url_for('static', filename=('images/profile/' ~ current_user.image)) }}">
             </div>
             <div class="col text-left">
                 <p class="author" style="margin-bottom: 2px">{{ current_user.first_name }} {{ current_user.last_name

@@ -20,8 +20,8 @@
         <div class="card-block">
             <div class="row">
                 <div class="col-12 col-md-auto text-left" style="padding-right: 5px">
-                    <img class="rounded-circle" width="50px"
-                         src="{{ url_for('static', filename=('images/profile/' ~ material.teacher_id ~ '.png')) }}">
+                    <img class="rounded-circle" width="50px" height="50px"
+                         src="{{ url_for('static', filename=('images/profile/' ~ material.teacher_image)) }}">
                 </div>
                 <div class="col text-left">
                     <p class="author" style="margin-bottom: 2px">{{ material.teacher_name }}</p>
@@ -42,5 +42,6 @@
     </div>
     <br>
     {% endfor %}
+    <a class="btn btn-success btn-lg" href="{{ url_for('admin.add_material') }}">Добавить материал</a>
 </div>
 {% endblock %}

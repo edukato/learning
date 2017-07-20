@@ -48,7 +48,7 @@
             <div class="bg-blackboard" style="padding: 10px;">
                 {% if mentor %}
                 <div>
-                    <img src="static/images/profile/{{ 'teacher_' ~ mentor.image }}"
+                    <img src="{{ url_for('static', filename=('images/profile/' ~ mentor.image)) }}"
                          class="rounded-circle img-fluid float-left mr-3 ml-2"
                          alt="140x140"
                          style="width: 120px; height: 120px;">
@@ -79,23 +79,31 @@
             <br>
             <h2>Мои услуги:</h2>
             {% if active_services %}
-            {% for service in active_services %}
-            <div class="col-md-6">
+            <div class="row">
+                {% for service in active_services %}
+            <div class="col-md-4">
                 <div class="card">
-                    <img class="card-img-top" data-src="holder.js/100px180/" alt="100%x180"
-                         style="height: 180px; width: 100%; display: block;"
-                         src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22130%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20130%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_15cc7e7389f%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A10pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_15cc7e7389f%22%3E%3Crect%20width%3D%22130%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2240.5%22%20y%3D%2294.5%22%3E130x180%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
+                    <img class="card-img-top" src="static/images/shop/{{ service._id }}.png"
+                         style="height: 150px"
                          data-holder-rendered="true">
                     <div class="card-block">
                         <h4 class="card-title">{{ service.name }}</h4>
                         <p class="card-text">{{ service.description}}</p>
                     </div>
                     <div class="card-footer">
-                        <small class="text-muted">Тут пока ничего нет</small>
+                        <small class="text-muted">До {{ service.end_date }}</small>
                     </div>
                 </div>
             </div>
+            {% if (loop.index % 3) == 0 %}
+            </div>
+            <br>
+            <div class="row">
+                {% else %}
+                <br>
+                {% endif %}
             {% endfor %}
+            </div>
             {% else %}
             <h3> Кхм, чёт мы ничего не находим. Может за покупками в <a
                     href="{{ url_for('home.shop') }}">магазин</a>.
