@@ -46,6 +46,7 @@ class Client(UserMixin, db.Model):
     first_login = db.Column(db.Boolean)
     wish_list = db.Column(db.String)
     pre_ege_res = db.Column(db.String)
+    interesting_subjects = db.Column(db.String)
     selling_log = db.relationship('SellingLog', backref='client',
                                   lazy='dynamic')
     events = db.relationship('Event', backref='client',
