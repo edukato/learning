@@ -180,11 +180,16 @@ def training_home():
     deltatime = datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) - client.date_of_reg.replace(
         hour=0, minute=0, second=0, microsecond=0)
 
-    rec_subject = (int(deltatime.days) % len(student_subjects)) + 1
+    have_not_subjects = False
+    rec_subject = 0
+
+    if (len(student_subjects) != 0):
+        rec_subject = (int(deltatime.days) % len(student_subjects)) + 1
 
     return render_template('home/train/training_home.html', student_subjects=student_subjects,
                            student_subjects_small=student_subjects_small,
-                           id_subjects=id_subjects, rec_subject=rec_subject - 1, rec=rec, title="Тренировка")
+                           id_subjects=id_subjects, rec_subject=rec_subject - 1, rec=rec,
+                           have_not_subjects=have_not_subjects, title="Тренировка")
 
 
 @home.route('/training_subject/<int:subject_id>')
