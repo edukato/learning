@@ -3,6 +3,12 @@
 {% block title %}Материалы{% endblock %}
 {% block body %}
 <style>
+    .breadcrumb{
+        border: none;
+        background-color: white;
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
     .author{
         font-size:12pt;
     }
@@ -10,7 +16,12 @@
         font-size:12pt;
     }
 </style>
-<div class="container" style="max-width: 850px">
+<div class="container mb-4" style="max-width: 850px">
+    <ol class="breadcrumb mb-0" >
+        <li class="breadcrumb-item"><a href="{{url_for('home.account')}}">Главная</a></li>
+        <li class="breadcrumb-item breadcrumb-item"><a href="{{url_for('home.materials_home')}}">Материалы</a></li>
+        <li class="breadcrumb-item active">{{ subject }}</li>
+    </ol>
     <div class="form-inline mb-2">
         <h1 class="mr-3">{{ subject }} - материалы</h1>
     </div>
