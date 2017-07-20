@@ -43,6 +43,9 @@ class Client(UserMixin, db.Model):
     chat_bot_5 = db.Column(db.Boolean)
     chat_bot_6 = db.Column(db.Boolean)
     loboda_date = db.Column(db.DateTime)
+    first_login = db.Column(db.Boolean)
+    wish_list = db.Column(db.String)
+    pre_ege_res = db.Column(db.String)
     selling_log = db.relationship('SellingLog', backref='client',
                                   lazy='dynamic')
     events = db.relationship('Event', backref='client',
@@ -181,6 +184,9 @@ class Service(db.Model):
     price = db.Column(db.Integer)
     image = db.Column(db.String(300))
     type = db.Column(db.Integer)
+    full_description = db.Column(db.String)
+    reviews = db.Column(db.String)
+    video = db.Column(db.String)
     selling_log = db.relationship('SellingLog', backref='service',
                                   lazy='dynamic')
     events = db.relationship('Event', backref='service',
