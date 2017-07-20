@@ -154,6 +154,8 @@ class Teacher(db.Model):
     institution = db.Column(db.String)
     course = db.Column(db.Integer)
     achievements = db.Column(db.String)
+    want_be_mentor = db.Column(db.Boolean)
+
     materials = db.relationship('Material', backref='teacher',
                              lazy='dynamic')
     grades = db.relationship('Grade', backref='teacher',

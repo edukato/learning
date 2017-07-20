@@ -26,7 +26,8 @@
     <ol class="breadcrumb mb-0" >
         <li class="breadcrumb-item"><a href="{{url_for('home.account')}}">Главная</a></li>
         <li class="breadcrumb-item breadcrumb-item"><a href="{{url_for('home.materials_home')}}">Материалы</a></li>
-        <li class="breadcrumb-item active">{{ material.subject.subject }}</li>
+        <li class="breadcrumb-item active"><a href="{{url_for('home.materials_subj', id = material.subject.id)}}">{{ material.subject.subject }}</a></li>
+        <li class="breadcrumb-item active">{{ material.title }}</li>
     </ol>
     <div class="card-block">
         <div class="row mb-2">
