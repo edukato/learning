@@ -23,6 +23,8 @@
 </div>
 <div class="container">
     <div align="center">
+        {% if current_user.balance >= service.price %}
+
         <h3>Подтверждение покупки</h3>
         <p> При приобретении курса "{{ service.name }}" с вашего счета будет
             списано {{ service.price }} рублей, подтвердите покупку.</p>
@@ -37,6 +39,10 @@
 
         <a href="{{ url_for('home.confirmed_transaction', id=service.id)}}" class="btn btn-success">Подтвердить</a>
         <a href="{{ url_for('home.shop') }}" class="btn btn-danger">Отменить</a>
+        {% else %}
+        <h3>Oops... Кажется нет средств.</h3>
+        <a class="btn btn-lg btn-success" href="{{ url_for('home.pay') }}">Пополнить</a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

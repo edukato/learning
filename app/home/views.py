@@ -54,7 +54,9 @@ def account():
     for service in active_services:
         service_info = Service.query.get_or_404(service.service_id)
         service.name = service_info.name
+        service._id = service_info.id
         service.description = service_info.description
+        service.end_date = awesome_date(service.access_end)
 
     weekdays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
     schedule = Schedule.query.filter(
@@ -506,7 +508,8 @@ def confirmed_transaction(id):
 
     service = Service.query.get_or_404(id)
     transaction = SellingLog(client_id=current_user.id, service_id=id, date_time=datetime.datetime.now(),
-                             access_start=datetime.datetime.now(), access_end=service.expiration_date,
+                             access_start=datetime.datetime.now(),
+                             access_end=datetime.datetime.now() + datetime.timedelta(days=30),
                              price=service.price)
     client = Client.query.get_or_404(current_user.id)
     client.balance -= service.price

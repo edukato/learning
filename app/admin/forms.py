@@ -1,5 +1,7 @@
 from flask_wtf import FlaskForm
+import datetime
 from wtforms import StringField, SubmitField, TextAreaField, IntegerField
+from wtforms.fields.html5 import DateTimeField
 from wtforms.validators import DataRequired
 
 
@@ -33,7 +35,16 @@ class TaskAddForm(FlaskForm):
     solution = TextAreaField('Решение', validators=[DataRequired()])
     submit = SubmitField('Добавить')
 
+
 class SalaryForm(FlaskForm):
     amount = IntegerField('Сумма, ₽', validators=[DataRequired()])
     description = TextAreaField('Описание')
+    submit = SubmitField('Готово')
+
+
+class AddMaterial(FlaskForm):
+    first_name = TextAreaField('Имя', validators=[DataRequired()])
+    last_name = TextAreaField('Фамилия', validators=[DataRequired()])
+    subject = TextAreaField('Предмет', validators=[DataRequired()])
+    date = DateTimeField('Дата и время выхода', format='%Y-%m-%d %H:%M:%S', validators=[DataRequired()])
     submit = SubmitField('Готово')
