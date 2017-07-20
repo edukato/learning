@@ -81,28 +81,27 @@
             {% if active_services %}
             <div class="row">
                 {% for service in active_services %}
-            <div class="col-md-4">
-                <div class="card">
-                    <img class="card-img-top" src="static/images/shop/{{ service._id }}.png"
-                         style="height: 150px"
-                         data-holder-rendered="true">
-                    <div class="card-block">
-                        <h4 class="card-title">{{ service.name }}</h4>
-                        <p class="card-text">{{ service.description}}</p>
-                    </div>
-                    <div class="card-footer">
-                        <small class="text-muted">До {{ service.end_date }}</small>
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-img-top"
+                             style="background: url('static/images/shop/{{ service._id }}.png') no-repeat; height: 200px; background-size: cover"></div>
+                        <div class="card-block">
+                            <h4 class="card-title">{{ service.name }}</h4>
+                            <p class="card-text">{{ service.description}}</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">До {{ service.end_date }}</small>
+                        </div>
                     </div>
                 </div>
-            </div>
-            {% if (loop.index % 3) == 0 %}
+                {% if (loop.index % 2) == 0 %}
             </div>
             <br>
             <div class="row">
                 {% else %}
                 <br>
                 {% endif %}
-            {% endfor %}
+                {% endfor %}
             </div>
             {% else %}
             <h3> Кхм, чёт мы ничего не находим. Может за покупками в <a
