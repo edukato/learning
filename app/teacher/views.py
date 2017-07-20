@@ -478,7 +478,11 @@ def change_mentorship():
     check_teacher()
 
     teacher = Teacher.query.filter(Teacher.login_id == current_user.id).first()
-    teacher.want_be_mentor = not teacher.want_be_mentor
+
+    if teacher.want_be_mentor is not None:
+        teacher.want_be_mentor = not teacher.want_be_mentor
+    else:
+        teacher.want_be_mentor = True
 
     db.session.commit()
     return redirect(url_for('teacher.dashboard'))
