@@ -17,7 +17,7 @@
         <div class="col-lg-3 col-md-4 col-sm-6 col-6">
             <div class="card">
                 <div class="divgood">
-                    <img class="card-img-top m-2 good" src="static/images/shop/{{ service_0.id }}.png"
+                    <img class="card-img-top m-2 good" src="{{ url_for('static', filename='images/shop/' ~ service_0.id ~ '.png')}}"
                          alt="Card image cap"
                          style="height: 150px">
                 </div>

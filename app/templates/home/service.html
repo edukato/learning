@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-md-8">
                 <img data-src="holder.js/140x140" class="rounded-circle img-fluid float-left mr-3" alt="140x140"
-                     src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNDAiIGhlaWdodD0iMTQwIj48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI2VlZSIvPjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjcwIiB5PSI3MCIgc3R5bGU9ImZpbGw6I2FhYTtmb250LXdlaWdodDpib2xkO2ZvbnQtc2l6ZToxMnB4O2ZvbnQtZmFtaWx5OkFyaWFsLEhlbHZldGljYSxzYW5zLXNlcmlmO2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjE0MHgxNDA8L3RleHQ+PC9zdmc+"
+                     src="{{ url_for('static', filename='images/shop/' ~ service.id ~ '.png')}}"
                      style="width: 150px; height: 150px;">
                 <h2>{{ service.name }}</h2>
                 <p class="lead">{{ service.description}}</p>
@@ -26,14 +26,23 @@
         <div class="col-md-7">
             <h2>О курсе</h2>
 
-            <p>{{ service.description}}</p>
+            <p>{{ service.full_description}}</p>
         </div>
         <div class="col-md-5">
+            {% if service.video %}
             <h2>Смотрите видео:</h2>
-            <iframe width="100%" height="250" src="https://www.youtube.com/embed/cANagPGUwOo" frameborder="0"
+            <iframe width="100%" height="250" src="{{ service.video }}" frameborder="0"
                     allowfullscreen></iframe>
             <hr>
+            {% endif %}
+            {% if review_list %}
             <h2>Отзывы клиентов:</h2>
+                {% for item in review_list %}
+                <h5>{{ item[0] }}</h5>
+                <p>{{ item[1] }}</p>
+                <hr>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
 </div>

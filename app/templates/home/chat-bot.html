@@ -53,38 +53,39 @@
                 <div class="form-group row">
                     <label class="col-sm-4">Введите адрес вашей страницы Вконтакте:</label>
                     <div class="col-sm-8">
-                        <input type="url" name="social" class="form-control" required="true" value="https://vk.com/">
+                        <input type="url" name="social" class="form-control" required="true"
+                               value="{% if current_user.social_network %} {{current_user.social_network}} {% else %} https://vk.com/ {% endif %}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-4">Разные параметры</label>
                     <div class="col-sm-8">
                         <div class="form-check">
-                            <label class="form-check-label"><input type="checkbox" name="1" class="form-check-input">
+                            <label class="form-check-label"><input type="checkbox" name="1" class="form-check-input" {% if current_user.chat_bot_1 == 1 %} checked {% endif %}>
                                 Присылать
                                 мне
                                 уведомления об акциях edukato</label>
                         </div>
                         <div class="form-check">
-                            <label class="form-check-label"><input type="checkbox" name="2" class="form-check-input">
+                            <label class="form-check-label"><input type="checkbox" name="2" class="form-check-input" {% if current_user.chat_bot_2 == 1 %} checked {% endif %}>
                                 Присылать
                                 мне
                                 дайджесты материалов по предметам</label>
                         </div>
                         <div class="form-check">
-                            <label class="form-check-label"><input type="checkbox" name="3" class="form-check-input">
+                            <label class="form-check-label"><input type="checkbox" name="3" class="form-check-input" {% if current_user.chat_bot_3 == 1 %} checked {% endif %}>
                                 Сообщать
                                 мне о
                                 зачислениях и тратах средств на счете</label>
                         </div>
                         <div class="form-check">
-                            <label class="form-check-label"><input type="checkbox" name="4" class="form-check-input">
+                            <label class="form-check-label"><input type="checkbox" name="4" class="form-check-input" {% if current_user.chat_bot_4 == 1 %} checked {% endif %}>
                                 Прислыть
                                 мне
                                 уведомления перед занятиями</label>
                         </div>
                         <div class="form-check">
-                            <label class="form-check-label"><input type="checkbox" name="5" class="form-check-input">
+                            <label class="form-check-label"><input type="checkbox" name="5" class="form-check-input" {% if current_user.chat_bot_5 == 1 %} checked {% endif %}>
                                 Напоминать,
                                 что
                                 нужно ботать</label>
