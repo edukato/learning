@@ -21,6 +21,7 @@ def check_teacher():
 def dashboard():
     check_teacher()
     clients = Client.query.filter(Client.mentor == current_user.id).all()
+
     schedule = Schedule.query.filter(
         (Schedule.teacher_id == Teacher.query.filter(Teacher.login_id == current_user.id).first().id) & (
             Schedule.time >= (datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)))).all()
@@ -36,7 +37,10 @@ def dashboard():
         schedule_item.student_name = schedule_student.last_name + ' ' + schedule_student.first_name[0] + '. ' + \
                                      schedule_student.middle[0] + '.'
 
-    return render_template('teacher/dashboard.html', schedule=schedule[0:5], clients=clients, title='Главная страница')
+    is_mentor = Teacher.query.filter(Teacher.login_id == current_user.id).first().want_be_mentor
+
+    return render_template('teacher/dashboard.html', is_mentor=is_mentor, schedule=schedule[0:5], clients=clients,
+                           title='Главная страница')
 
 
 @teacher.route('/teacher/students')
@@ -202,7 +206,8 @@ def show_student(id):
     if student.mentor != current_user.id:
         abort(403)
     return render_template('teacher/student.html',
-                           student=student, subjects = subjects, title="ученик")
+                           student=student, subjects=subjects, title="ученик")
+
 
 @teacher.route('/teacher/student/<int:id>/add_subject/', methods=['GET', 'POST'])
 @login_required
@@ -213,14 +218,14 @@ def add_subject(id):
     subject = Subject.query.filter(Subject.subject == subject_name).first()
     add = True
 
-    if(student.subjects != None):
+    if (student.subjects != None):
         student_subjects = student.subjects.split(",")
     else:
         student_subjects = []
 
-    if(subject != None):
+    if (subject != None):
         for student_subject in student_subjects:
-            if(subject.id == int(student_subject)):
+            if (subject.id == int(student_subject)):
                 add = False
 
     if (subject != None and add == True):
@@ -233,7 +238,7 @@ def add_subject(id):
 
         student.subjects = new_subjects
         for i in range(subject.tasks_number):
-            new_skil = Skil(client_id = id, subject = subject.id, number = i+1, level = 1, right_percent = 0, answers_amount = 0)
+            new_skil = Skil(client_id=id, subject=subject.id, number=i + 1, level=1, right_percent=0, answers_amount=0)
             db.session.add(new_skil)
         db.session.commit()
         flash("Оки-доки")
@@ -244,7 +249,8 @@ def add_subject(id):
 
     return redirect(url_for('teacher.show_student', id=int(request.form['student_id']), title="ученик"))
 
-@teacher.route('/teacher/student/<int:id>/delete_subject/<int:subject_id>', methods=['GET','POST'])
+
+@teacher.route('/teacher/student/<int:id>/delete_subject/<int:subject_id>', methods=['GET', 'POST'])
 @login_required
 def delete_subject(id, subject_id):
     check_teacher()
@@ -254,7 +260,7 @@ def delete_subject(id, subject_id):
     new_student_subjects_id = []
     new_student_subjects = ""
     for student_subject_id in student_subjects_id:
-        if(subject_id  != int(student_subject_id)):
+        if (subject_id != int(student_subject_id)):
             new_student_subjects_id.append(student_subject_id)
 
     for student_subject_id in new_student_subjects_id:
@@ -263,7 +269,7 @@ def delete_subject(id, subject_id):
         else:
             new_student_subjects = str(student_subject_id)
 
-    if(new_student_subjects != ""):
+    if (new_student_subjects != ""):
         student.subjects = new_student_subjects
     else:
         student.subjects = None
@@ -276,6 +282,7 @@ def delete_subject(id, subject_id):
     db.session.commit()
 
     return redirect(url_for('teacher.show_student', id=student.id, title="ученик"))
+
 
 @teacher.route('/teacher/schedule/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -463,3 +470,15 @@ def material(id):
 
     material.date_t = awesome_date(material.date)
     return render_template('teacher/material.html', material=material, title='Материал')
+
+
+@teacher.route('/teacher/change_mentorship')
+@login_required
+def change_mentorship():
+    check_teacher()
+
+    teacher = Teacher.query.filter(Teacher.login_id == current_user.id).first()
+    teacher.want_be_mentor = not teacher.want_be_mentor
+
+    db.session.commit()
+    return redirect(url_for('teacher.dashboard'))

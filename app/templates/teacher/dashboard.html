@@ -29,7 +29,11 @@
             {% else %}
             <p>Вы пока никого не курируете. Странно. А ведь должны.</p>
             {% endif %}
-            <a class="btn btn-success btn-lg" href="">Записаться куратором</a>
+            {% if is_mentor %}
+            <a class="btn btn-outline-danger btn-lg" href="{{ url_for('teacher.change_mentorship') }}"><span class="fa fa-times"></span> Не хочу быть куратором</a>
+            {% else %}
+            <a class="btn btn-success btn-lg" href="{{ url_for('teacher.change_mentorship') }}">Записаться куратором</a>
+            {% endif %}
         </div>
         <div class="col-md-6">
             <h3>Предстоящие занятия</h3>
