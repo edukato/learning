@@ -633,16 +633,21 @@ def materials_home():
         student_subjects.append([id_subject, new_subject_name])
 
     materials = Material.query.filter(Material.date <= datetime.datetime.now()).all()
-    for material in materials:
-        for id_subject in id_subjects:
-            if int(material.subject_id) != int(id_subject):
-                print('kek')
-                materials.remove(material)
 
+    for material in materials:
+        key = False
+        for id_subject in id_subjects:
+            if int(material.subject_id) == int(id_subject):
+                key = True
+        if not key:
+            materials.remove(material)
+
+    print(materials)
     for material in materials:
         teacher = Client.query.get_or_404(Teacher.query.get_or_404(material.teacher_id).login_id)
         material.teacher_name = teacher.first_name + ' ' + teacher.last_name
         material.teacher_descript = teacher.description
+        material.teacher_image = teacher.image
         material.date_t = awesome_date(material.date)
 
     return render_template('home/materials_home.html', materials=materials, subjects=student_subjects,
@@ -675,6 +680,7 @@ def materials_subj(id):
         teacher = Client.query.get_or_404(Teacher.query.get_or_404(material.teacher_id).login_id)
         material.teacher_name = teacher.first_name + ' ' + teacher.last_name
         material.teacher_descript = teacher.description
+        material.teacher_image = teacher.image
         material.date_t = awesome_date(material.date)
 
     return render_template('home/materials_subject.html', materials=materials, subject=subject,
@@ -705,4 +711,5 @@ def material(id):
     teacher = Client.query.get_or_404(Teacher.query.get_or_404(material.teacher_id).login_id)
     material.teacher_name = teacher.first_name + ' ' + teacher.last_name
     material.teacher_descript = teacher.description
+    material.teacher_image = teacher.image
     return render_template('home/material.html', material=material, title='Материал')

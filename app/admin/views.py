@@ -273,6 +273,8 @@ def materials():
         material.date_t = awesome_date(material.date)
         teacher = Client.query.get_or_404(Teacher.query.get_or_404(material.teacher_id).login_id)
         material.teacher_name = teacher.first_name + ' ' + teacher.last_name
+        print(teacher.image)
+        material.teacher_image = teacher.image
 
     return render_template('admin/materials.html', materials=materials, title='Материалы')
 
