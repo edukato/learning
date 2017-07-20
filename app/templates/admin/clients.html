@@ -42,7 +42,9 @@
                                     {{ student.first_name }}
                                 </td>
                                 <td>
+                                    {% if student.middle != None %}
                                     {{ student.middle }}
+                                    {% endif %}
                                 </td>
                                 <td>
                                     {{ student.email }}
@@ -84,7 +86,9 @@
                                     {{ teacher.first_name }}
                                 </td>
                                 <td>
+                                    {% if teacher.middle != None %}
                                     {{ teacher.middle }}
+                                    {% endif %}
                                 </td>
                                 <td>
                                     {{ teacher.email }}
