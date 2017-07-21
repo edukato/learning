@@ -743,12 +743,9 @@ def step_1():
 @home.route('/step/2/<int:year>', methods=['GET', 'POST'])
 @login_required
 def step_2(year):
-<<<<<<< HEAD
+
     current_user.year_of_study = year
     db.session.commit()
-
-    return render_template('home/wizard/step_2.html')
-=======
 
     if current_user.step_number == 1 or current_user.step_number == 2:
         current_user.step_number = 2
@@ -757,19 +754,12 @@ def step_2(year):
         return render_template('home/wizard/step_2.html')
     else:
         return redirect(url_for('home.step_' + str(current_user.step_number)))
->>>>>>> 9ff0ea3a7f3c179286816f3538f663a04b038291
 
 
 @home.route('/step/3', methods=['GET', 'POST'])
 @login_required
 def step_3():
-<<<<<<< HEAD
-    univ = request.form['university']
-    current_user.wish_list = univ
-    db.session.commit()
-=======
-
-    if(current_user.step_number != 3):
+    if current_user.step_number != 3:
         try:
             univ = request.form['university']
             current_user.wish_list = univ
@@ -777,33 +767,27 @@ def step_3():
             db.session.commit()
         except:
             return redirect(url_for('home.step_' + str(current_user.step_number)))
->>>>>>> 9ff0ea3a7f3c179286816f3538f663a04b038291
 
     subjects = Subject.query.all()
 
-    return render_template('home/wizard/step_3.html', subjects = subjects)
+    return render_template('home/wizard/step_3.html', subjects=subjects)
 
 
-@home.route('/step/4', methods=['GET', 'POST'])
+@home.route('/step/4', methods=['GET','POST'])
 @login_required
 def step_4():
-<<<<<<< HEAD
-    all_subjects = Subject.all()
-=======
-
     all_subjects = Subject.query.all()
->>>>>>> 9ff0ea3a7f3c179286816f3538f663a04b038291
     wish_subjects = []
     wish_subjects_string = ""
     separator = ','
 
-    if(current_user.step_number != 4):
+    if current_user.step_number != 4:
         for subject in all_subjects:
             if request.form.get(str(subject.id)):
                 wish_subjects.append(str(subject.id))
 
-        if (len(wish_subjects) == 0):
-            if(current_user.step_number == 3):
+        if len(wish_subjects) == 0:
+            if current_user.step_number == 3:
                 flash("Необходимо выбрать хотя бы один предмет")
             return redirect(url_for('home.step_' + str(current_user.step_number)))
 
@@ -812,22 +796,12 @@ def step_4():
     current_user.interesting_subjects = wish_subjects_string
     db.session.commit()
 
-    return render_template('home/wizard/step_4.html')
-
-
-@home.route('/step/4')
-@login_required
-def step_4():
-    if current_user.step_number != 4 or (not current_user.step_number):
-        return redirect(url_for('home.step_' + str(current_user.step_number)))
-
     weekdays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
     opschedule = OperatingSchedules.query.all()
 
     now = datetime.datetime.now()
     endweek = now + datetime.timedelta(days=(7 - now.weekday()))
     endweek = endweek.replace(hour=0, minute=0, second=0, microsecond=0)
-
 
     byweeks = list()
     for i in range(3):
@@ -852,7 +826,8 @@ def step_4():
             day_counter += 1
             print(day)
             for schedule_item in day:
-                if Schedule.query.filter((Schedule.time == (now_day + datetime.timedelta(days=day_counter-now_day.weekday()-1))) & (
+                if Schedule.query.filter((Schedule.time == (
+                    now_day + datetime.timedelta(days=day_counter - now_day.weekday() - 1))) & (
                             Schedule.interval_number == schedule_item.interval_number)).all():
                     print('kek')
                     day.remove(schedule_item)
