@@ -850,6 +850,7 @@ def schedule_addition(week, id):
 
     client = Client.query.get_or_404(current_user.id)
     client.step_number = 5
+    client.mentor = op_schedule.teacher_id
     db.session.commit()
 
     return redirect(url_for('home.step_5'))
@@ -860,7 +861,8 @@ def schedule_addition(week, id):
 def step_5():
     if current_user.step_number != 5 or (not current_user.step_number):
         return redirect(url_for('home.step_' + str(current_user.step_number)))
-    mentor = Client.query.get_or_404(current_user.mentor)
+    mentor = Client.query.get_or_404(Teacher.query.get_or_404(current_user.mentor).login_id)
+    mentor.skype = Teacher.query.get_or_404(current_user.mentor).skype_login
     consult = Schedule.query.filter(
         (Schedule.client_id == current_user.id) & (Schedule.teacher_id == mentor.id)).first()
     consult.date = awesome_date(consult.time)
