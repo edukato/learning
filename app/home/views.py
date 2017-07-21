@@ -42,6 +42,8 @@ def homepage():
 def account():
     check_student()
 
+    if current_user.step_number != 7: return redirect(url_for('home.step_' + str(current_user.step_number)))
+
     if current_user.status == 2:
         return redirect(url_for('admin.dashboard'))
 
@@ -729,8 +731,10 @@ def material(id):
     return render_template('home/material.html', material=material, title='Материал')
 
 
-@home.route('/wizard')
+@home.route('/step/1')
 @login_required
-def wizard():
+def step_1():
+    if current_user.step_number != 1 or (not current_user.step_number):
+        return redirect(url_for('home.step_' + str(current_user.step_number)))
 
-    return render_template('home/wizard.html')
+    return render_template('home/wizard/step_1.html')
