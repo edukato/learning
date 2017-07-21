@@ -42,7 +42,7 @@ def homepage():
 def account():
     check_student()
 
-    if current_user.step_number != 7: return redirect(url_for('home.step_' + str(current_user.step_number)))
+    if current_user.step_number != 0: return redirect(url_for('home.step_' + str(current_user.step_number)))
 
     if current_user.status == 2:
         return redirect(url_for('admin.dashboard'))
@@ -104,7 +104,10 @@ def account():
     sel_log = SellingLog.query.filter(SellingLog.client_id == current_user.id).filter(
         SellingLog.service_id.in_(id_for_serv)).order_by(SellingLog.id.desc()).first()
 
-    next_pay = awesome_date(sel_log.access_end)
+    if sel_log != None:
+        next_pay = awesome_date(sel_log.access_end)
+    else:
+        next_pay = ""
 
     return render_template('home/account.html', plan=plan, schedule=byweeks, weekdays=weekdays,
                            active_services=active_services, mentor=mentor, teacher=teacher, next_pay=next_pay,
@@ -123,7 +126,7 @@ def account_send_claim(teacher_id):
 @login_required
 def shop():
     check_student()
-
+    if current_user.step_number != 0: return redirect(url_for('home.step_' + str(current_user.step_number)))
     services_0 = Service.query.filter(
         (Service.expiration_date > datetime.datetime.now()) & (
             Service.start_date < datetime.datetime.now()) & (Service.type == '0')).all()
@@ -151,7 +154,7 @@ def shop():
 @login_required
 def pay():
     check_student()
-
+    if current_user.step_number != 0: return redirect(url_for('home.step_' + str(current_user.step_number)))
     return render_template('home/pay.html', title="Пополнение счёта")
 
 
@@ -159,6 +162,7 @@ def pay():
 @login_required
 def training_home():
     check_student()
+    if current_user.step_number != 0: return redirect(url_for('home.step_' + str(current_user.step_number)))
     client = current_user
     rec = True
     if (client.loboda_date != None):
@@ -200,6 +204,7 @@ def training_home():
 @login_required
 def training_subject(subject_id):
     check_student()
+    if current_user.step_number != 0: return redirect(url_for('home.step_' + str(current_user.step_number)))
     descriptions = []
     skils = Skil.query.filter(Skil.client_id == current_user.id).filter(Skil.subject == subject_id).all()
     training_choices = TrainingChoice.query.filter(TrainingChoice.subject_id == subject_id).all()
@@ -223,7 +228,7 @@ def training_subject(subject_id):
 @login_required
 def ege(subject_id, training_type):
     check_student()
-
+    if current_user.step_number != 0: return redirect(url_for('home.step_' + str(current_user.step_number)))
     number_of_tasks = Subject.query.get_or_404(subject_id).tasks_number
     if training_type == 0:
         final_tasks = []
@@ -290,31 +295,16 @@ def ege(subject_id, training_type):
 @login_required
 def send_error(task_id):
     check_student()
-
+    if current_user.step_number != 0: return redirect(url_for('home.step_' + str(current_user.step_number)))
     error = TasksError(task_id=task_id, error=request.form['text'])
     db.session.add(error)
     db.session.commit()
-
-
-@home.route('/recommendation_question')
-@login_required
-def recommendation_question():
-    check_student()
-
-    return render_template('home/train/recommendation_question.html', title="Рекомендуем отработать")
-
-
-@home.route('/recommendation_answer')
-@login_required
-def recommendation_answer():
-    return render_template('home/train/recommendation_answer.html', title="Рекомендуем отработать")
-
 
 @home.route('/choice/<int:subject_id>')
 @login_required
 def choice(subject_id):
     check_student()
-
+    if current_user.step_number != 0: return redirect(url_for('home.step_' + str(current_user.step_number)))
     training_choices = TrainingChoice.query.filter(TrainingChoice.subject_id == subject_id).all()
     descriptions = []
     for training_choice in training_choices:
@@ -328,6 +318,7 @@ def choice(subject_id):
 @login_required
 def answers_ege(subject_id):
     check_student()
+    if current_user.step_number != 0: return redirect(url_for('home.step_' + str(current_user.step_number)))
     training_type = int(request.form['type_of_train'])
     if (training_type == 1):
         client = Client.query.get_or_404(current_user.id)
@@ -459,7 +450,7 @@ def answers_ege(subject_id):
 @login_required
 def results(subject_id, tasks):
     check_student()
-
+    if current_user.step_number != 0: return redirect(url_for('home.step_' + str(current_user.step_number)))
     result = []
     for task in tasks:
         if (task.right_answer == request.form[('answer_' + str(task.id))]):
@@ -474,7 +465,7 @@ def results(subject_id, tasks):
 @login_required
 def help():
     check_student()
-
+    if current_user.step_number != 0: return redirect(url_for('home.step_' + str(current_user.step_number)))
     return render_template('home/help.html', title="Служба поддержки")
 
 
@@ -482,7 +473,7 @@ def help():
 @login_required
 def contacts():
     check_student()
-
+    if current_user.step_number != 0: return redirect(url_for('home.step_' + str(current_user.step_number)))
     return render_template('home/contacts.html', title="Контакты")
 
 
@@ -490,7 +481,7 @@ def contacts():
 @login_required
 def confirm_transaction(id):
     check_student()
-
+    if current_user.step_number != 0: return redirect(url_for('home.step_' + str(current_user.step_number)))
     service = Service.query.get_or_404(id)
 
     key = False
@@ -512,7 +503,7 @@ def confirm_transaction(id):
 @login_required
 def confirmed_transaction(id):
     check_student()
-
+    if current_user.step_number != 0: return redirect(url_for('home.step_' + str(current_user.step_number)))
     service = Service.query.get_or_404(id)
     transaction = SellingLog(client_id=current_user.id, service_id=id, date_time=datetime.datetime.now(),
                              access_start=datetime.datetime.now(),
@@ -532,7 +523,7 @@ def confirmed_transaction(id):
 @login_required
 def show_service(id):
     check_student()
-
+    if current_user.step_number != 0: return redirect(url_for('home.step_' + str(current_user.step_number)))
     service = Service.query.get_or_404(id)
 
     review_list = []
@@ -551,7 +542,7 @@ def show_service(id):
 @login_required
 def edit_account():
     check_student()
-
+    if current_user.step_number != 0: return redirect(url_for('home.step_' + str(current_user.step_number)))
     client = Client.query.get_or_404(current_user.id)
 
     form = AccountEditForm(obj=client)
@@ -578,7 +569,7 @@ def edit_account():
 @login_required
 def transactions():
     check_student()
-
+    if current_user.step_number != 0: return redirect(url_for('home.step_' + str(current_user.step_number)))
     alltransactions = SellingLog.query.filter(SellingLog.client_id == current_user.id).all()
     for transaction in alltransactions:
         transaction.name = (Service.query.filter(Service.id == transaction.service_id).first()).name
@@ -589,7 +580,7 @@ def transactions():
 @login_required
 def road_map():
     check_student()
-
+    if current_user.step_number != 0: return redirect(url_for('home.step_' + str(current_user.step_number)))
     road_map_items = RoadMap.query.filter(RoadMap.client_id == current_user.id).order_by(
         RoadMap.step.asc()).all()
     return render_template('home/road_map.html', road_map_items=road_map_items, title='Дорожная карта')
@@ -599,7 +590,7 @@ def road_map():
 @login_required
 def chat_bot():
     check_student()
-
+    if current_user.step_number != 0: return redirect(url_for('home.step_' + str(current_user.step_number)))
     return render_template('home/chat-bot.html', title='Чат-бот')
 
 
@@ -607,7 +598,7 @@ def chat_bot():
 @login_required
 def chat_bot_upd():
     check_student()
-
+    if current_user.step_number != 0: return redirect(url_for('home.step_' + str(current_user.step_number)))
     client = Client.query.get_or_404(current_user.id)
     if request.form.get('social'):
         client.social_network = request.form['social']
@@ -629,7 +620,7 @@ def chat_bot_upd():
 @login_required
 def set_time():
     check_student()
-
+    if current_user.step_number != 0: return redirect(url_for('home.step_' + str(current_user.step_number)))
     return render_template('home/set_time.html', title='Указать расписание')
 
 
@@ -637,7 +628,7 @@ def set_time():
 @login_required
 def materials_home():
     check_student()
-
+    if current_user.step_number != 0: return redirect(url_for('home.step_' + str(current_user.step_number)))
     if current_user.subjects is not None:
         id_subjects = current_user.subjects.split(",")
     else:
@@ -674,7 +665,7 @@ def materials_home():
 @login_required
 def materials_subj(id):
     check_student()
-
+    if current_user.step_number != 0: return redirect(url_for('home.step_' + str(current_user.step_number)))
     subject = Subject.query.get_or_404(id).subject
 
     if current_user.subjects is not None:
@@ -707,7 +698,7 @@ def materials_subj(id):
 @login_required
 def material(id):
     check_student()
-
+    if current_user.step_number != 0: return redirect(url_for('home.step_' + str(current_user.step_number)))
     material = Material.query.get_or_404(id)
     if current_user.subjects is not None:
         id_subjects = current_user.subjects.split(",")
@@ -730,6 +721,10 @@ def material(id):
     material.teacher_image = teacher.image
     return render_template('home/material.html', material=material, title='Материал')
 
+@home.route('/step/0')
+@login_required
+def step_0():
+    return redirect('home.account')
 
 @home.route('/step/1')
 @login_required
