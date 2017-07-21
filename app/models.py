@@ -360,6 +360,7 @@ class Subject(db.Model):
     subject = db.Column(db.String)
     description = db.Column(db.String)
     tasks_number = db.Column(db.Integer)
+    icon = db.Column(db.String)
     materials = db.relationship('Material', backref='subject',
                               lazy='dynamic')
     answers = db.relationship('Answer', backref='subject',

@@ -1,23 +1,54 @@
-{% extends "base.html" %}
-{% set active_page = "contacts" %}
-{% block title %}Контакты{% endblock %}
-{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>edukato</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/custom.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <style>
+        .vertical-center {
+            min-height: 100%; /* Fallback for browsers do NOT support vh unit */
+            min-height: 100vh; /* These two lines are counted as one :-)       */
+
+            display: flex;
+            align-items: center;
+        }
+    </style>
+
+</head>
+<body style="background:url('{{ url_for('static', filename='images/bg-sea.jpeg') }}');background-size: cover; padding-top: 0px">
 <div class="container">
-    <form action="{{ url_for('home.step_3')}}", method="POST">
-        <div class="form-check">
-            <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" style="width: 100px; height: 100px"
-                       name="1">
-                Option one is this and that&mdash;be sure to include why it's great
-            </label>
-            <button type="submit" class="btn btn-success">Результаты</button>
+    <div class="row text-center">
+        <img src="{{ url_for('static', filename='images/logo.svg') }}" height="35px" class="text-center mb-5">
+    </div>
+    <div class="row">
+        <div class="container text-center" style="background-color:white; max-width: 600px; padding:20px;">
+            <h3>Привет, {{current_user.first_name}}</h3>
+            <h5>Рады видеть тебя на этом берегу :-)</h5>
+            <hr>
+            <p>Осталось совсем чуть-чуть, очень скоро ты сможешь начать работу.</p>
+            <h3>Какие ВУЗы ты рассматриваешь для поступления:</h3>
+            <br>
+            <form action="{{ url_for('home.step_3') }}" method="POST">
+                <div class="row">
+                    <textarea class="form-control mr-3 ml-3" name="university" rows="4"></textarea>
+                </div>
+                <button type="submit" class="btn btn-success mt-3">Продолжить</button>
+            </form>
         </div>
-        <div class="form-check disabled">
-            <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" value="" disabled>
-                Option two is disabled
-            </label>
-        </div>
-    </form>
+    </div>
 </div>
-{% endblock %}
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
+        integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+        integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+        integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+        crossorigin="anonymous"></script>
+</body>
+</html>
