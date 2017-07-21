@@ -738,3 +738,41 @@ def step_1():
         return redirect(url_for('home.step_' + str(current_user.step_number)))
 
     return render_template('home/wizard/step_1.html')
+
+@home.route('/step/2/<int:year>', methods=['GET','POST'])
+@login_required
+def step_2(year):
+
+    current_user.year_of_study = year
+    db.session.commit()
+
+    return render_template('home/wizard/step_2.html')
+
+@home.route('/step/3', methods=['GET','POST'])
+@login_required
+def step_3():
+
+    univ = request.form['university']
+    current_user.wish_list = univ
+    db.session.commit()
+
+    return render_template('home/wizard/step_3.html')
+
+@home.route('/step/4', methods=['GET','POST'])
+@login_required
+def step_4():
+
+    all_subjects = Subject.all()
+    wish_subjects = []
+    wish_subjects_string = ""
+    separator = ','
+
+    for subject in all_subjects:
+        if request.form.get(str(subject.id)):
+            wish_subjects.add(subject.id)
+
+    wish_subjects_string = separator.join(wish_subjects)
+    current_user.interesting_subjects = wish_subjects_string
+    db.session.commit()
+
+    return render_template('home/wizard/step_4.html')
