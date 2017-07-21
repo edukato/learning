@@ -25,7 +25,8 @@ def register():
                             password=form.password.data,
                             date_of_reg = datetime.datetime.now(),
                             step_number = 1,
-                            status = 1)
+                            status = 1,
+                            balance = 0)
 
         # add employee to the database
         db.session.add(user)
