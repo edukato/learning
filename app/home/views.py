@@ -743,34 +743,51 @@ def step_1():
 @login_required
 def step_2(year):
 
-    current_user.year_of_study = year
-    db.session.commit()
-
-    return render_template('home/wizard/step_2.html')
+    if current_user.step_number == 1 or current_user.step_number == 2:
+        current_user.step_number = 2
+        current_user.year_of_study = year
+        db.session.commit()
+        return render_template('home/wizard/step_2.html')
+    else:
+        return redirect(url_for('home.step_' + str(current_user.step_number)))
 
 @home.route('/step/3', methods=['GET','POST'])
 @login_required
 def step_3():
 
-    univ = request.form['university']
-    current_user.wish_list = univ
-    db.session.commit()
+    if(current_user.step_number != 3):
+        try:
+            univ = request.form['university']
+            current_user.wish_list = univ
+            current_user.step_number = 3
+            db.session.commit()
+        except:
+            return redirect(url_for('home.step_' + str(current_user.step_number)))
 
-    return render_template('home/wizard/step_3.html')
+    subjects = Subject.query.all()
+
+    return render_template('home/wizard/step_3.html', subjects = subjects)
 
 @home.route('/step/4', methods=['GET','POST'])
 @login_required
 def step_4():
 
-    all_subjects = Subject.all()
+    all_subjects = Subject.query.all()
     wish_subjects = []
     wish_subjects_string = ""
     separator = ','
 
-    for subject in all_subjects:
-        if request.form.get(str(subject.id)):
-            wish_subjects.add(subject.id)
+    if(current_user.step_number != 4):
+        for subject in all_subjects:
+            if request.form.get(str(subject.id)):
+                wish_subjects.append(str(subject.id))
 
+        if (len(wish_subjects) == 0):
+            if(current_user.step_number == 3):
+                flash("Необходимо выбрать хотя бы один предмет")
+            return redirect(url_for('home.step_' + str(current_user.step_number)))
+
+    current_user.step_number = 4
     wish_subjects_string = separator.join(wish_subjects)
     current_user.interesting_subjects = wish_subjects_string
     db.session.commit()
