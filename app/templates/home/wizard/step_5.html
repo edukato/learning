@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>edukato</title>
+    <title>Все готово | edukato</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -26,37 +26,16 @@
     </div>
     <div class="row">
         <div class="container text-center" style="background-color:white; max-width: 600px; padding:20px;">
-            <h3>Между тем мы почти готовы :)</h3>
-            <h5>Сейчас будем подбирать тебе куратора</h5>
+            <h3>Все прошло хорошо</h3>
+            <h5>После первой консультации сайт заработает</h5>
             <hr>
-            <p>Выбери удобное время:</p>
-            {% for week in byweeks %}
-            {% set week_loop = loop.index0 %}
-            <h5>{% if loop.index == 1 %}Эта{% else %}{% if loop.index == 2 %}Следующая{% else %}{{ loop.index }}{% endif %}{% endif %} неделя</h5>
-            <hr>
-            {% for day in week %}
-            {% if day %}
-            <div class="row">
-                <div class="col-md-2">
-                    {{ weekdays[loop.index0] }}
-                </div>
-                <div class="col-md-10">
-                    <table class="table table-stripes table-hover">
-                        {% for item in day %}
-                        <tr>
-                            <td>{{ item.interval_number }}</td>
-                            <td>{{ item.teacher_name }}</td>
-                            <td>
-                                <a href="{{ url_for('home.schedule_addition', week = week_loop, id = item.id) }}"
-                                   class="btn btn-sm btn-success">Записаться</a></td>
-                        </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
-            {% endfor %}
+            <p>Твой куратор:</p>
+            <img class="rounded-circle mb-2" width="50px" height="50px"
+                 src="{{ url_for('static', filename=('images/profile/' ~ mentor.image)) }}">
+            <h4 style="margin-bottom:0px">{{ mentor.first_name }} {{ mentor.last_name }}</h4>
+            <p class="mb-4">{{ mentor.description }}</p>
+            <h5>Консультация пройдет {{ consult.date }}</h5>
+            <p>Есть вопросы? <a href>Пиши</a></p>
         </div>
     </div>
 </div>

@@ -11,7 +11,7 @@ from werkzeug.utils import secure_filename
 
 from . import home
 from ..models import Service, SellingLog, Client, RoadMap, TasksError, TrainingRecommendationSession, Answer, \
-    TrainingChoice, Task, Subject, TrainingChoice, Schedule, Teacher, MentorsClaim, Skil, Material
+    TrainingChoice, Task, Subject, TrainingChoice, Schedule, Teacher, MentorsClaim, Skil, Material, OperatingSchedules
 from .. import db
 from .forms import AccountEditForm
 from ..utils import awesome_date
@@ -739,29 +739,29 @@ def step_1():
 
     return render_template('home/wizard/step_1.html')
 
-@home.route('/step/2/<int:year>', methods=['GET','POST'])
+
+@home.route('/step/2/<int:year>', methods=['GET', 'POST'])
 @login_required
 def step_2(year):
-
     current_user.year_of_study = year
     db.session.commit()
 
     return render_template('home/wizard/step_2.html')
 
-@home.route('/step/3', methods=['GET','POST'])
+
+@home.route('/step/3', methods=['GET', 'POST'])
 @login_required
 def step_3():
-
     univ = request.form['university']
     current_user.wish_list = univ
     db.session.commit()
 
     return render_template('home/wizard/step_3.html')
 
-@home.route('/step/4', methods=['GET','POST'])
+
+@home.route('/step/4', methods=['GET', 'POST'])
 @login_required
 def step_4():
-
     all_subjects = Subject.all()
     wish_subjects = []
     wish_subjects_string = ""
@@ -776,3 +776,80 @@ def step_4():
     db.session.commit()
 
     return render_template('home/wizard/step_4.html')
+
+
+@home.route('/step/4')
+@login_required
+def step_4():
+    if current_user.step_number != 4 or (not current_user.step_number):
+        return redirect(url_for('home.step_' + str(current_user.step_number)))
+
+    weekdays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
+    opschedule = OperatingSchedules.query.all()
+
+    now = datetime.datetime.now()
+    endweek = now + datetime.timedelta(days=(7 - now.weekday()))
+    endweek = endweek.replace(hour=0, minute=0, second=0, microsecond=0)
+
+
+    byweeks = list()
+    for i in range(3):
+        week = [[], [], [], [], [], [], []]
+        for opschedule_item in opschedule:
+            opschedule_item.subject_name = Subject.query.get_or_404(opschedule_item.subject_id).subject
+            opsch_teacher_id = Teacher.query.get_or_404(opschedule_item.teacher_id).login_id
+            opsch_teacher = Client.query.get_or_404(opsch_teacher_id)
+            opschedule_item.teacher_name = opsch_teacher.last_name + ' ' + opsch_teacher.first_name + ' ' + opsch_teacher.middle
+            week[opschedule_item.day_of_the_week].append(opschedule_item)
+        byweeks.append(week)
+
+    for i in range(0, now.weekday()):
+        byweeks[0][i] = [][:]
+
+    now_day = datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+    day_counter = 0
+
+    for week in byweeks:
+        print(week)
+        for day in week:
+            day_counter += 1
+            print(day)
+            for schedule_item in day:
+                if Schedule.query.filter((Schedule.time == (now_day + datetime.timedelta(days=day_counter-now_day.weekday()-1))) & (
+                            Schedule.interval_number == schedule_item.interval_number)).all():
+                    print('kek')
+                    day.remove(schedule_item)
+
+    return render_template('home/wizard/step_4.html', weekdays=weekdays, byweeks=byweeks)
+
+
+@home.route('/addition/<int:week>/<int:id>')
+@login_required
+def schedule_addition(week, id):
+    check_student()
+
+    now_day = datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+    op_schedule = OperatingSchedules.query.get_or_404(id)
+    schedule_item = Schedule(client_id=current_user.id, teacher_id=op_schedule.teacher_id,
+                             time=(now_day + datetime.timedelta(
+                                 days=(week * 7 - now_day.weekday() + op_schedule.day_of_the_week))),
+                             interval_number=op_schedule.interval_number)
+    db.session.add(schedule_item)
+
+    client = Client.query.get_or_404(current_user.id)
+    client.step_number = 5
+    db.session.commit()
+
+    return redirect(url_for('home.step_5'))
+
+
+@home.route('/step/5')
+@login_required
+def step_5():
+    if current_user.step_number != 5 or (not current_user.step_number):
+        return redirect(url_for('home.step_' + str(current_user.step_number)))
+    mentor = Client.query.get_or_404(current_user.mentor)
+    consult = Schedule.query.filter(
+        (Schedule.client_id == current_user.id) & (Schedule.teacher_id == mentor.id)).first()
+    consult.date = awesome_date(consult.time)
+    return render_template('home/wizard/step_5.html', consult=consult, mentor=mentor)
