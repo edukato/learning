@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>403</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/custom.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <style>
+        .vertical-center {
+            min-height: 100%; /* Fallback for browsers do NOT support vh unit */
+            min-height: 100vh; /* These two lines are counted as one :-)       */
+
+            display: flex;
+            align-items: center;
+        }
+    </style>
+
+</head>
+<body style="background:url('{{ url_for('static', filename='images/bg-sea.jpeg') }}');background-size: cover; padding-top: 0px">
+<div class="container">
+    <div class="row text-center">
+        <img src="{{ url_for('static', filename='images/logo.svg') }}" height="35px" class="text-center mb-5">
+    </div>
+    <div class="row">
+        <div class="container text-center" style="background-color:white; max-width: 600px; padding:20px;">
+            <h3>Привет, {{current_user.first_name}}</h3>
+            <h5>Рады видеть тебя на этом берегу :-)</h5>
+            <hr>
+            <p>Осталось совсем чуть-чуть, очень скоро ты сможешь начать работу.</p>
+            <h2>Выбери свой класс:</h2>
+            <br>
+            <div class="row">
+                <br>
+                <div class="col-md-4 col-sm-12">
+                    <a href="{{ url_for('home.step_1') }}"
+                       class="list-group-item justify-content-between list-group-item-action">
+                        <div class="col-md-12">
+                            <h1 align="center">9</h1>
+                        </div>
+                        <div class="par">
+                            <p>
+                                Молодец, что задумался рано.
+                            </p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <a href="{{ url_for('home.step_1') }}"
+                       class="list-group-item justify-content-between list-group-item-action">
+                        <div class="col-md-12">
+                            <h1 align="center">10</h1>
+                        </div>
+                        <div class="par">
+                            <p>
+                                Оптимальный вариант.
+                            </p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <a href="{{ url_for('home.step_1') }}"
+                       class="list-group-item justify-content-between list-group-item-action">
+                        <div class="col-md-12">
+                            <h1 align="center">11 </h1>
+                        </div>
+                        <div class="par">
+                            <p>
+                                Поступление совсем скоро.
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
+        integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+        integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+        integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+        crossorigin="anonymous"></script>
+</body>
+</html>
