@@ -156,6 +156,7 @@ class Teacher(db.Model):
     course = db.Column(db.Integer)
     achievements = db.Column(db.String)
     want_be_mentor = db.Column(db.Boolean)
+    skype_login = db.Column(db.String)
 
     materials = db.relationship('Material', backref='teacher',
                              lazy='dynamic')
