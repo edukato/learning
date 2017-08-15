@@ -15,16 +15,19 @@ def check_teacher():
     if not (current_user.status == 3):
         abort(403)
 
+def check_admin():
+    if not (current_user.id == 3 or current_user.id == 5):
+        abort(403)
+
 
 @teacher.route('/teacher')
 @login_required
 def dashboard():
     check_teacher()
-    clients = Client.query.filter(Client.mentor == current_user.id).all()
-
+    clients = Client.query.filter(Client.mentor == (Teacher.query.filter(Teacher.login_id == current_user.id).first()).id).all()
     schedule = Schedule.query.filter(
-        (Schedule.teacher_id == Teacher.query.filter(Teacher.login_id == current_user.id).first().id) & (
-            Schedule.time >= (datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)))).all()
+    (Schedule.teacher_id == Teacher.query.filter(Teacher.login_id == current_user.id).first().id) & (
+        Schedule.time >= (datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)))).all()
 
     months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября',
               'декабря']
@@ -35,8 +38,7 @@ def dashboard():
         schedule_item.subject_name = Subject.query.get_or_404(schedule_item.subject_id).subject
         schedule_student = Client.query.get_or_404(schedule_item.client_id)
         schedule_item.student_name = schedule_student.last_name + ' ' + schedule_student.first_name[0] + '. ' + \
-                                     schedule_student.middle[0] + '.'
-
+                                         schedule_student.middle[0] + '.'
     is_mentor = Teacher.query.filter(Teacher.login_id == current_user.id).first().want_be_mentor
 
     return render_template('teacher/dashboard.html', is_mentor=is_mentor, schedule=schedule[0:5], clients=clients,
@@ -50,8 +52,7 @@ def students():
               'декабря']
 
     check_teacher()
-
-    mentorship = Client.query.filter(Client.mentor == current_user.id).all()
+    mentorship = Client.query.filter(Client.mentor == (Teacher.query.filter(Teacher.login_id == current_user.id).first()).id).all()
 
     schedule_after = Schedule.query.filter(
         (Schedule.teacher_id == Teacher.query.filter(Teacher.login_id == current_user.id).first().id) & (
@@ -87,15 +88,16 @@ def students():
         schedule_after_item_client = Client.query.get_or_404(schedule_after_item.client_id)
         schedule_after_item.date = awesome_date(schedule_after_item.time)
         schedule_after_item.client_name = schedule_after_item_client.last_name + ' ' + \
-                                          schedule_after_item_client.first_name + ' ' + \
-                                          schedule_after_item_client.middle
+                                              schedule_after_item_client.first_name + ' ' + \
+                                              schedule_after_item_client.middle
 
     for schedule_before_item in schedule_before_1:
         schedule_before_item_client = Client.query.get_or_404(schedule_before_item.client_id)
         schedule_before_item.date = awesome_date(schedule_before_item.time)
         schedule_before_item.client_name = schedule_before_item_client.last_name + ' ' + \
-                                           schedule_before_item_client.first_name + ' ' + \
-                                           schedule_before_item_client.middle
+                                               schedule_before_item_client.first_name + ' ' + \
+                                               schedule_before_item_client.middle
+
     return render_template('teacher/students.html', schedule_after=schedule_after_1, schedule_before=schedule_before_1,
                            mentorship=mentorship, title='Ваши ученики')
 
@@ -121,6 +123,7 @@ def help():
 @login_required
 def change_roadmap(id):
     check_teacher()
+    check_admin()
     try:
         road_map_items = RoadMap.query.filter(RoadMap.client_id == id).order_by(
             RoadMap.step.asc()).all()
@@ -134,6 +137,7 @@ def change_roadmap(id):
 @login_required
 def add_step(id):
     check_teacher()
+    check_admin()
     try:
         road_map_items = RoadMap.query.filter(RoadMap.client_id == id).order_by(
             RoadMap.step.asc()).all()
@@ -153,6 +157,7 @@ def add_step(id):
 @login_required
 def change_roadmap_redaction(id, step):
     check_teacher()
+    check_admin()
     road_map_items = RoadMap.query.filter(RoadMap.client_id == id).order_by(
         RoadMap.step.asc()).all()
     return render_template('teacher/change_roadmap_redaction.html', step=step, student_id=id,
@@ -164,7 +169,7 @@ def change_roadmap_redaction(id, step):
 @login_required
 def change_step(id, step_for_change):
     check_teacher()
-
+    check_admin()
     db.session.query(RoadMap).filter(RoadMap.client_id == id).filter(RoadMap.step == step_for_change).update(
         {"name": (request.form['heading_edit']), "description": (request.form['description_edit'])})
     db.session.commit()
@@ -176,7 +181,7 @@ def change_step(id, step_for_change):
 @login_required
 def delete_step(id, step_for_delete):
     check_teacher()
-
+    check_admin()
     road_map_items = RoadMap.query.filter(RoadMap.client_id == id).order_by(
         RoadMap.step.asc()).all()
     laststep = ((road_map_items[-1].step) + 1)
@@ -194,7 +199,12 @@ def delete_step(id, step_for_delete):
 @login_required
 def show_student(id):
     check_teacher()
+    check_admin()
     student = Client.query.get_or_404(id)
+
+    if student.mentor != Teacher.query.filter(Teacher.login_id == current_user.id).first().id:
+        abort(403)
+
     if (student.subjects != None):
         subjects_id = student.subjects.split(",")
         subjects = []
@@ -203,16 +213,44 @@ def show_student(id):
     else:
         subjects = []
 
-    if student.mentor != current_user.id:
-        abort(403)
+    last_lessons = Schedule.query.filter(Schedule.client_id == id).filter(Schedule.time < datetime.datetime.now()).all()
+    work_teachers = []
+    last_lesson_subjects = []
+    for last_lesson in last_lessons:
+        work_teachers.append(Teacher.query.get_or_404(last_lesson.teacher_id))
+        last_lesson_subjects.append(Subject.query.get_or_404(last_lesson.subject_id))
+    teachers = []
+    for work_teacher in work_teachers:
+        teachers.append(Client.query.get_or_404(work_teacher.login_id))
+
     return render_template('teacher/student.html',
-                           student=student, subjects=subjects, title="ученик")
+                           student=student, subjects=subjects, last_lessons = last_lessons, teachers=teachers, last_lesson_subjects = last_lesson_subjects, title="ученик")
+
+
+@teacher.route('/teacher/student/confirm/<int:id>', methods=['GET', 'POST'])
+@login_required
+def confirm_student(id):
+    check_teacher()
+    check_admin()
+    student = Client.query.get_or_404(id)
+
+    if student.mentor != Teacher.query.filter(Teacher.login_id == current_user.id).first().id:
+        abort(403)
+
+    if student.step_number == 5:
+        student.step_number = 0
+        db.session.commit()
+    else:
+        abort(403)
+
+    return redirect(url_for('teacher.show_student', id=id))
 
 
 @teacher.route('/teacher/student/<int:id>/add_subject/', methods=['GET', 'POST'])
 @login_required
 def add_subject(id):
     check_teacher()
+    check_admin()
     student = Client.query.get_or_404(id)
     subject_name = request.form['subject_name']
     subject = Subject.query.filter(Subject.subject == subject_name).first()
@@ -254,6 +292,7 @@ def add_subject(id):
 @login_required
 def delete_subject(id, subject_id):
     check_teacher()
+    check_admin()
     student = Client.query.get_or_404(id)
     subject = Subject.query.get_or_404(subject_id)
     student_subjects_id = str(student.subjects).split(",")
@@ -290,7 +329,7 @@ def get_schedule(id):
     check_teacher()
 
     student = Client.query.get_or_404(id)
-    if student.mentor != current_user.id:
+    if student.mentor != Teacher.query.filter(Teacher.login_id == current_user.id).first().id:
         abort(403)
 
     weekdays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
@@ -335,7 +374,7 @@ def remove_sch_item(id):
 
     schedule_item = Schedule.query.get_or_404(id)
     student = Client.query.get_or_404(schedule_item.client_id)
-    if student.mentor != current_user.id:
+    if student.mentor != Teacher.query.filter(Teacher.login_id == current_user.id).first().id:
         abort(403)
     subject = Subject.query.get_or_404(schedule_item.subject_id)
     teacher = Client.query.get_or_404(schedule_item.teacher_id)
@@ -350,7 +389,7 @@ def really_remove(id):
 
     schedule_item = Schedule.query.get_or_404(id)
     student = Client.query.get_or_404(schedule_item.client_id)
-    if student.mentor != current_user.id:
+    if student.mentor != Teacher.query.filter(Teacher.login_id == current_user.id).first().id:
         abort(403)
     print(schedule_item.id)
     Schedule.query.filter(Schedule.id == schedule_item.id).delete()
@@ -364,11 +403,11 @@ def schedule_addition(client_id, week, id):
     check_teacher()
 
     student = Client.query.get_or_404(client_id)
-    if student.mentor != current_user.id:
+    if student.mentor != Teacher.query.filter(Teacher.login_id == current_user.id).first().id:
         abort(403)
     now_day = datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
     op_schedule = OperatingSchedules.query.get_or_404(id)
-    schedule_item = Schedule(client_id=client_id, teacher_id=current_user.id, subject_id=op_schedule.subject_id,
+    schedule_item = Schedule(client_id=client_id, teacher_id=Teacher.query.filter(Teacher.login_id == current_user.id).first().id, subject_id=op_schedule.subject_id,
                              time=(now_day + datetime.timedelta(
                                  days=(week * 7 - now_day.weekday() + op_schedule.day_of_the_week))),
                              interval_number=op_schedule.interval_number)
@@ -383,7 +422,7 @@ def schedule_add(id):
     check_teacher()
 
     student = Client.query.get_or_404(id)
-    if student.mentor != current_user.id:
+    if student.mentor != Teacher.query.filter(Teacher.login_id == current_user.id).first().id:
         abort(403)
 
     weekdays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
@@ -393,18 +432,16 @@ def schedule_add(id):
     endweek = now + datetime.timedelta(days=(7 - now.weekday()))
     endweek = endweek.replace(hour=0, minute=0, second=0, microsecond=0)
 
-    week = [[], [], [], [], [], [], []]
-    for opschedule_item in opschedule:
-        opschedule_item.subject_name = Subject.query.get_or_404(opschedule_item.subject_id).subject
-        opsch_teacher_id = Teacher.query.get_or_404(opschedule_item.teacher_id).login_id
-        opsch_teacher = Client.query.get_or_404(opsch_teacher_id)
-        opschedule_item.teacher_name = opsch_teacher.last_name + ' ' + opsch_teacher.first_name + ' ' + opsch_teacher.middle
-        week[opschedule_item.day_of_the_week].append(opschedule_item)
-
     byweeks = list()
-    byweeks.append(week[:])
-    byweeks.append(week[:])
-    byweeks.append(week[:])
+    for i in range(3):
+        week = [[], [], [], [], [], [], []]
+        for opschedule_item in opschedule:
+            opschedule_item.subject_name = Subject.query.get_or_404(opschedule_item.subject_id).subject
+            opsch_teacher_id = Teacher.query.get_or_404(opschedule_item.teacher_id).login_id
+            opsch_teacher = Client.query.get_or_404(opsch_teacher_id)
+            opschedule_item.teacher_name = opsch_teacher.last_name + ' ' + opsch_teacher.first_name + ' ' + opsch_teacher.middle
+            week[opschedule_item.day_of_the_week].append(opschedule_item)
+        byweeks.append(week)
 
     for i in range(0, now.weekday()):
         byweeks[0][i] = [][:]
@@ -413,12 +450,16 @@ def schedule_add(id):
     day_counter = 0
 
     for week in byweeks:
+        print(week)
         for day in week:
             day_counter += 1
+            print(day)
             for schedule_item in day:
-                if Schedule.query.filter((Schedule.time == (now_day + datetime.timedelta(days=day_counter))) & (
-                            Schedule.interval_number == schedule_item.interval_number)).all() is None:
-                    schedule_item.remove()
+                if Schedule.query.filter((Schedule.time == (
+                    now_day + datetime.timedelta(days=day_counter - now_day.weekday() - 1))) & (
+                            Schedule.interval_number == schedule_item.interval_number)).all():
+                    print('kek')
+                    day.remove(schedule_item)
 
     return render_template('teacher/teachers_schedule.html', student=student, weekdays=weekdays, byweeks=byweeks,
                            title='Добавить элемент')
@@ -476,7 +517,7 @@ def material(id):
 @login_required
 def change_mentorship():
     check_teacher()
-
+    check_admin()
     teacher = Teacher.query.filter(Teacher.login_id == current_user.id).first()
 
     if teacher.want_be_mentor is not None:

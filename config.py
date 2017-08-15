@@ -4,7 +4,8 @@ class Config(object):
     """
 
     # Put any configurations here that are common across all environments
-
+    SQLALCHEMY_POOL_RECYCLE = 299
+    SQLALCHEMY_POOL_TIMEOUT = 20
 
 class DevelopmentConfig(Config):
     """

@@ -26,6 +26,11 @@
     color:white;
 }
 
+.bg-envelope {
+    background: url('../images/envelope.jpg') no-repeat fixed top;
+    color: #fff;
+}
+
 .bg-contacts {
     background: url('../images/bg-contacts.jpeg') no-repeat fixed center;
     background-size: cover;
@@ -53,7 +58,7 @@ nav .container:first-of-type {
 }
 
 .bg-road_map {
-    background: url('../images/bg-road_map.jpg') no-repeat center scroll;
+    background: url('../images/road_map.jpg') no-repeat center scroll;
     width: 100%;
     height: 150px;
     border: black 1px;

@@ -2,47 +2,20 @@
 {% import "bootstrap/utils.html" as utils %}
 {% block title %}Подтвердите покупку{% endblock %}
 {% block body %}
-<div class="bg-1">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8">
-                <img alt="140x140" class="rounded-circle img-fluid float-left mr-3" data-src="holder.js/140x140"
-                     src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNDAiIGhlaWdodD0iMTQwIj48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI2VlZSIvPjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjcwIiB5PSI3MCIgc3R5bGU9ImZpbGw6I2FhYTtmb250LXdlaWdodDpib2xkO2ZvbnQtc2l6ZToxMnB4O2ZvbnQtZmFtaWx5OkFyaWFsLEhlbHZldGljYSxzYW5zLXNlcmlmO2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjE0MHgxNDA8L3RleHQ+PC9zdmc+"
-                     style="width: 150px; height: 150px;">
-                <h2>{{ service.name}}</h2>
-                <p class="lead">{{ service.description}}</p>
-            </div>
-            <div class="col-md-4">
-                <p>Стоимость:</p>
-                <h1>{{ service.price}}₽
-                    <small>в месяц</small>
-                </h1>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="container">
-    <div align="center">
-        {% if current_user.balance >= service.price %}
-
-        <h3>Подтверждение покупки</h3>
-        <p> При приобретении курса "{{ service.name }}" с вашего счета будет
-            списано {{ service.price }} рублей, подтвердите покупку.</p>
-        {{ utils.flashed_messages() }}
-
-        <p>
-            <small>edukato не обманывает своих клиентов. Мы никогда не снимем деньги без вашего ведома. По всем
-                вопросам
-                обращайтесь в поддержку 8 800 555-35-35
-            </small>
-        </p>
-
-        <a href="{{ url_for('home.confirmed_transaction', id=service.id)}}" class="btn btn-success">Подтвердить</a>
-        <a href="{{ url_for('home.shop') }}" class="btn btn-danger">Отменить</a>
-        {% else %}
-        <h3>Oops... Кажется нет средств.</h3>
-        <a class="btn btn-lg btn-success" href="{{ url_for('home.pay') }}">Пополнить</a>
-        {% endif %}
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            {% if case == 0 %}
+                <h1>Есть проблема. Ты уже оплатил следующий месяц.</h1>
+                <p>Мы рады твоему желанию работать с нами, однако мы просим оплачивать не более, чем на месяц в перед, так как практика показывает большое число отказов</p>
+            {% else %}
+                {% if case == 1 %}
+                    <h1>Есть проблема. Ты выбрал меньше услуг, чем есть у тебя.</h1>
+                    <p>Надо брать больше. И, пожалуйста, никогда больше не играй с адресами страниц, это незаконно.</p>
+                {% else %}
+                {% endif %}
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endblock %}

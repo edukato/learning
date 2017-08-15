@@ -26,12 +26,13 @@
         <div class="col-md-9">
             {% if (not rec) and (rec_subject != -1) %}
             <div class="bg-3">
+                <div class="container" style="padding-top:0px">
                 <div class="row">
-                    <div class="col text-center pr-0">
+                    <div class="col-md-6 col-sm-12 text-center">
                         <br>
                         <img height="200px" align="middle" src="/static/images/klee.png">
                     </div>
-                    <div class="col text-center pl-0">
+                    <div class="col-md-6 col-sm-12 text-center">
                         <br><br>
                         <h3>Привет<br> Сегодня у нас {{ ' ' ~ student_subjects_small[rec_subject] }} <br> Сразу 5 вопросов</h3>
                         <br>
@@ -41,15 +42,17 @@
                         </a>
                     </div>
                 </div>
+                </div>
             </div>
             {% elif  (rec) and (rec_subject != -1)  %}
             <div class="bg-3">
+                <div class="container" style="padding-top:0px">
                 <div class="row">
-                    <div class="col text-center pr-0">
+                    <div class="col-md-6 col-sm-12 text-center">
                         <br>
                         <img height="200px" align="middle" src="/static/images/done.png">
                     </div>
-                    <div class="col text-center pl-0">
+                    <div class="col-md-6 col-sm-12 text-center">
                         <br><br><br>
                         <h3 class="mt-2"> Молодчина, так держать! </h3>
                         <br>
@@ -58,6 +61,7 @@
                             Продолжить грызть гранит науки!
                         </a>
                     </div>
+                </div>
                 </div>
             </div>
             {% elif (not rec) and (rec_subject == -1) %}

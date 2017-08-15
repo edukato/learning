@@ -5,13 +5,113 @@
 {% block title %}Регистрация{% endblock %}
 {% block body %}
 <div class="container">
-    <div class="content-section">
-        {{ utils.flashed_messages() }}
-        <div class="center">
+    <div class="row">
+        <div class="col-md-6">
+            {{ utils.flashed_messages() }}
             <h1>Регистрация</h1>
             <br/>
             {{ wtf.quick_form(form) }}
         </div>
+        <div class="col-md-6">
+            <img class="img-fluid" src="{{ url_for('static', filename='images/notepad.png')}}">
+        </div>
     </div>
 </div>
+<script>
+var email = document.getElementById("email");
+
+  if (email.validity.valueMissing) {
+    email.setCustomValidity("Необходимо ввести email");
+  }
+
+email.addEventListener("input", function (event) {
+
+  if (email.validity.valueMissing) {
+    email.setCustomValidity("Необходимо ввести email");
+  }
+  else{
+    event.target.setCustomValidity("");
+  }
+});
+
+var first_name = document.getElementById("first_name");
+
+  if (first_name.validity.valueMissing) {
+    first_name.setCustomValidity("Необходимо ввести имя");
+  }
+
+first_name.addEventListener("input", function (event) {
+
+  if (first_name.validity.valueMissing) {
+    first_name.setCustomValidity("Необходимо ввести имя");
+  }
+  else{
+    event.target.setCustomValidity("");
+  }
+});
+
+var last_name = document.getElementById("last_name");
+
+  if (last_name.validity.valueMissing) {
+    last_name.setCustomValidity("Необходимо ввести фамилию");
+  }
+
+last_name.addEventListener("input", function (event) {
+
+  if (last_name.validity.valueMissing) {
+    last_name.setCustomValidity("Необходимо ввести фамилию");
+  }
+  else{
+    event.target.setCustomValidity("");
+  }
+});
+
+var middle = document.getElementById("middle");
+
+  if (middle.validity.valueMissing) {
+    middle.setCustomValidity("Необходимо ввести отчество");
+  }
+
+middle.addEventListener("input", function (event) {
+
+  if (middle.validity.valueMissing) {
+    middle.setCustomValidity("Необходимо ввести отчество");
+  }
+  else{
+    event.target.setCustomValidity("");
+  }
+});
+
+var password = document.getElementById("password");
+
+  if (password.validity.valueMissing) {
+    password.setCustomValidity("Необходимо ввести пароль");
+  }
+
+password.addEventListener("input", function (event) {
+
+  if (password.validity.valueMissing) {
+    password.setCustomValidity("Необходимо ввести пароль");
+  }
+  else{
+    event.target.setCustomValidity("");
+  }
+});
+
+var confirm_password = document.getElementById("confirm_password");
+
+  if (confirm_password.validity.valueMissing) {
+    confirm_password.setCustomValidity("Необходимо подтвердить пароль");
+  }
+
+confirm_password.addEventListener("input", function (event) {
+
+  if (confirm_password.validity.valueMissing) {
+    confirm_password.setCustomValidity("Необходимо подтвердить пароль");
+  }
+  else{
+    event.target.setCustomValidity("");
+  }
+});
+</script>
 {% endblock %}

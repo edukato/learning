@@ -2,11 +2,492 @@
 {% set active_page = "index" %}
 {% block title %}Главная страница{% endblock %}
 {% block body %}
-<div class="container">
-    <div class="row">
-        <h1>Привет, это закрытый сервис.
-            <small>Если честно, то мы не очень рады тебе</small>
-        </h1>
+
+<style>
+    #video_container {
+        width:100%;
+        min-height:100%;
+        height:100%;
+        margin:0px;
+        padding:0px;
+    }
+    #background {
+    width: 100%;
+    height: auto;
+    min-height:100%;
+    z-index: -100;
+    }
+
+    html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    font-family: "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.text-vertical-center {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.text-vertical-center h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 4.5em;
+    font-weight: 700;
+}
+
+/* Custom Button Styles */
+
+.btn-dark {
+    border-radius: 0;
+    color: #fff;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.btn-dark:hover,
+.btn-dark:focus,
+.btn-dark:active {
+    color: #fff;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.btn-light {
+    border-radius: 0;
+    color: #333;
+    background-color: rgb(255,255,255);
+}
+
+.btn-light:hover,
+.btn-light:focus,
+.btn-light:active {
+    color: #333;
+    background-color: rgba(255,255,255,0.8);
+}
+
+/* Custom Horizontal Rule */
+
+hr.small {
+    max-width: 100px;
+}
+
+/* Side Menu */
+
+#sidebar-wrapper {
+    z-index: 1000;
+    position: fixed;
+    right: 0;
+    width: 250px;
+    height: 100%;
+    transform: translateX(250px);
+    overflow-y: auto;
+    background: #222;
+    -webkit-transition: all 0.4s ease 0s;
+    -moz-transition: all 0.4s ease 0s;
+    -ms-transition: all 0.4s ease 0s;
+    -o-transition: all 0.4s ease 0s;
+    transition: all 0.4s ease 0s;
+}
+
+.sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 250px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-nav li {
+    text-indent: 20px;
+    line-height: 40px;
+}
+
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    color: #999;
+}
+
+.sidebar-nav li a:hover {
+    text-decoration: none;
+    color: #fff;
+    background: rgba(255,255,255,0.2);
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+    text-decoration: none;
+}
+
+.sidebar-nav > .sidebar-brand {
+    height: 55px;
+    font-size: 18px;
+    line-height: 55px;
+}
+
+.sidebar-nav > .sidebar-brand a {
+    color: #999;
+}
+
+.sidebar-nav > .sidebar-brand a:hover {
+    color: #fff;
+    background: none;
+}
+
+#menu-toggle {
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+#sidebar-wrapper.active {
+    right: 250px;
+    width: 250px;
+    -webkit-transition: all 0.4s ease 0s;
+    -moz-transition: all 0.4s ease 0s;
+    -ms-transition: all 0.4s ease 0s;
+    -o-transition: all 0.4s ease 0s;
+    transition: all 0.4s ease 0s;
+}
+
+.toggle {
+    margin: 5px 5px 0 0;
+}
+
+/* Header */
+
+.header {
+    display: table;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: url(static/imgages/callout.jpg) no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
+/* About */
+
+.about {
+    padding: 50px 0;
+}
+
+/* Services */
+
+.services {
+    padding: 50px 0;
+}
+
+.service-item {
+    margin-bottom: 30px;
+}
+
+/* Callout */
+
+.callout {
+    display: table;
+    width: 100%;
+    height: 200px;
+    color: #fff;
+    background: url(static/images/callout.jpg) no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
+/* Portfolio */
+
+.portfolio {
+    padding: 50px 0;
+}
+
+.portfolio-item {
+    margin-bottom: 30px;
+}
+
+.img-portfolio {
+    margin: 0 auto;
+}
+
+.img-portfolio:hover {
+    opacity: 0.8;
+}
+
+/* Call to Action */
+
+.call-to-action {
+    padding: 50px 0;
+}
+
+.call-to-action .btn {
+    margin: 10px;
+}
+
+/* Map */
+
+.map {
+    height: 500px;
+}
+
+@media(max-width:768px) {
+    .map {
+        height: 75%;
+    }
+}
+
+.map iframe {
+    pointer-events: none;
+}
+
+/* Footer */
+
+footer {
+    padding: 100px 0;
+}
+
+#to-top {
+  display: none;
+  position: fixed;
+  bottom: 5px;
+  right: 5px;
+}
+header {
+	color:white;
+}
+</style>
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+<div class="container" id="video_container">
+    <iframe id="background" width="854" height="480" src="https://www.youtube.com/embed/DMmeTyoa6-k" frameborder="0" allowfullscreen></iframe>
+    <div class="text-center" style="
+    position:absolute;
+    width:100%;
+    top:50px">
+    <a href="{{ url_for('auth.register') }}" class="btn btn-lg btn-success mb-2">Зарегистрируйся прямо сейчас</a>
+    <a href="#services" class="btn btn-lg btn-primary mb-2">Читать больше</a>
     </div>
 </div>
+        <section id="services" class="services bg-primary" style="padding-top:15px">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-lg-10 offset-lg-1">
+                    <h2>Что такое edukato?</h2>
+                    <hr class="small">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-university fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>Студенты лучших ВУЗов</strong>
+                                </h4>
+                                <p>Студенты МГУ, МГИМО, ВШЭ и др. – это люди, которые сами успешно преодолели все тяготы вступительной поры и готовы поделиться с тобой этим опытом.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-trophy fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>Победители всероссийский и международных олимпиад</strong>
+                                </h4>
+                                <p>Именно они знают, как научиться решать нерешаемое.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-question fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>Индивидуальный подход к каждому ученику</strong>
+                                </h4>
+                                <p>Для каждого нашего клиента мы составляем индивидуальный план поступления, учитывающий твои сильные и слабые стороны, твои потребности и возможности</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-money fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>Самые низкие цены</strong>
+                                </h4>
+                                <p>Мы делаем все для того, чтобы стоимость наших услуг оставалась минимальной.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.row (nested) -->
+                </div>
+                <!-- /.col-lg-10 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </section>
+    <!-- Callout -->
+    <aside class="callout">
+        <div class="text-vertical-center">
+            <h1>Как мы исполним твою мечту?</h1>
+        </div>
+    </aside>
+    <section id="portfolio" class="portfolio" style="padding-top:10px; padding-bottom:10px;">
+        <div class="container">
+				<div class="row">
+			<div class="col-md-4 offset-md-2">
+			<h3 align="center">Консультации</h2>
+			<p class="text-center">Преподаватели по предметам, которые тебе нужно сдавать, отвечают на твои вопросы и дают советы по подготовке в течение 30 минут</p>
+			</div>
+			<div class="col-md-4">
+			<h3 align="center">Занятия</h2>
+			<p class="text-center">Это целый урок (как у репетитора) - преподаватель подробно объясняет новый материал. Аж целый час!</p>
+			</div>
+		</div>
+		<div class="row">
+		<div class="col-md-12 text-center">
+		<p><small>всё это по скайпу, поэтому можно сидеть в пледике и пить горячий шоколад с карамельной крошкой</small></p>
+		</div>
+			<div class="col-md-12 text-center mt-3 mb-3">
+			<h2>Стой! Это ещё не всё...</h2>
+			</div>
+		</div>
+		<div class="row text-center">
+			<div class="col-md-4 offset-md-2">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-list fa-stack-1x text-primary"></i>
+                            </span>
+			<h3>План поступления</h3>
+			<p>Мы умеем делать многоходовочки. И знаем, какие олимпиады можно написать, почти не готовясь, и заработать тем самым такие нужные баллы. И, конечно, мы расскажем, как оптимально распределить время при подготовке к ЕГЭ – какие задания решаются с закрытми глазами, а какие требуют предельной концентрации. Исходя из всего этого, мы составим твой собственный план поступления, который и приведет тебя в университет твоей мечты.</p>
+			</div>
+			<div class="col-md-4">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-book fa-stack-1x text-primary"></i>
+                            </span>
+
+			<h3>Материалы</h3>
+			<p>Ну, тут все просто. Мы периодически будем присылать тебе теоретический материал, который нужно будет заботать. Только самое необходимое - ничего лишнего.</p>
+			</div>
+		</div>
+		</div>
+
+        <!-- /.container -->
+    </section>
+    <div class="container" style="padding-bottom:20px;">
+        <div class="row">
+            <div class="col-md-5 offset-md-1 text-center">
+                <img class="img-fluid" src="{{ url_for('static', filename='images/loboda.png') }}">
+                <br>
+            </div>
+            <div class="col-md-5 text-center">
+                <br>
+                <span class="fa-stack fa-4x">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-cloud fa-stack-1x text-primary"></i>
+                </span>
+
+			    <h3>Тренировки</h3>
+			    <p>Мы разработали систему, которая при помощи генетического алгоритма ищет твои слабые места и дает соответствующие задания. Представь, она учится сама.</p>
+			</div>
+        </div>
+    </div>
+    <div class="bg-1">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <h3>Калькулятор цен</h3>
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 offset-md-2">
+                <h5>Консультации</h5>
+                <h1 id="consult">1</h1>
+                <input type="range" min="0" max="15" value="1" id="consult_slider" step="1"
+                       oninput="outputUpdate()">
+            </div>
+            <div class="col-md-4">
+                <h5>Занятия</h5>
+                <h1 id="lesson">1</h1>
+                <input type="range" min="0" max="15" value="1" id="lesson_slider" step="1"
+                       oninput="outputUpdate()">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <br>
+                <br>
+                <h5>Итоговая стоимость:</h5>
+                <h1><span id="price">999</span>₽</h1>
+            </div>
+        </div>
+        </div>
+</div>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h3 class="mb-2">Набор ограничен - осталось <slan class="badge badge-primary">6</slan> мест</h3>
+            <a class="btn btn-lg btn-primary" style="font-size:3em;" href="{{ url_for('auth.register') }}">Регистрация</a>
+            <h1 class="mt-4">Первое занятие - бесплатно</h1>
+        </div>
+    </div>
+</div>
+<script>
+    function outputUpdate() {
+        var nconsult = document.getElementById('consult_slider').value;
+        var nlesson = document.getElementById('lesson_slider').value;
+        var price_cons = 0;
+        var price_less = 0;
+        if (nconsult == 0) {
+            price_cons = 0
+        } else if (nconsult == 1) {
+            price_cons = 400
+        } else if (nconsult == 2) {
+            price_cons = 350
+        } else if (nconsult == 3) {
+            price_cons = 325
+        } else if (nconsult > 3) {
+            price_cons = 300
+        }
+        if (nlesson == 0) {
+            price_less = 0
+        } else if (nlesson == 1) {
+            price_less = 600
+        } else if (nlesson == 2) {
+            price_less = 550
+        } else if (nlesson == 3) {
+            price_less = 525
+        } else if (nlesson > 3) {
+            price_less = 500
+        }
+        document.querySelector('#consult').innerHTML = nconsult;
+        document.querySelector('#lesson').innerHTML = nlesson;
+
+        var pricenew = price_cons * nconsult + price_less * nlesson - 1;
+
+        if (pricenew == -1) {
+            pricenew = 0
+        }
+        document.getElementById('price').innerHTML = pricenew.toString();
+
+    }
+    body.onload = function() {
+        outputUpdate();
+    }
+</script>
 {% endblock %}

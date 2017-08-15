@@ -1,5 +1,38 @@
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter45465162 = new Ya.Metrika({
+                    id:45465162,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/45465162" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>{{ title }} | edukato</title>
 
     <!-- Bootstrap CSS -->
@@ -7,6 +40,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/custom.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+
     <link href="https://raw.githubusercontent.com/HubSpot/tether/master/dist/js/tether.min.js" rel="script">
 
     <!-- Custom CSS -->
@@ -21,7 +55,7 @@
         }
     </style>
 </head>
-<body>
+<body onload="outputUpdate()">
 
 {% set navigation_bar_auth = [
 ('/account', 'account', 'Мой аккаунт'),('/training_home','training_home','Тренировка'),
@@ -29,7 +63,8 @@
 ] -%}
 
 {% set navigation_bar_non_auth = [
-('/', 'index', 'Неприветливая страничка'),
+('/', 'index', 'Главная'),
+('/parents','parents','Родителям'),
 ('/login', 'login', 'Вход'),
 ('/register', 'register', 'Регистрация')
 ] -%}
@@ -125,8 +160,8 @@
                        aria-haspopup="true" aria-expanded="false"><span class="fa fa- fa-user"></span>
                         Привет, {{ current_user.first_name }}
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <div class="m-3" style="width: 275px">
+                    <div class="dropdown-menu dropdown-menu-right pb-1 pt-2 mb-0">
+                        <div class="mr-3 ml-3 mb-0 mt-1" style="width: 265px">
                             {% if current_user.image %}
                             <img src="{{ url_for('static', filename=('images/profile/' ~ current_user.image)) }}"
                                  class="rounded-circle img-fluid float-left mr-3"
@@ -140,14 +175,14 @@
                             {% endif %}
                             <h5>{{ current_user.first_name }} {{ current_user.last_name }}</h5>
                             <p class="no_mar"><span class="fa fa-envelope"></span> {{ current_user.email }} </p>
-                            <p><span class="fa fa-phone"></span> {{ current_user.phone_num }} </p>
+                            <p class="mb-2"><span class="fa fa-phone"></span> {{ current_user.phone_num }} </p>
                         </div>
-                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-divider mt-1 mb-1"></div>
                         <a class="dropdown-item" href="{{ url_for('home.edit_account') }}"><span
                                 class="fa fa- fa-pencil"></span> Настройки аккаунта</a>
                         <a class="dropdown-item" href="{{ url_for('home.help') }}"><span
                                 class="fa fa- fa-question"></span> Возникли проблемы</a>
-                        <a class="dropdown-item" href="{{ url_for('auth.logout') }}"><span
+                        <a class="dropdown-item pb-1" href="{{ url_for('auth.logout') }}"><span
                                 class="fa fa- fa-sign-out"></span> Выход наружу</a>
                     </div>
                 </li>
@@ -162,8 +197,11 @@
 <div class="container">
     <hr>
 
-    <footer>
-        <p>&copy; edukato 2017</p>
+    <footer style="padding:0px;">
+        <p>&copy; edukato 2017 - все права защищены</p>
+        <!--
+        <p><small><a href="{{ url_for('home.agreement') }}">Пользовательское соглашение</a> / <a href>Политика конфиденциальности</a> / <a href="mailto:admin@edukato.ru">Написать нам</a></small></p>
+        -->
     </footer>
 </div>
 

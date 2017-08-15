@@ -1,98 +1,160 @@
 {% extends "base.html" %}
 {% set active_page = "shop" %}
+{% import "bootstrap/utils.html" as utils %}
 {% block title %}Магазин{% endblock %}
 {% block body %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h3>Тарифные планы
-                <small><span class="badge badge-default">{{ services_0_count}}</span></small>
-            </h3>
-            <hr>
-        </div>
-    </div>
-    <div class="row">
-        {% if services_0 %}
-        {% for service_0 in services_0 %}
-        <div class="col-lg-3 col-md-4 col-sm-6 col-6">
-            <div class="card">
-                <div class="divgood">
-                    <img class="card-img-top m-2 good" src="{{ url_for('static', filename='images/shop/' ~ service_0.id ~ '.png')}}"
-                         alt="Card image cap"
-                         style="height: 150px">
-                </div>
-                <div class="card-block">
-                    <h4 class="card-title">{{ service_0.name }}</h4>
-                    <p class="card-text">{{ service_0.description}}</p>
-                    <a href="{{ url_for('home.confirm_transaction', id=service_0.id) }}"
-                       class="btn btn-sm btn-success">Купить</a>
-                    <a href="{{ url_for('home.show_service', id=service_0.id) }}"
-                       class="btn btn-sm btn-secondary">Подробнее</a>
-                </div>
+{{ utils.flashed_messages() }}
+<div class="bg-1">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <h3>Настройки тарифного плана</h3>
+                <hr>
             </div>
-            <br/>
         </div>
-        {% endfor %}
-        {% endif %}
-    </div>
-    <div>
-        <h3>Если не хватило в плане:
-            <small><span class="badge badge-default">{{ services_1_count}}</small>
-            </span></h3>
-    </div>
-    <br>
-    <div class="row">
-        {% if services_1 %}
-        {% for service_1 in services_1 %}
-        <div class="col-md-3">
-            <div class="card">
-                <div class="divgood">
-                    <img class="card-img-top m-2 good" src="static/images/shop/{{ service_1.id }}.png"
-                         alt="Card image cap"
-                         style="height: 150px">
-                </div>
-                <div class="card-block">
-                    <h4 class="card-title">{{ service_1.name }}</h4>
-                    <p class="card-text">{{ service_1.description}}</p>
-                    <a href="{{ url_for('home.confirm_transaction', id=service_1.id) }}"
-                       class="btn btn-success">Купить</a>
-                    <a href="{{ url_for('home.show_service', id=service_1.id) }}"
-                       class="btn btn-secondary">Подробнее</a>
-                </div>
+        <div class="row">
+            <div class="col-md-4 offset-md-2">
+                <h5>Консультации</h5>
+                <h1 id="consult">1</h1>
+                <input type="range" min="0" max="15" value="1" id="consult_slider" step="1"
+                       oninput="outputUpdate()">
             </div>
-            <br>
-        </div>
-        {% endfor %}
-        {% endif %}
-    </div>
-    <div>
-        <h3>Предстоящие вебинары и другие интересности
-            <small><span class="badge badge-default">{{ services_2_count}}</small>
-            </span></h3>
-    </div>
-    <div class="row">
-        {% if services_2 %}
-        {% for service_2 in services_2 %}
-        <div class="col-md-3">
-            <div class="card">
-                <div class="divgood">
-                    <img class="card-img-top m-2 good" src="static/images/shop/{{ service_2.id }}.png"
-                         alt="Card image cap"
-                         style="height: 150px">
-                </div>
-                <div class="card-block">
-                    <h4 class="card-title">{{ service_2.name }}</h4>
-                    <p class="card-text">{{ service_2.description}}</p>
-                    <a href="{{ url_for('home.confirm_transaction', id=service_2.id) }}"
-                       class="btn btn-success">Купить</a>
-                    <a href="{{ url_for('home.show_service', id=service_2.id) }}"
-                       class="btn btn-secondary">Подробнее</a>
-                </div>
+            <div class="col-md-4">
+                <h5>Занятия</h5>
+                <h1 id="lesson">1</h1>
+                <input type="range" min="0" max="15" value="1" id="lesson_slider" step="1"
+                       oninput="outputUpdate()">
             </div>
-            <br>
         </div>
-        {% endfor %}
-        {% endif %}
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <br>
+                <br>
+                <h5>Итоговая стоимость:</h5>
+                <h1><span id="price">999</span>₽</h1>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-md-12">
+                <br>
+                <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#new">Купить тарифный
+                    план
+                </button>
+                <button type="button" class="btn btn-secondary mb-2" data-toggle="modal" data-target="#renew">Обновить
+                    текущий
+                </button>
+            </div>
+        </div>
     </div>
 </div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <br>
+            <h3>Oops... Тут пока ничего нет.</h3>
+            <p class="lead">Скоро здесь появятся вебинары и другие интересные штуки</p>
+            <img src="{{ url_for('static',filename='images/soccer-ball.svg') }}" height="60px">
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="renew" tabindex="-1" role="dialog" aria-labelledby="renewLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="renewLabel">Мы почти готовы</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="renew-body">
+                <p>
+                Мы спишем с твоего счета <b><span>999₽</span></b>. Эти занятия будут добавлены к текущему
+                плану и превратятся в тыкву по окончанию месяца.
+                </p>
+            </div>
+            <div class="modal-footer" id="renew-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                <a type="button" class="btn btn-primary" id="renew-button" href="">Все супер</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="new" tabindex="-1" role="dialog" aria-labelledby="newLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newLabel">Мы почти готовы</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>
+                Мы спишем с твоего счета <b><span id="price-new">999</span>₽</b>. План начнет действовать сразу после
+                окончания существующего.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                <a type="button" id="new-button" class="btn btn-primary" href="">Все супер</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function outputUpdate() {
+        var nconsult = document.getElementById('consult_slider').value;
+        var nlesson = document.getElementById('lesson_slider').value;
+        var price_cons = 0;
+        var price_less = 0;
+        if (nconsult == 0) {
+            price_cons = 0
+        } else if (nconsult == 1) {
+            price_cons = 400
+        } else if (nconsult == 2) {
+            price_cons = 350
+        } else if (nconsult == 3) {
+            price_cons = 325
+        } else if (nconsult > 3) {
+            price_cons = 300
+        }
+        if (nlesson == 0) {
+            price_less = 0
+        } else if (nlesson == 1) {
+            price_less = 600
+        } else if (nlesson == 2) {
+            price_less = 550
+        } else if (nlesson == 3) {
+            price_less = 525
+        } else if (nlesson > 3) {
+            price_less = 500
+        }
+        document.querySelector('#consult').innerHTML = nconsult;
+        document.querySelector('#lesson').innerHTML = nlesson;
+
+        var pricenew = price_cons * nconsult + price_less * nlesson - 1;
+        var pricere = pricenew - {{ sel_log.price }};
+
+        if (pricenew == -1) {
+            pricenew = 0
+        }
+        document.getElementById('price').innerHTML = pricenew.toString();
+
+        document.getElementById('price-new').innerHTML = pricenew.toString();
+
+        document.getElementById('renew-body').innerHTML = 'Мы спишем с твоего счета <b>'+pricere.toString()+'₽</b>. Эти занятия будут добавлены к текущему плану и превратятся в тыкву по окончании месяца.';
+        document.getElementById('renew-footer').innerHTML = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button><a type="button" class="btn btn-primary" id="renew-button" href="">Все супер</a>';
+
+        document.getElementById('new-button').setAttribute("href", "shop/confirm/" + nconsult + "/" + nlesson + "/0");
+        document.getElementById('renew-button').setAttribute("href", "shop/confirm/" + nconsult + "/" + nlesson + "/1");
+
+        if ((nconsult < {{ sel_log.consultations }} || nlesson < {{ sel_log.lessons }}) || (nconsult == {{ sel_log.consultations }} && nlesson == {{ sel_log.lessons }})){
+            document.getElementById('renew-body').innerHTML = "Прости, но ты выбрал меньше, чем у тебя есть.";
+            document.getElementById('renew-footer').innerHTML ='<button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>';
+        }
+    }
+    body.onload = function() {
+        outputUpdate();
+    }
+</script>
 {% endblock %}

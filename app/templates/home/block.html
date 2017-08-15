@@ -1,0 +1,196 @@
+{% import "bootstrap/utils.html" as utils %}
+{{ utils.flashed_messages() }}
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{{ title }} | edukato</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/custom.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+
+    <link href="https://raw.githubusercontent.com/HubSpot/tether/master/dist/js/tether.min.js" rel="script">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 58px;
+            padding-bottom 20px;
+        }
+
+        .no_mar {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body class="pt-4" onload="outputUpdate()">
+{{ utils.flashed_messages() }}
+<h1 align="center" class="mb-3">Пришло время настроить твой тарифный план</h1>
+<div class="bg-1">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <h3>Настройки тарифного плана</h3>
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 offset-md-2">
+                <h5>Консультации</h5>
+                <h1 id="consult">1</h1>
+                <input type="range" min="0" max="15" value="1" id="consult_slider" step="1"
+                       oninput="outputUpdate()">
+            </div>
+            <div class="col-md-4">
+                <h5>Занятия</h5>
+                <h1 id="lesson">1</h1>
+                <input type="range" min="0" max="15" value="1" id="lesson_slider" step="1"
+                       oninput="outputUpdate()">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <br>
+                <br>
+                <h5>Итоговая стоимость:</h5>
+                <h1><span id="price">999</span>₽</h1>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-md-12">
+                <br>
+                <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#new">Купить тарифный
+                    план
+                </button>
+                <button type="button" class="btn btn-secondary mb-2" data-toggle="modal" data-target="#renew">Обновить
+                    текущий
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="renew" tabindex="-1" role="dialog" aria-labelledby="renewLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="renewLabel">Мы почти готовы</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="renew-body">
+                <p>
+                Мы спишем с твоего счета <b><span>999₽</span></b>. Эти занятия будут добавлены к текущему
+                плану и превратятся в тыкву по окончанию месяца.
+                </p>
+            </div>
+            <div class="modal-footer" id="renew-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                <a type="button" class="btn btn-primary" id="renew-button" href="">Все супер</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="new" tabindex="-1" role="dialog" aria-labelledby="newLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newLabel">Мы почти готовы</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>
+                Мы спишем с твоего счета <b><span id="price-new">999</span>₽</b>. План начнет действовать сразу после
+                окончания существующего.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                <a type="button" id="new-button" class="btn btn-primary" href="">Все супер</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function outputUpdate() {
+        var nconsult = document.getElementById('consult_slider').value;
+        var nlesson = document.getElementById('lesson_slider').value;
+        var price_cons = 0;
+        var price_less = 0;
+        if (nconsult == 0) {
+            price_cons = 0
+        } else if (nconsult == 1) {
+            price_cons = 400
+        } else if (nconsult == 2) {
+            price_cons = 350
+        } else if (nconsult == 3) {
+            price_cons = 325
+        } else if (nconsult > 3) {
+            price_cons = 300
+        }
+        if (nlesson == 0) {
+            price_less = 0
+        } else if (nlesson == 1) {
+            price_less = 600
+        } else if (nlesson == 2) {
+            price_less = 550
+        } else if (nlesson == 3) {
+            price_less = 525
+        } else if (nlesson > 3) {
+            price_less = 500
+        }
+        document.querySelector('#consult').innerHTML = nconsult;
+        document.querySelector('#lesson').innerHTML = nlesson;
+
+        var pricenew = price_cons * nconsult + price_less * nlesson - 1;
+        var pricere = pricenew - {{ sel_log.price }};
+
+        if (pricenew == -1) {
+            pricenew = 0
+        }
+        document.getElementById('price').innerHTML = pricenew.toString();
+
+        document.getElementById('price-new').innerHTML = pricenew.toString();
+
+        document.getElementById('renew-body').innerHTML = 'Мы спишем с твоего счета <b>'+pricere.toString()+'₽</b>. Эти занятия будут добавлены к текущему плану и превратятся в тыкву по окончании месяца.';
+        document.getElementById('renew-footer').innerHTML = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button><a type="button" class="btn btn-primary" id="renew-button" href="">Все супер</a>';
+
+        document.getElementById('new-button').setAttribute("href", "shop/confirm/" + nconsult + "/" + nlesson + "/0");
+        document.getElementById('renew-button').setAttribute("href", "shop/confirm/" + nconsult + "/" + nlesson + "/1");
+
+        if ((nconsult < {{ sel_log.consultations }} || nlesson < {{ sel_log.lessons }}) || (nconsult == {{ sel_log.consultations }} && nlesson == {{ sel_log.lessons }})){
+            document.getElementById('renew-body').innerHTML = "Прости, но ты выбрал меньше, чем у тебя есть.";
+            document.getElementById('renew-footer').innerHTML ='<button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>';
+        }
+    }
+    body.onload = function() {
+        outputUpdate();
+    }
+</script>
+<div class="container">
+    <hr>
+
+    <footer>
+        <p>&copy; edukato 2017 - все права защищены</p>
+        <p><small><a href="{{ url_for('home.agreement') }}">Пользовательское соглашение</a> / <a href>Политика конфиденциальности</a> / <a href="mailto:admin@edukato.ru">Написать нам</a></small></p>
+    </footer>
+</div>
+
+<!-- Bootstrap Javascript -->
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+        integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+        integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+        crossorigin="anonymous"></script>
+</body>
+</html>

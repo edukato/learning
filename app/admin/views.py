@@ -226,12 +226,14 @@ def teacher(id):
     check_admin()
 
     teacher = Client.query.get_or_404(id)
+    teacher_db = teacher.query.filter(Teacher.login_id == id).first()
+
     if teacher.status != 3:
         flash('Это не учитель')
         return redirect(url_for('admin.clients'))
 
     weekdays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
-    schedule = Schedule.query.filter((Schedule.teacher_id == id) & (Schedule.time > datetime.datetime.now())).all()
+    schedule = Schedule.query.filter((Schedule.teacher_id == teacher_db.id) & (Schedule.time > datetime.datetime.now())).all()
 
     for schedule_item in schedule:
         schedule_item.day = schedule_item.time.day
@@ -239,7 +241,7 @@ def teacher(id):
         schedule_item.dow = schedule_item.time.weekday()
         schedule_item.day_of_week = weekdays[schedule_item.dow]
         schedule_item.date = awesome_date(schedule_item.time)
-        schedule_student = Client.query.get_or_404(Client.query.get_or_404(schedule_item.client_id).login_id)
+        schedule_student = Client.query.get_or_404(schedule_item.client_id)
         schedule_item.student = schedule_student.last_name + ' ' + schedule_student.first_name[0] + '. ' + \
                                 schedule_student.middle[0] + '.'
 

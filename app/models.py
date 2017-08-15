@@ -20,7 +20,7 @@ class Client(UserMixin, db.Model):
     last_name = db.Column(db.String(60), index=True)
     middle = db.Column(db.String(60), index=True)
     email = db.Column(db.String(60), index=True, unique=True)
-    phone_num = db.Column(db.String, unique=True)
+    phone_num = db.Column(db.String(60), unique=True)
     social_network = db.Column(db.String(60))
     status = db.Column(db.Integer)
     description = db.Column(db.String(300))
@@ -33,8 +33,8 @@ class Client(UserMixin, db.Model):
     home_address = db.Column(db.String(300))
     image = db.Column(db.String(300))
     plan = db.Column(db.Integer)
-    groups_list = db.Column(db.String)
-    subjects = db.Column(db.String)
+    groups_list = db.Column(db.String(300))
+    subjects = db.Column(db.String(300))
     mentor = db.Column(db.Integer)
     chat_bot_1 = db.Column(db.Boolean)
     chat_bot_2 = db.Column(db.Boolean)
@@ -44,9 +44,9 @@ class Client(UserMixin, db.Model):
     chat_bot_6 = db.Column(db.Boolean)
     loboda_date = db.Column(db.DateTime)
     step_number = db.Column(db.Integer)
-    wish_list = db.Column(db.String)
-    pre_ege_res = db.Column(db.String)
-    interesting_subjects = db.Column(db.String)
+    wish_list = db.Column(db.String(300))
+    pre_ege_res = db.Column(db.String(300))
+    interesting_subjects = db.Column(db.String(300))
     selling_log = db.relationship('SellingLog', backref='client',
                                   lazy='dynamic')
     events = db.relationship('Event', backref='client',
@@ -125,6 +125,10 @@ class SellingLog(db.Model):
     access_start = db.Column(db.DateTime)
     access_end = db.Column(db.DateTime)
     image = db.Column(db.String(300))
+    lessons = db.Column(db.Integer)
+    consultations = db.Column(db.Integer)
+    lessons_now = db.Column(db.Integer)
+    consultations_now = db.Column(db.Integer)
 
     def __repr__(self):
         return '<SellingLog: {}>'.format(self.id)
@@ -152,11 +156,11 @@ class Teacher(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     login_id = db.Column(db.Integer)
-    institution = db.Column(db.String)
+    institution = db.Column(db.String(300))
     course = db.Column(db.Integer)
-    achievements = db.Column(db.String)
+    achievements = db.Column(db.String(300))
     want_be_mentor = db.Column(db.Boolean)
-    skype_login = db.Column(db.String)
+    skype_login = db.Column(db.String(300))
 
     materials = db.relationship('Material', backref='teacher',
                              lazy='dynamic')
@@ -188,9 +192,9 @@ class Service(db.Model):
     price = db.Column(db.Integer)
     image = db.Column(db.String(300))
     type = db.Column(db.Integer)
-    full_description = db.Column(db.String)
-    reviews = db.Column(db.String)
-    video = db.Column(db.String)
+    full_description = db.Column(db.String(300))
+    reviews = db.Column(db.String(300))
+    video = db.Column(db.String(300))
     selling_log = db.relationship('SellingLog', backref='service',
                                   lazy='dynamic')
     events = db.relationship('Event', backref='service',
@@ -232,11 +236,11 @@ class ONews(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     group_id = db.Column(db.Integer, db.ForeignKey('groups.id'))
     link = db.Column(db.String(300))
-    text = db.Column(db.String)
-    image = db.Column(db.String)
-    video = db.Column(db.String)
-    document = db.Column(db.String)
-    audio = db.Column(db.String)
+    text = db.Column(db.String(300))
+    image = db.Column(db.String(300))
+    video = db.Column(db.String(300))
+    document = db.Column(db.String(300))
+    audio = db.Column(db.String(300))
 
     def __repr__(self):
         return '<Onews: {}>'.format(self.id)
@@ -260,11 +264,11 @@ class Task(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'))
-    solution = db.Column(db.String)
+    solution = db.Column(db.String())
     number = db.Column(db.Integer)
-    text = db.Column(db.String)
-    image = db.Column(db.String)
-    right_answer = db.Column(db.String)
+    text = db.Column(db.String(350))
+    image = db.Column(db.String(300))
+    right_answer = db.Column(db.String(300))
     answers = db.relationship('Answer', backref='task',
                               lazy='dynamic')
     tasks_errors = db.relationship('TasksError', backref='task',
@@ -280,7 +284,7 @@ class Answer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
     task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
-    answer = db.Column(db.String)
+    answer = db.Column(db.String(300))
     right = db.Column(db.Boolean)
     training_type = db.Column(db.Integer)
     training_id = db.Column(db.Integer)
@@ -310,7 +314,7 @@ class TrainingChoice(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'))
     number = db.Column(db.Integer)
-    description = db.Column(db.String)
+    description = db.Column(db.String(300))
 
     def __repr__(self):
         return '<Training_choice: {}>'.format(self.id)
@@ -320,7 +324,7 @@ class Skil(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
-    subject = db.Column(db.String)
+    subject = db.Column(db.String(300))
     number = db.Column(db.Integer)
     level = db.Column(db.Integer)
     right_percent = db.Column(db.Float)
@@ -334,12 +338,12 @@ class TrainingRecommendationSession(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
-    subject = db.Column(db.String)
+    subject = db.Column(db.String(300))
     start_date = db.Column(db.DateTime)
     if_close = db.Column(db.Boolean)
     current_question = db.Column(db.Integer)
-    questions = db.Column(db.String)
-    answers = db.Column(db.String)
+    questions = db.Column(db.String(300))
+    answers = db.Column(db.String(300))
 
     def __repr__(self):
         return '<TrainingRecommendationSession: {}>'.format(self.id)
@@ -349,7 +353,7 @@ class TasksError(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
-    error = db.Column(db.String)
+    error = db.Column(db.String(300))
 
     def __repr__(self):
         return '<TasksError: {}>'.format(self.id)
@@ -358,10 +362,10 @@ class Subject(db.Model):
     __tablename__ = 'subjects'
 
     id = db.Column(db.Integer, primary_key=True)
-    subject = db.Column(db.String)
-    description = db.Column(db.String)
+    subject = db.Column(db.String(300))
+    description = db.Column(db.String(300))
     tasks_number = db.Column(db.Integer)
-    icon = db.Column(db.String)
+    icon = db.Column(db.String(300))
     materials = db.relationship('Material', backref='subject',
                               lazy='dynamic')
     answers = db.relationship('Answer', backref='subject',
@@ -396,7 +400,7 @@ class MentorsClaim(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))
     client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
-    claim = db.Column(db.String)
+    claim = db.Column(db.String(300))
 
     def __repr__(self):
         return '<MentorsClaim: {}>'.format(self.id)
@@ -408,9 +412,9 @@ class Material(db.Model):
     subject_id = db.Column(db.Integer, db.ForeignKey('subjects.id'))
     date = db.Column(db.DateTime)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))
-    title = db.Column(db.String)
-    description = db.Column(db.String)
-    text = db.Column(db.String)
+    title = db.Column(db.String(300))
+    description = db.Column(db.String(300))
+    text = db.Column(db.String(300))
 
     def __repr__(self):
         return '<Material: {}>'.format(self.id)

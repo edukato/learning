@@ -18,14 +18,29 @@
         {% for task in tasks %}
         <div class="task">
             <div class="row">
-                <div class="col-md-12 col-lg-12 col-sm-12" style="display: flex;justify-content: space-between;">
-                    <h5>Вопрос {{loop.index}} из {{ tasks_quantity }}</h5>
+
                     {% if loop.index == 1 %}
-                    <H5>Время:&nbsp;<span id="time"></span></H5>
-                    {% endif %}
+                    <div class="col-md-12 col-lg-12 col-sm-12" style="justify-content: space-between;">
+                    <div class="row">
+                      <div class="col-md-4 col-sm-4 col-12 text-center">
+                                        <h5 style="padding-right:5px">Вопрос 1 из 19</h5>
+                                        </div>
+                      <div class="col-md-4 col-sm-4 col-12 text-center">
+                                        <h5>Время:&nbsp;<span id="time">00:31:57</span></h5>
+                                        </div>
+                      <div class="col-md-4 col-sm-4 col-12 text-center">
+                                        <a href="#" style="width:70px; height:30px" class="btn btn-danger btn-sm align-right" data-toggle="modal" data-target="#error_modal_1">
+                                            Ошибка!
+                                        </a>
+                        </div>
+                      </div>
+                    {% else %}
+                    <div class="col-md-12 col-lg-12 col-sm-12" style="display: flex;justify-content: space-between;">
+                    <h5>Вопрос {{loop.index}} из {{ tasks_quantity }}</h5>
                     <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="{{'#error_modal_' ~ task.id }}">
                         Ошибка!
                     </a>
+                    {% endif %}
                     <div class="modal fade" id="{{'error_modal_' ~ task.id }}" tabindex="-1" role="dialog"
                          aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                         <div class="modal-dialog" role="document">

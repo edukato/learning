@@ -7,27 +7,32 @@
 <div class="bg-1">
     <div class="container">
         <div class="row text-center">
+            {% if plan %}
             <div class=" col-sm-12 col-md-6">
                 <h5>
-                    <small>Твой тарифный план:</small>
-                    <u>{{ plan.name }}</u>
+                    Твой тарифный план:
                 </h5>
                 <h1>{{ plan.price }}₽
                     <small>в месяц</small>
                 </h1>
                 <p>Следующее списание {{ next_pay }}</p>
+                <div style="height: 40px;">
+                <button type="button" class="btn btn-sm btn-success" data-toggle="popover" title="Немного подробностей:" data-content="Консультации - всего {{ plan.consultations}}, из них проведено {{ plan.consultations - plan.consultations_now }}.
+                Занятия - всего {{ plan.lessons}}, из них проведено{{ plan.lessons - plan.lessons_now }}.">Подробности</button>
+                </div>
             </div>
-
+            {% else %}
+            <div class=" col-sm-12 col-md-6 mt-4">
+                <h5>
+                    У тебя пока нет тарифного плана, может самое время <a href="{{ url_for('home.shop') }}">приобрести его?</a>
+                </h5>
+            </div>
+            {% endif %}
             <div class=" col-sm-12 col-md-6 text-center">
 
                 <h3>Материалы</h3>
-                <p>Следующий 21 апреля</p>
+                <p>Следующий {{ ' ' ~ next_material_date }}</p>
                 <div class="container" style="max-width: 300px; padding-top: 0px">
-                    <div align="center" class="progress" style="background-color: white; max-width: 300px">
-                        <div class="progress-bar" role="progressbar" style="width: 75%;" aria-valuenow="25"
-                             aria-valuemin="0" aria-valuemax="100">3/4
-                        </div>
-                    </div>
                 </div>
                 <a href="{{ url_for('home.materials_home') }}" class="btn btn-sm btn-secondary">Посмотреть
                     прошлые</a>
@@ -77,37 +82,6 @@
                 {% endif %}
             </div>
             <br>
-            <h2>Мои услуги:</h2>
-            {% if active_services %}
-            <div class="row">
-                {% for service in active_services %}
-                <div class="col-md-6 mb-3">
-                    <div class="card">
-                        <div class="card-img-top"
-                             style="background: url('static/images/shop/{{ service._id }}.png') no-repeat; height: 200px; background-size: cover"></div>
-                        <div class="card-block">
-                            <h4 class="card-title">{{ service.name }}</h4>
-                            <p class="card-text">{{ service.description}}</p>
-                        </div>
-                        <div class="card-footer">
-                            <small class="text-muted">До {{ service.end_date }}</small>
-                        </div>
-                    </div>
-                </div>
-                {% if (loop.index % 2) == 0 %}
-            </div>
-            <br>
-            <div class="row">
-                {% else %}
-                <br>
-                {% endif %}
-                {% endfor %}
-            </div>
-            {% else %}
-            <h3> Кхм, чёт мы ничего не находим. Может за покупками в <a
-                    href="{{ url_for('home.shop') }}">магазин</a>.
-            </h3>
-            {% endif %}
         </div>
         <div class="col-md-6">
             <h2>Календарь событий:</h2>
@@ -172,5 +146,7 @@
         });
         $('#claim_modal').modal('hide');
     }
-</script>
+$(function () {
+  $('[data-toggle="popover"]').popover()
+})</script>
 {% endblock %}

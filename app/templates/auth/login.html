@@ -5,13 +5,51 @@
 {% block title %}Вход{% endblock %}
 {% block body %}
 <div class="container">
-    <div class="content-section">
+    <div class="row">
+        <div class="col-md-6">
         {{ utils.flashed_messages() }}
-        <div class="center">
             <h1>Вход в аккаунт</h1>
             <br/>
             {{ wtf.quick_form(form) }}
         </div>
+        <div class="col-md-6">
+            <img class="img-fluid" src="{{ url_for('static', filename='images/cup.png') }}">
+        </div>
     </div>
 </div>
+<script>
+
+var email = document.getElementById("email");
+
+  if (email.validity.valueMissing) {
+    email.setCustomValidity("Необходимо ввести email");
+  }
+
+email.addEventListener("input", function (event) {
+
+  if (email.validity.valueMissing) {
+    email.setCustomValidity("Необходимо ввести email");
+  }
+  else{
+    event.target.setCustomValidity("");
+  }
+});
+
+var password = document.getElementById("password");
+
+  if (password.validity.valueMissing) {
+    password.setCustomValidity("Необходимо ввести пароль");
+  }
+
+password.addEventListener("input", function (event) {
+
+  if (password.validity.valueMissing) {
+    password.setCustomValidity("Необходимо ввести пароль");
+  }
+  else{
+    event.target.setCustomValidity("");
+  }
+});
+
+</script>
 {% endblock %}
